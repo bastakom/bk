@@ -1,4 +1,5 @@
 import { getStoryblokApi } from '@storyblok/react'
+import Staplar from './Staplar'
 
 async function getTjanster() {
   let sbParams = { version: 'draft' as const, starts_with: 'tjanster/' }
@@ -15,13 +16,7 @@ const TjansterComponent = async () => {
     data: { stories },
   } = res
 
-  return (
-    <div className="h-screen flex items-center">
-      {stories.map((item: any, index: number) => (
-        <h2 key={index}>{item.name}</h2>
-      ))}
-    </div>
-  )
+  return <Staplar props={stories} />
 }
 
 export default TjansterComponent
