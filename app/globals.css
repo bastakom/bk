@@ -1,0 +1,42 @@
+@import 'slick-carousel/slick/slick.css';
+@import 'slick-carousel/slick/slick-theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1 {
+  font-family: 'Geologica', sans-serif;
+}
+
+.font-primary {
+  font-family: 'Geologica', sans-serif;
+}
+
+.font-secondary {
+  font-family: 'Sofia Sans', sans-serif;
+}
+
+.button {
+  background: #fff;
+  color: black;
+  padding: 10px 20px;
+  font-family: 'Geologica', sans-serif;
+  border-radius: 7px;
+}
+
+:root {
+  --background: white;
+  --foreground: black;
+}
+
+[data-theme='dark'] {
+  --background: black;
+  --foreground: white;
+}
+
+.slick-track {
+  display: flex !important;
+  gap: 10px;
+  margin-left: -10px;
+}
