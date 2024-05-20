@@ -11,7 +11,6 @@ const page = async ({ params }: { params: { slug: string } }) => {
   const pathname = params.slug
 
   const res = await getSlugData(pathname)
-  console.log(res.data.story)
 
   const {
     data: { story },

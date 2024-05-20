@@ -2,8 +2,6 @@ import Link from 'next/link'
 
 import { FaInstagram, FaFacebook, FaLinkedin, FaVimeo } from 'react-icons/fa6'
 import { FaYoutube } from 'react-icons/fa'
-import Image from 'next/image'
-import logo from '@/public/bk-white.png'
 
 interface Props {
   props: any
@@ -13,8 +11,6 @@ const FooterComponent = ({ props }: Props) => {
   const {
     story: { content },
   } = props
-
-  console.log(content)
 
   return (
     <div className="w-full h-[50vh] flex flex-col bg-[#3d3d3d] p-10 mt-10 text-white relative">
