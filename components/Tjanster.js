@@ -3,7 +3,7 @@ import { storyblokEditable } from '@storyblok/react'
 
 const Tjanster = ({ blok }) => {
   return (
-    <div className="h-screen flex items-center" {...storyblokEditable(blok)}>
+    <div className="flex" {...storyblokEditable(blok)}>
       <TjansterComponent />
     </div>
   )

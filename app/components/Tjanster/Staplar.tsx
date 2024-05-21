@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useState } from 'react'
 
 interface Props {
@@ -9,43 +8,35 @@ interface Props {
 
 const Staplar = ({ props }: Props) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [open, setIsOpen] = useState(false)
 
   const handleView = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)
+    if (openIndex === index) {
+      setIsOpen(true)
+    } else {
+      setIsOpen(false)
+    }
   }
 
   return (
-    <div className="flex w-full h-full relative gap-2">
-      {props.map((item, index) => {
-        if (openIndex === index) {
-          return (
-            <div
-              onClick={() => handleView(index)}
-              className=" w-full h-[600px] absolute bg-gray-200 flex flex-col justify-center transition-all duration-300"
-              key={index}
-            >
-              <h2 className="p-2 font-bold text-2xl">{item.name}</h2>
-              <Link href="#" className="p-2">
-                LÄS MER FÖRFAN!
-              </Link>
-            </div>
-          )
-        } else if (openIndex === null) {
-          return (
-            <div
-              onClick={() => handleView(index)}
-              className="h-[600px] w-1/5 bg-gray-200 flex flex-col justify-center transition-all duration-300"
-              key={index}
-            >
-              <div>
-                <h2 className="p-2 font-bold text-2xl">{item.name}</h2>
-              </div>
-            </div>
-          )
-        } else {
-          return null
-        }
-      })}
+    <div className="flex w-full relative gap-2">
+      {props.map((item, index) => (
+        <div
+          onClick={() => handleView(index)}
+          className={`h-[600px] ${
+            openIndex === index ? 'w-full' : 'w-1/5'
+          } bg-gray-200 flex flex-col justify-center transition-all duration-300 hover:cursor-pointer`}
+          key={index}
+        >
+          <div>
+            {open && <h2 className="p-2 font-bold text-lg">{item.name}</h2>}
+            {openIndex === index && (
+              <h2 className="p-2 font-bold text-lg">{item.name}</h2>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
