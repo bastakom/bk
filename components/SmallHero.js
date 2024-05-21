@@ -1,7 +1,7 @@
 import Small from '@/app/components/SmallHero/Small'
 import { storyblokEditable } from '@storyblok/react'
 
-const Cases = ({ blok }) => {
+const Smallhero = ({ blok }) => {
   return (
     <div {...storyblokEditable(blok)}>
       <Small props={blok} />
@@ -9,4 +9,4 @@ const Cases = ({ blok }) => {
   )
 }
 
-export default Cases
+export default Smallhero

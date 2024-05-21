@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { render } from 'storyblok-rich-text-react-renderer'
 
 interface Props {
   props: any[]
@@ -55,7 +56,7 @@ const Staplar = ({ props }: Props) => {
               />
             )}
             <div className="bg-black opacity-40 absolute top-0 h-full w-full" />
-            <div className="z-10">
+            <div className="z-10 h-full items-center flex justify-center">
               {open && (
                 <h2
                   className={`p-2 font-bold text-xl text-white transition-opacity text-center`}
@@ -65,10 +66,17 @@ const Staplar = ({ props }: Props) => {
               )}
 
               {openIndex === index && (
-                <div className="p-5 flex flex-col gap-5 w-full h-full">
-                  <h2 className={`font-bold text-4xl text-white reveal`}>
+                <div className="p-5 flex flex-col gap-2 w-full h-full  justify-end">
+                  <h2 className={`font-bold text-4xl text-white`}>
                     <span>{item.name}</span>
                   </h2>
+                  {typeof item?.content?.content === 'string' ? (
+                    <div className="line-clamp-3 font-primary max-w-[60%] text-white reveal">
+                      <span className="leading-[22px]">
+                        {item.content.content}
+                      </span>
+                    </div>
+                  ) : null}
                   <Link
                     href={`${item.full_slug}`}
                     className="z-10 button absolute right-5 bottom-5"
