@@ -18,7 +18,7 @@ async function fetchCases() {
   })
 }
 
-export const fetchConfig = async () => {
+const fetchConfig = async () => {
   let sbParams = { version: 'draft' as const }
 
   const storyblokApi = getStoryblokApi()

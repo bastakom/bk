@@ -27,8 +27,6 @@ const CasePage = ({ props, config }: Props) => {
     fetchData()
   }, [])
 
-  console.log(config.config.data.story)
-
   useGSAP(() => {
     gsap.fromTo(
       '.filtered-item',
