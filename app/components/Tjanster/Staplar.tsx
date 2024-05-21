@@ -8,7 +8,7 @@ interface Props {
 
 const Staplar = ({ props }: Props) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
-  const [open, setIsOpen] = useState(false)
+  const [open, setIsOpen] = useState(true)
 
   const handleView = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)

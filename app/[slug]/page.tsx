@@ -1,7 +1,4 @@
-'use client'
-
 import { StoryblokStory, getStoryblokApi } from '@storyblok/react/rsc'
-import { Suspense } from 'react'
 
 async function fetchData(slug: string) {
   let sbParams = {
@@ -23,10 +20,8 @@ export default async function page({ params }: { params: { slug: string } }) {
   const { data } = await fetchData(slugName)
 
   return (
-    <Suspense fallback={<>Loading...</>}>
-      <div className="mt-10">
-        <StoryblokStory story={data?.data.story} />
-      </div>
-    </Suspense>
+    <div className="mt-10">
+      <StoryblokStory story={data?.data.story} />
+    </div>
   )
 }
