@@ -4,7 +4,7 @@ import CasePage from '../components/Cases/CasePage'
 const Page = async () => {
   const props = await fetchCases()
   const config = await fetchConfig()
-  return <CasePage props={props.data.stories} config={config} />
+  return <CasePage props={props.data.stories} config={config.config.data.story} />
 }
 
 export default Page
