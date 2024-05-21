@@ -12,7 +12,6 @@ import Config from './Config'
 import HeaderMenu from './HeaderMenu'
 import MenuLink from './MenuLink'
 import Cases from './Cases'
-import Tjanster from './Tjanster'
 import SmallHero from './SmallHero'
 import TitleText from './TitleText'
 
@@ -26,7 +25,6 @@ const components = {
   config: Config,
   header_menu: HeaderMenu,
   menu_link: MenuLink,
-  varatjanster: Tjanster,
   smallhero: SmallHero,
   title_text: TitleText,
 }

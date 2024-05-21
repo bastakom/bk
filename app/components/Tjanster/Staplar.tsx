@@ -7,13 +7,15 @@ import { render } from 'storyblok-rich-text-react-renderer'
 
 interface Props {
   props: any[]
+  config: any
 }
 
-const Staplar = ({ props }: Props) => {
+const Staplar = ({ props, config }: Props) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
   const [open, setIsOpen] = useState(true)
 
+  console.log(config)
   const handleView = (index: number) => {
     if (isAnimating) return
 
