@@ -4,7 +4,7 @@ const getSlugData = async (slug: string) => {
   let sbParams = { version: 'draft' as const }
 
   const storyblokApi = getStoryblokApi()
-  return await storyblokApi.get(`cdn/stories/vara-tjanster/${slug}`, sbParams)
+  return await storyblokApi.get(`cdn/stories/tjanster/${slug}`, sbParams)
 }
 
 const page = async ({ params }: { params: { slug: string } }) => {

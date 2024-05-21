@@ -28,7 +28,7 @@ const Navigation = ({ props }: Props) => {
         {props.story.content.header_menu.map((item: any) => {
           return (
             <Link
-              href={item.link.cached_url}
+              href={`/${item.link.cached_url}`}
               key={item._uid}
               className="font-secondary text-md"
             >
