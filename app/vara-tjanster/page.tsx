@@ -36,7 +36,7 @@ const getTjanster = async () => {
   return res.data.stories
 }
 
-export const fetchConfig = async () => {
+const fetchConfig = async () => {
   let sbParams = { version: 'draft' as const }
 
   const storyblokApi = getStoryblokApi()
