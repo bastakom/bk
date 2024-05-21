@@ -13,6 +13,7 @@ import HeaderMenu from './HeaderMenu'
 import MenuLink from './MenuLink'
 import Cases from './Cases'
 import Tjanster from './Tjanster'
+import SmallHero from './SmallHero'
 
 const components = {
   feature: Feature,
@@ -25,6 +26,7 @@ const components = {
   header_menu: HeaderMenu,
   menu_link: MenuLink,
   varatjanster: Tjanster,
+  smallhero: SmallHero,
 }
 /** 2. Initialize it as usual */
 storyblokInit({

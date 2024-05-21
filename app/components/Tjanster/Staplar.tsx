@@ -10,17 +10,29 @@ interface Props {
 
 const Staplar = ({ props }: Props) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [isAnimating, setIsAnimating] = useState(false)
   const [open, setIsOpen] = useState(true)
 
   const handleView = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index)
+    if (isAnimating) return
+
     if (openIndex === index) {
       setIsOpen(true)
     } else {
       setIsOpen(false)
     }
-  }
+    if (openIndex === index) {
+      setOpenIndex(null)
+    } else {
+      setIsAnimating(true)
+      setOpenIndex(null)
 
+      setTimeout(() => {
+        setOpenIndex(index)
+        setIsAnimating(false)
+      }, 100)
+    }
+  }
   return (
     <div className="flex w-full relative gap-2">
       {props.map((item, index) => {
@@ -42,10 +54,12 @@ const Staplar = ({ props }: Props) => {
                 className="object-cover"
               />
             )}
-            <div className="bg-black opacity-30 absolute top-0 h-full w-full" />
+            <div className="bg-black opacity-40 absolute top-0 h-full w-full" />
             <div className="z-10">
               {open && (
-                <h2 className={`p-2 font-bold text-xl text-white`}>
+                <h2
+                  className={`p-2 font-bold text-xl text-white transition-opacity text-center`}
+                >
                   <span>{item.name}</span>
                 </h2>
               )}
