@@ -40,3 +40,24 @@ h1 {
   gap: 10px;
   margin-left: -10px;
 }
+
+/* Reveal Text */
+
+.reveal {
+  overflow: hidden;
+  line-height: 1;
+}
+
+.reveal span {
+  display: block;
+  animation: reveal 0.5s;
+}
+
+@keyframes reveal {
+  0% {
+    transform: translate(0, 100%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

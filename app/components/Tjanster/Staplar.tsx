@@ -44,11 +44,21 @@ const Staplar = ({ props }: Props) => {
             )}
             <div className="bg-black opacity-30 absolute top-0 h-full w-full" />
             <div className="z-10">
-              {open && <h2 className="p-2 font-bold text-lg text-white">{item.name}</h2>}
+              {open && (
+                <h2 className={`p-2 font-bold text-xl text-white`}>
+                  <span>{item.name}</span>
+                </h2>
+              )}
+
               {openIndex === index && (
-                <div className="p-2">
-                  <h2 className="font-bold text-lg text-white">{item.name}</h2>
-                  <Link href={`${item.full_slug}`} className="z-50">
+                <div className="p-5 flex flex-col gap-5 w-full h-full">
+                  <h2 className={`font-bold text-4xl text-white reveal`}>
+                    <span>{item.name}</span>
+                  </h2>
+                  <Link
+                    href={`${item.full_slug}`}
+                    className="z-10 button absolute right-5 bottom-5"
+                  >
                     Läs mer
                   </Link>
                 </div>
