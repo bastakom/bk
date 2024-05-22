@@ -36,7 +36,7 @@ export default function RootLayout({
     <StoryblokProvider>
       <html lang="en">
         <body className={`${inter.className} pb-10 px-10 relative`}>
-          <Loading />
+          {/* <Loading /> */}
           <ThemeProvider defaultTheme="light" attribute="class">
             <Header />
             {children}

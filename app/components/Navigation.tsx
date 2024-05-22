@@ -6,6 +6,7 @@ import logowhite from '@/public/bk-white.png'
 import Image from 'next/image'
 import ThemeSwitch from './ThemeSwitch'
 import { useTheme } from 'next-themes'
+import TextAnimation from './TextAnimation/TextAnimation'
 
 interface Props {
   props?: any
@@ -15,7 +16,7 @@ const Navigation = ({ props }: Props) => {
   const { theme } = useTheme()
   return (
     <div className="flex py-2 items-center justify-between fixed z-50 w-full p-10 top-0 left-0 bg-white dark:bg-[#121212]">
-      <Link href="/">
+      <Link href="/" className="flex gap-5 w-full items-center">
         <Image
           src={theme === 'dark' ? logowhite : logoblack}
           width={50}
@@ -23,6 +24,7 @@ const Navigation = ({ props }: Props) => {
           alt="Bästa kompisar Reklambyrå"
           className="my-2"
         />
+        <TextAnimation />
       </Link>
       <nav className="flex gap-5 w-full justify-end">
         {props.story.content.header_menu.map((item: any) => {

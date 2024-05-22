@@ -14,6 +14,7 @@ import MenuLink from './MenuLink'
 import Cases from './Cases'
 import SmallHero from './SmallHero'
 import TitleText from './TitleText'
+import Tiles from './Tiles'
 
 const components = {
   feature: Feature,
@@ -27,6 +28,7 @@ const components = {
   menu_link: MenuLink,
   smallhero: SmallHero,
   title_text: TitleText,
+  tiles: Tiles,
 }
 /** 2. Initialize it as usual */
 storyblokInit({

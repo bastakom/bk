@@ -116,7 +116,7 @@ const CasePage = ({ props, config }: Props) => {
                     key={index}
                     href={item.full_slug}
                     className="w-full h-[400px] relative"
-                    onMouseEnter={() => handleMouseEnter(item.content.uuid)}
+                    onMouseEnter={() => handleMouseEnter(item.uuid)}
                     onMouseLeave={handleMouseLeave}
                   >
                     <div className="filtered-item h-full">
@@ -141,11 +141,16 @@ const CasePage = ({ props, config }: Props) => {
                       )}
                     </div>
                     <div
+                      className={`transition-opacity duration-300 ${
+                        hoveredItem === item.uuid ? 'opacity-80' : 'opacity-40'
+                      } absolute inset-0 bg-[#25364f] z-10`}
+                    />
+                    <div
                       className={`flex p-5 h-full w-full items-start justify-end z-20 absolute flex-col bottom-0`}
                     >
                       <span
                         className={`transition-opacity duration-300 ${
-                          hoveredItem === item.content.uuid
+                          hoveredItem === item.uuid
                             ? 'text-white opacity-100'
                             : 'text-white opacity-50'
                         } text-[25px] leading-10 font-bold font-primary`}
