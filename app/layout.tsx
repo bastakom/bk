@@ -3,8 +3,9 @@ import { Inter } from 'next/font/google'
 import { storyblokInit, apiPlugin } from '@storyblok/react/rsc'
 import StoryblokProvider from '../components/StoryblokProvider'
 import dynamic from 'next/dynamic'
-const Header = dynamic(() => import('./components/Header'), { ssr: false })
+
 const Footer = dynamic(() => import('./components/Footer'), { ssr: false })
+const Header = dynamic(() => import('./components/Header'), { ssr: false })
 
 import { ThemeProvider } from './components/ThemeProvid/theme-provider'
 import './globals.css'
@@ -36,7 +37,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${inter.className} pb-10 px-10 relative`}>
           <Loading />
-          <ThemeProvider defaultTheme="system" attribute="class">
+          <ThemeProvider defaultTheme="light" attribute="class">
             <Header />
             {children}
             <Footer />

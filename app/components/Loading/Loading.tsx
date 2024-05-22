@@ -87,8 +87,8 @@ const Loading = () => {
   return !loading ? (
     <div
       ref={loadingRef}
-      className="w-full p-10 h-screen left-0 top-0 flex items-center justify-center bg-white fixed"
-      style={{ zIndex: 99 }}
+      className="w-full pb-8 px-10 pt-16 bg-white h-screen left-0 top-0 flex items-center justify-center  fixed"
+      style={{ zIndex: 49 }}
     >
       <div
         className="h-full w-full left-0 bg-black top-0 z-50 text-white flex justify-center items-center"
