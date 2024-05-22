@@ -9,6 +9,7 @@ const Footer = dynamic(() => import('./components/Footer'), { ssr: false })
 import { ThemeProvider } from './components/ThemeProvid/theme-provider'
 import './globals.css'
 import './font.css'
+import Loading from './components/Loading/Loading'
 
 storyblokInit({
   accessToken: 'faVE0ToH7Y41wHZy0uSt3Qtt',
@@ -34,6 +35,7 @@ export default function RootLayout({
     <StoryblokProvider>
       <html lang="en">
         <body className={`${inter.className} pb-10 px-10 relative`}>
+          <Loading />
           <ThemeProvider defaultTheme="system" attribute="class">
             <Header />
             {children}

@@ -8,7 +8,7 @@ interface Props {
 const TitleText = ({ title, content }: Props) => {
   return (
     <div className={`mt-24 mb-10 flex flex-col gap-2 items-center`}>
-      <h2 className={`text-center max-w-[30%] text-3xl font-bold`}>
+      <h2 className={`text-center max-w-[30%] text-4xl font-bold`}>
         {render(title)}
       </h2>
       {content && (

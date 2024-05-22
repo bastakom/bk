@@ -63,12 +63,17 @@ const CasePage = ({ props, config }: Props) => {
 
   return (
     <div className="w-full m-auto">
-      <video autoPlay muted loop className="max-h-[55vh] w-full object-cover back mt-20">
+      <video
+        autoPlay
+        muted
+        loop
+        className="max-h-[55vh] w-full object-cover back mt-20"
+      >
         <source src={config.content.casehero.filename} />
       </video>
       <div className="z-10 relative">
         <div className="py-5 text-left flex gap-5 text-sm justify-center items-center left-0 z-50">
-            <span> Filter:</span>
+          <span> Filter:</span>
           <button
             key={100}
             onClick={() => handleCategoryClick('')}
@@ -94,7 +99,7 @@ const CasePage = ({ props, config }: Props) => {
         </div>
         <div className="flex m-auto">
           <div
-            className="flex flex-wrap justify-start gap-2 pb-10 w-full m-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-start gap-2 pb-10 w-full m-auto"
             ref={container}
           >
             {props
@@ -110,7 +115,7 @@ const CasePage = ({ props, config }: Props) => {
                   <Link
                     key={index}
                     href={item.full_slug}
-                    className="w-[33%] h-[400px] relative"
+                    className="w-full h-[400px] relative"
                     onMouseEnter={() => handleMouseEnter(item.content.uuid)}
                     onMouseLeave={handleMouseLeave}
                   >
