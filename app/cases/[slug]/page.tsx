@@ -45,7 +45,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
         </div>
         <div className="grid grid-cols-2 gap-5 my-5 container m-auto ">
           {story.content.gallery.slice(0, 4).map((item: any) => (
-            <div className="h-[500px] relative w-full">
+            <div className="h-[400px] relative w-full">
               <Image src={item.filename} fill alt="" className="object-cover" />
             </div>
           ))}
@@ -64,7 +64,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
         </div>
         <div className="grid grid-cols-2 gap-5 my-5 container m-auto ">
           {story.content.gallery.slice(4, 8).map((item: any) => (
-            <div className="h-[500px] relative w-full">
+            <div className="h-[400px] relative w-full">
               <Image src={item.filename} fill alt="" className="object-cover" />
             </div>
           ))}
