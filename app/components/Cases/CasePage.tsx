@@ -73,11 +73,10 @@ const CasePage = ({ props, config }: Props) => {
       </video>
       <div className="z-10 relative">
         <div className="py-5 text-left flex gap-5 text-sm justify-center items-center left-0 z-50">
-          <span> Filter:</span>
           <button
             key={100}
             onClick={() => handleCategoryClick('')}
-            className={`font-primary ${
+            className={`font-primary text-xl ${
               selectedCategory === '' ? 'text-[#FF6063]' : ''
             }`}
           >
@@ -86,7 +85,7 @@ const CasePage = ({ props, config }: Props) => {
           {Array.from(uniqueCategories).map((category: string, index: number) =>
             category ? (
               <button
-                className={`font-primary ${
+                className={`font-primary text-xl ${
                   selectedCategory === category ? 'text-[#FF6063]' : ''
                 }`}
                 key={index}
@@ -120,6 +119,13 @@ const CasePage = ({ props, config }: Props) => {
                     onMouseLeave={handleMouseLeave}
                   >
                     <div className="filtered-item h-full">
+                      <div
+                        className={`transition-opacity duration-300 ${
+                          hoveredItem === item.uuid
+                            ? 'opacity-80'
+                            : 'opacity-40'
+                        } absolute inset-0 bg-[#25364f] z-10`}
+                      />
                       {item.content?.videoimage?.is_external_url ? (
                         <video
                           autoPlay
@@ -140,11 +146,7 @@ const CasePage = ({ props, config }: Props) => {
                         />
                       )}
                     </div>
-                    <div
-                      className={`transition-opacity duration-300 ${
-                        hoveredItem === item.uuid ? 'opacity-80' : 'opacity-40'
-                      } absolute inset-0 bg-[#25364f] z-10`}
-                    />
+
                     <div
                       className={`flex p-5 h-full w-full items-start justify-end z-20 absolute flex-col bottom-0`}
                     >
@@ -153,12 +155,12 @@ const CasePage = ({ props, config }: Props) => {
                           hoveredItem === item.uuid
                             ? 'text-white opacity-100'
                             : 'text-white opacity-50'
-                        } text-[25px] leading-10 font-bold font-primary`}
+                        } text-[28px] leading-10 font-bold font-primary`}
                       >
                         {item.name}
                       </span>
                       {item.content?.Kategori && (
-                        <span className="text-[16px] font-bold font-primary text-white">
+                        <span className="text-lg font-bold font-primary text-white">
                           {Array.isArray(item.content.Kategori)
                             ? item.content.Kategori.join(', ')
                             : item.content.Kategori}

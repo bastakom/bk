@@ -5,6 +5,22 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Sofia';
+  src: url('/fonts/Sofia-Pro-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Sofia';
+  src: url('/fonts/Sofia-Pro-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+html {
+  font-family: 'Sofia', sans-serif;
+}
+
 h1 {
   font-family: 'Sofia', sans-serif;
 }
@@ -17,8 +33,9 @@ h1 {
   font-family: 'Sofia', sans-serif;
 }
 
-.font-light {
-  font-family: 'Sofia-light', sans-serif;
+.font-light-sofia {
+  font-family: 'Sofia';
+  font-weight: 300;
 }
 
 .button {
@@ -68,4 +85,15 @@ h1 {
 
 .container {
   max-width: 85rem;
+}
+
+a {
+  font-size: 18px;
+  font-family: 'Sofia', 'sans-serif';
+  text-decoration: none;
+  transition: 0.5s all ease-in-out;
+}
+
+a:hover {
+  opacity: 0.7;
 }

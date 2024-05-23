@@ -3,14 +3,9 @@
   src: url('/fonts/Sofia-Pro-Regular.ttf') format('truetype');
   font-weight: normal;
 }
-@font-face {
-  font-family: 'Sofia-light';
-  src: url('/fonts/Sofia-light.ttf') format('opentype');
-  font-weight: light;
-}
 
 @font-face {
-  font-family: 'neuzeit';
-  src: url('/fonts/Neuzeit-Grotesk-Light.otf') format('opentype');
+  font-family: 'Sofia';
+  src: url('/public/fonts/Sofia-Pro-Light.ttf') format('truetype');
   font-weight: light;
 }

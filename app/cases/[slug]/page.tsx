@@ -16,9 +16,6 @@ const page = async ({ params }: { params: { slug: string } }) => {
     data: { story },
   } = await getSlugData(pathname)
 
-  console.log(story.content.text_under_video)
-  console.log(story.content.text_under_gallery)
-
   return (
     <>
       <div className="relative bg-slate-50 dark:bg-[#121212] pb-20 ">
@@ -31,13 +28,13 @@ const page = async ({ params }: { params: { slug: string } }) => {
               className="object-cover"
             />
           </div>
-          <button className="text-left w-full absolute text-white p-5">Tillbaka</button>
+
           <div className="w-full justify-between flex-col flex gap-5 container m-auto ">
             <div className="flex items-center gap-2">
-              <span className="font-light">Klient: </span>
+              <span className="font-light">Kund: </span>
               <h2 className="font-bold">{story.content.title}</h2>
             </div>
-            <div className="w-2/3 flex flex-col gap-5 text-[28px]">
+            <div className="w-2/3 flex flex-col gap-5 font-light-sofia text-[28px]">
               {render(story.content.content)}
             </div>
             <span>{story?.content?.ingress}</span>
@@ -50,7 +47,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
             </div>
           ))}
         </div>
-        <div className="flex flex-col gap-5 text-[28px] container m-auto my-10">
+        <div className="flex flex-col gap-5 text-[28px] container m-auto my-10 font-light-sofia">
           {render(story.content.text_under_gallery)}
         </div>
         <div className="w-ful gap-5 container m-auto">
@@ -69,7 +66,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
             </div>
           ))}
         </div>
-        <div className="flex flex-col gap-5 text-[28px] container m-auto my-10">
+        <div className="flex flex-col gap-5 text-[28px] container m-auto my-10 font-light-sofia">
           {render(story.content.text_under_video)}
         </div>
         <div className="w-ful gap-5 container m-auto">

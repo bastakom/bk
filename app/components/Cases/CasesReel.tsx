@@ -120,12 +120,12 @@ function CasesReel({ props }: any) {
                     hoveredItem === item.uuid
                       ? 'text-white opacity-100'
                       : 'text-white opacity-50'
-                  } text-[25px] leading-10 font-bold font-primary`}
+                  } text-[28px] leading-10 font-bold font-primary`}
                 >
                   {item.name}
                 </span>
                 {item.content?.Kategori && (
-                  <span className="text-[16px] font-bold font-primary text-white">
+                  <span className="text-[20px] font-bold font-primary text-white">
                     {item.content.Kategori}
                   </span>
                 )}
@@ -146,7 +146,7 @@ function CasesReel({ props }: any) {
       </div>
       <Link
         href="/cases"
-        className="font-primary text-[18px] w-full text-center font-bold"
+        className="font-primary text-xl w-full text-center font-bold"
       >
         Se alla cases
       </Link>
