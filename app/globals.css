@@ -6,15 +6,19 @@
 @tailwind utilities;
 
 h1 {
-  font-family: 'Geologica', sans-serif;
+  font-family: 'Sofia', sans-serif;
 }
 
 .font-primary {
-  font-family: 'Geologica', sans-serif;
+  font-family: 'Sofia', sans-serif;
 }
 
 .font-secondary {
-  font-family: 'Sofia Sans', sans-serif;
+  font-family: 'Sofia', sans-serif;
+}
+
+.font-light {
+  font-family: 'Sofia-light', sans-serif;
 }
 
 .button {
@@ -60,4 +64,8 @@ h1 {
   100% {
     transform: translate(0, 0);
   }
+}
+
+.container {
+  max-width: 85rem;
 }

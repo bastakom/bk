@@ -1,2 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap');
+@font-face {
+  font-family: 'Sofia';
+  src: url('/fonts/Sofia-Pro-Regular.ttf') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Sofia-light';
+  src: url('/fonts/Sofia-light.ttf') format('opentype');
+  font-weight: light;
+}
+
+@font-face {
+  font-family: 'neuzeit';
+  src: url('/fonts/Neuzeit-Grotesk-Light.otf') format('opentype');
+  font-weight: light;
+}

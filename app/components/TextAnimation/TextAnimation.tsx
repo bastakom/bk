@@ -16,11 +16,12 @@ const TextAnimation = () => {
     'Beste vrienden',
     'Mejores amigos',
     'Beste Freunde',
-    'Лучшие друзья',
+    'Najdraze prijateliji',
     '最好的朋友',
     '親友',
     'أعز اصدقاء',
     'Amici optimi',
+    'Лучшие друзья',
   ]
   const [index, setIndex] = useState(0)
   const [loading, setLoading] = useState(false)
