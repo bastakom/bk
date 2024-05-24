@@ -22,7 +22,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
         <div className="flex gap-14 mb-20 mt-20 flex-col items-center">
           <div className="w-full relative h-[800px]">
             <Image
-              src={story.content.image.filename}
+              src={story?.content?.image?.filename || ''}
               fill
               alt="placeholder"
               className="object-cover"
@@ -40,37 +40,62 @@ const page = async ({ params }: { params: { slug: string } }) => {
             <span>{story?.content?.ingress}</span>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-5 my-5 container m-auto ">
-          {story.content.gallery.slice(0, 4).map((item: any) => (
-            <div className="h-[400px] relative w-full">
-              <Image src={item.filename} fill alt="" className="object-cover" />
-            </div>
-          ))}
+        <div className="grid grid-cols-2 gap-5 my-5 container m-auto">
+          {story.content &&
+            Array.isArray(story.content.gallery) &&
+            story.content.gallery.length > 0 &&
+            story.content.gallery.slice(0, 4).map((item: any) => (
+              <div className="h-[400px] relative w-full" key={item.filename}>
+                <Image
+                  src={item.filename}
+                  fill
+                  alt=""
+                  className="object-cover"
+                />
+              </div>
+            ))}
         </div>
+
         <div className="flex flex-col gap-5 text-[28px] container m-auto my-10 font-light-sofia">
-          {render(story.content.text_under_gallery)}
+          {story.content?.text_under_gallery &&
+            render(story.content.text_under_gallery)}
         </div>
-        <div className="w-ful gap-5 container m-auto">
-          {story.content.videos.slice(0, 1).map((item: any) => (
-            <div className="object-cover relative w-full">
-              <video muted loop controls autoPlay className="w-full">
-                <source src={item.filename} />
-              </video>
-            </div>
-          ))}
+
+        <div className="w-full gap-5 container m-auto">
+          {story.content &&
+            Array.isArray(story.content.videos) &&
+            story.content.videos.length > 0 &&
+            story.content.videos.slice(0, 1).map((item: any) => (
+              <div className="object-cover relative w-full" key={item.filename}>
+                <video muted loop controls autoPlay className="w-full">
+                  <source src={item.filename} />
+                </video>
+              </div>
+            ))}
         </div>
-        <div className="grid grid-cols-2 gap-5 my-5 container m-auto ">
-          {story.content.gallery.slice(4, 8).map((item: any) => (
-            <div className="h-[400px] relative w-full">
-              <Image src={item.filename} fill alt="" className="object-cover" />
-            </div>
-          ))}
+
+        <div className="grid grid-cols-2 gap-5 my-5 container m-auto">
+          {story.content &&
+            Array.isArray(story.content.gallery) &&
+            story.content.gallery.length > 4 &&
+            story.content.gallery.slice(4, 8).map((item: any) => (
+              <div className="h-[400px] relative w-full" key={item.filename}>
+                <Image
+                  src={item.filename}
+                  fill
+                  alt=""
+                  className="object-cover"
+                />
+              </div>
+            ))}
         </div>
+
         <div className="flex flex-col gap-5 text-[28px] container m-auto my-10 font-light-sofia">
           {render(story.content.text_under_video)}
         </div>
         <div className="w-ful gap-5 container m-auto">
-          {story.content.videos.length === 2 &&
+          {Array.isArray(story.content.gallery) &&
+            story.content.videos.length === 2 &&
             story.content.videos.slice(1, 2).map((item: any) => (
               <div className="object-cover relative w-full">
                 <video muted loop controls autoPlay className="w-full">

@@ -15,6 +15,7 @@ import Cases from './Cases'
 import SmallHero from './SmallHero'
 import TitleText from './TitleText'
 import Tiles from './Tiles'
+import Team from './Team'
 
 const components = {
   feature: Feature,
@@ -29,6 +30,7 @@ const components = {
   smallhero: SmallHero,
   title_text: TitleText,
   tiles: Tiles,
+  vart_team: Team,
 }
 /** 2. Initialize it as usual */
 storyblokInit({

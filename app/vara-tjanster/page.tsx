@@ -8,18 +8,18 @@ const page = async () => {
   const config = await fetchConfig()
 
   return (
-    <>
-      <TitleText
+    <div className="mt-14">
+      {/* <TitleText
         title={config.hero_tjanster_title}
         content={config.hero_tjanster_sub}
-      />
+      /> */}
       <Staplar props={res} config={config} />
       <Small
         image={config.image_tjanster}
         title={config.tjanster_title}
         content={config.tjanster_content}
       />
-    </>
+    </div>
   )
 }
 

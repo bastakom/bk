@@ -16,7 +16,7 @@ const Smallhero = ({ blok }) => {
           <h1 className="text-5xl max-w-[60%] font-bold leading-[3.5rem]">
             {blok.title}
           </h1>
-          <span className="flex flex-col gap-5 max-w-[90%] font-light-sofia text-[28px]">
+          <span className="flex flex-col gap-5 max-w-[90%] font-light-sofia text-[20px]">
             {render(blok.sub_text)}
           </span>
         </div>

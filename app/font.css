@@ -6,6 +6,6 @@
 
 @font-face {
   font-family: 'Sofia';
-  src: url('/public/fonts/Sofia-Pro-Light.ttf') format('truetype');
+  src: url('/fonts/Sofia-Pro-Light.ttf') format('truetype');
   font-weight: light;
 }

@@ -17,6 +17,12 @@
   font-weight: 300;
 }
 
+@font-face {
+  font-family: 'Sofia';
+  src: url('/fonts/Sofia-Pro-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
 html {
   font-family: 'Sofia', sans-serif;
 }
@@ -36,6 +42,10 @@ h1 {
 .font-light-sofia {
   font-family: 'Sofia';
   font-weight: 300;
+}
+.font-bold-sofia {
+  font-family: 'Sofia';
+  font-weight: 700;
 }
 
 .button {
@@ -96,4 +106,26 @@ a {
 
 a:hover {
   opacity: 0.7;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.relative:hover .slide-in {
+  visibility: visible;
+  animation: slideInFromRight 0.5s forwards;
+}
+
+.slide-in {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s linear;
 }

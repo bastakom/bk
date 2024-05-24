@@ -3,19 +3,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { render } from 'storyblok-rich-text-react-renderer'
 
 interface Props {
   props: any[]
   config: any
 }
 
-const Staplar = ({ props, config }: Props) => {
+const Staplar = ({ props }: Props) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
   const [open, setIsOpen] = useState(true)
 
-  console.log(config)
   const handleView = (index: number) => {
     if (isAnimating) return
 
@@ -61,7 +59,7 @@ const Staplar = ({ props, config }: Props) => {
             <div className="z-10 h-full items-center flex justify-center">
               {open && (
                 <h2
-                  className={`p-2 font-bold text-xl text-white transition-opacity text-center`}
+                  className={`p-2 font-bold text-[28px] text-white transition-opacity text-center`}
                 >
                   <span>{item.name}</span>
                 </h2>
