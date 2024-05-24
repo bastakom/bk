@@ -1,3 +1,5 @@
+
+
 import { getStoryblokApi } from '@storyblok/react'
 import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
@@ -16,6 +18,8 @@ const page = async ({ params }: { params: { slug: string } }) => {
     data: { story },
   } = await getSlugData(pathname)
 
+  console.log(story)
+
   return (
     <>
       <div className="relative bg-slate-50 dark:bg-[#121212] pb-20 ">
@@ -25,7 +29,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
               src={story?.content?.image?.filename || ''}
               fill
               alt="placeholder"
-              className="object-cover"
+              className="object-cover bg-[-200px]"
             />
           </div>
 
