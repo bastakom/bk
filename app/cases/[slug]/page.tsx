@@ -19,8 +19,8 @@ const page = async ({ params }: { params: { slug: string } }) => {
   return (
     <>
       <div className="relative bg-slate-50 dark:bg-[#121212] pb-20 ">
-        <div className="flex gap-14 mb-20 mt-20 flex-col items-center">
-          <div className="w-full relative h-[800px]">
+        <div className="flex gap-14 mb-20 mt-16 flex-col items-center">
+          <div className="w-full relative h-[600px]">
             <Image
               src={story?.content?.image?.filename || ''}
               fill

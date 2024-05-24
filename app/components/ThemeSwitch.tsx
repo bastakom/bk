@@ -7,7 +7,7 @@ const ThemeSwitch = () => {
   const { setTheme, theme } = useTheme()
 
   return (
-    <div className="pl-2  flex justify-center items-center">
+    <div className="pl-2  flex justify-center items-center bg-slate-400 px-10 py-2 mx-5">
       {theme === 'light' ? (
         <button onClick={() => setTheme('dark')}>
           <GoMoon fontSize={'1.5rem'} />

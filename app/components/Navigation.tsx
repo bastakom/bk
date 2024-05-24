@@ -32,7 +32,7 @@ const Navigation = ({ props }: Props) => {
             <Link
               href={`/${item.link.cached_url}`}
               key={item._uid}
-              className="font-secondary text-sm uppercase"
+              className="font-secondary text-lg"
             >
               {item.name}
             </Link>
