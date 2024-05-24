@@ -24,13 +24,13 @@ const ThemeSwitch = () => {
           setIsDark(!isDark)
         }}
         className={`transition-transform duration-300 transform ${
-          isDark ? 'translate-x-5' : '-translate-x-5'
+          !isDark ? 'translate-x-5' : '-translate-x-5'
         } bg-black dark:bg-white p-2 rounded-full shadow-md`}
       >
-        {isDark ? (
-          <IoSunnyOutline fontSize={'1.5rem'} color='black'/>
+        {!isDark ? (
+          <IoSunnyOutline fontSize={'1.5rem'} color='white'/>
         ) : (
-          <GoMoon fontSize={'1.5rem'} color='white' />
+          <GoMoon fontSize={'1.5rem'} color='black' />
         )}
       </button>
     </div>
