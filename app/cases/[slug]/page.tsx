@@ -1,5 +1,3 @@
-
-
 import { getStoryblokApi } from '@storyblok/react'
 import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
@@ -17,8 +15,6 @@ const page = async ({ params }: { params: { slug: string } }) => {
   const {
     data: { story },
   } = await getSlugData(pathname)
-
-  console.log(story)
 
   return (
     <>
@@ -44,27 +40,6 @@ const page = async ({ params }: { params: { slug: string } }) => {
             <span>{story?.content?.ingress}</span>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-5 my-5 container m-auto">
-          {story.content &&
-            Array.isArray(story.content.gallery) &&
-            story.content.gallery.length > 0 &&
-            story.content.gallery.slice(0, 4).map((item: any) => (
-              <div className="h-[400px] relative w-full" key={item.filename}>
-                <Image
-                  src={item.filename}
-                  fill
-                  alt=""
-                  className="object-cover"
-                />
-              </div>
-            ))}
-        </div>
-
-        <div className="flex flex-col gap-5 text-[28px] container m-auto my-10 font-light-sofia">
-          {story.content?.text_under_gallery &&
-            render(story.content.text_under_gallery)}
-        </div>
-
         <div className="w-full gap-5 container m-auto">
           {story.content &&
             Array.isArray(story.content.videos) &&
@@ -77,6 +52,37 @@ const page = async ({ params }: { params: { slug: string } }) => {
               </div>
             ))}
         </div>
+        <div className="grid grid-cols-2 gap-5 my-5 container m-auto">
+          {story.content &&
+            Array.isArray(story.content.gallery) &&
+            story.content.gallery.length > 0 &&
+            story.content.gallery.slice(0, 4).map((item: any) => (
+              <div className="h-[400px] relative w-full" key={item.filename}>
+                {item.filename.endsWith('.mp4') ? (
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    className="object-cover h-full w-full"
+                  >
+                    <source src={item?.filename || ''} />
+                  </video>
+                ) : (
+                  <Image
+                    src={item?.filename || ''}
+                    fill
+                    alt=""
+                    className="object-cover"
+                  />
+                )}
+              </div>
+            ))}
+        </div>
+
+        <div className="flex flex-col gap-5 text-[20px] container m-auto my-10 font-light-sofia">
+          {story.content?.text_under_gallery &&
+            render(story.content.text_under_gallery)}
+        </div>
 
         <div className="grid grid-cols-2 gap-5 my-5 container m-auto">
           {story.content &&
@@ -84,17 +90,28 @@ const page = async ({ params }: { params: { slug: string } }) => {
             story.content.gallery.length > 4 &&
             story.content.gallery.slice(4, 8).map((item: any) => (
               <div className="h-[400px] relative w-full" key={item.filename}>
-                <Image
-                  src={item.filename}
-                  fill
-                  alt=""
-                  className="object-cover"
-                />
+                {item.filename.endsWith('.mp4') ? (
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    className="object-cover h-full w-full"
+                  >
+                    <source src={item?.filename || ''} />
+                  </video>
+                ) : (
+                  <Image
+                    src={item?.filename || ''}
+                    fill
+                    alt=""
+                    className="object-cover"
+                  />
+                )}
               </div>
             ))}
         </div>
 
-        <div className="flex flex-col gap-5 text-[28px] container m-auto my-10 font-light-sofia">
+        <div className="flex flex-col gap-5 text-[20px] container m-auto my-10 font-light-sofia">
           {render(story.content.text_under_video)}
         </div>
         <div className="w-ful gap-5 container m-auto">

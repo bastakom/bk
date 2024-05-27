@@ -20,20 +20,20 @@ const Team = async () => {
   const res = await getTeam()
   console.log(res)
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
       {res.map((member: any) => (
         <div key={member.id} className="relative group hover:cursor-pointer">
           <div className="relative">
             {member?.content?.content === '' ? null : (
               <div
-                className="absolute top-0 h-full text-black w-full p-5 flex items-center bg-white opacity-0 group-hover:opacity-100
-            group-hover:translate-x-0 transform translate-x-full transition-all duration-300 ease-in-out text-lg hover:cursor-pointer"
+                className="absolute top-0 h-full text-black w-full p-5 flex items-center bg-white opacity-0 group-hover:opacity-90
+            group-hover:translate-x-0 transform translate-x-full transition-all duration-300 ease-in-out text-[16px] hover:cursor-pointer"
               >
                 {render(member?.content?.content)}
               </div>
             )}
             <Image
-              className="h-[593px] lg:max-h-[593px] object-cover"
+              className="h-[593px] lg:max-h-[420px] object-cover"
               src={member.content.image.filename}
               width={500}
               height={500}

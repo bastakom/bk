@@ -126,7 +126,8 @@ const CasePage = ({ props, config }: Props) => {
                             : 'opacity-40'
                         } absolute inset-0 bg-[#25364f] z-10`}
                       />
-                      {item.content?.videoimage?.is_external_url ? (
+
+                      {item.content.videoimage?.filename.endsWith('.mp4') ? (
                         <video
                           autoPlay
                           loop
