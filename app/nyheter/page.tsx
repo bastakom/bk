@@ -28,6 +28,7 @@ async function getCategories() {
   let sbParams = {
     version: 'draft' as const,
     starts_with: 'nyheter/kategori/',
+    sort_by: 'name:asc',
   }
 
   const storyblokApi = getStoryblokApi()

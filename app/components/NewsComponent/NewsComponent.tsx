@@ -44,16 +44,16 @@ const NewsComponent = ({ props, kategories }: Props) => {
 
   return (
     <div className="mt-24">
-      <h1 className="font-bold-sofia">SENASTE NYHET</h1>
       <div className="h-[50vh] my-5 ">
+        <h1 className="font-bold-sofia">SENASTE NYHET</h1>
         {props.slice(0, 1).map((item: any) => (
-          <div className="grid grid-cols-2 h-full items-center justify-center p-10 m-auto">
-            <div className="flex flex-col gap-5">
+          <div className="grid grid-cols-2 h-full items-center justify-center py-10 m-auto">
+            <div className="flex flex-col gap-5 px-6 bg-[#EFE9E2] h-full justify-center">
               {item.content.kategori
                 .map((kat: any) => kategories.find((k) => k.uuid === kat)?.name)
                 .join(' / ')}
               <h2
-                className={`text-[28px] max-w-[80%] font-bold leading-[26px] ${
+                className={`text-[45px] max-w-[80%] font-bold leading-[40px] ${
                   hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-80'
                 }`}
               >
@@ -70,7 +70,7 @@ const NewsComponent = ({ props, kategories }: Props) => {
                 Läs mer
               </Link>
             </div>
-            <div className="relative h-full">
+            <div className="relative h-full w-full">
               <Image
                 src={
                   item.content.future_picture.filename
@@ -85,7 +85,7 @@ const NewsComponent = ({ props, kategories }: Props) => {
           </div>
         ))}
       </div>
-      <div className="flex flex-wrap gap-5 mb-6">
+      <div className="flex flex-wrap gap-5 mb-6 justify-center">
         <button
           onClick={() => setSelectedCategory('')}
           className={`${selectedCategory === '' ? 'text-[#FF6063]' : ''}`}
@@ -104,7 +104,7 @@ const NewsComponent = ({ props, kategories }: Props) => {
           </button>
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-3 gap-5">
         {filteredPosts.slice(1, 100).map((item) => {
           // const formattedDate = item.published_at
           //   ? format(new Date(`${item?.published_at}`), 'yyyy-MM-dd')
@@ -125,21 +125,21 @@ const NewsComponent = ({ props, kategories }: Props) => {
                       : item?.content?.image?.filename
                   }
                   fill
-                  className="object-fit"
+                  className="object-cover"
                   alt={item.name}
                 />
 
                 <div
-                  className={`bg-[#25364f] absolute h-full w-full ${
+                  className={`bg-[#121212] absolute h-full w-full ${
                     hoveredUuid == item.uuid ? 'opacity-80' : 'opacity-40'
                   } transition-opacity duration-300`}
                 />
               </div>
               <div className="flex w-full p-5 text-white justify-between items-end absolute bottom-0">
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col w-full">
                   <h2
-                    className={`text-[24px] max-w-[80%] font-bold leading-[26px] ${
-                      hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-80'
+                    className={`text-[24px] max-w-[80%] font-bold ${
+                      hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
                     }`}
                   >
                     {item.name}

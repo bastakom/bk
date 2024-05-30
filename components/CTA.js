@@ -21,7 +21,7 @@ const CTA = ({ blok }) => {
           blok.two_columns ? 'text-left w-full' : 'justify-center flex'
         }`}
       >
-        <p
+        <div
           className={`${
             blok.two_columns ? 'text-left w-full' : 'text-center max-w-[75%] flex flex-col gap-5'
           } ${
@@ -29,7 +29,7 @@ const CTA = ({ blok }) => {
           }  font-primary`}
         >
           {render(blok.content)}
-        </p>
+        </div>
         {blok.two_columns && (
           <div className="flex mt-10">
             {blok.buttons.map((item, index) => (
