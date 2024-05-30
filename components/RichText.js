@@ -1,12 +1,25 @@
 import { storyblokEditable } from '@storyblok/react/rsc'
-import { render } from 'storyblok-rich-text-react-renderer'
 
 const RichText = ({ blok }) => {
-  console.log(blok)
   return (
-    <div className="absolute left-0 pt-20 pb-14" {...storyblokEditable(blok)}>
-      <div className="looping-text-container">
-        <div className="looping-text">{render(blok.content)}</div>
+    <div {...storyblokEditable(blok)} className="my-20">
+      <div className="marquee-section m-auto">
+        <div className="loop-div-right">
+          <div className="marquee flex gap-2 text-[24px]">
+            <span>{blok.content}</span>
+            <span>{blok.content}</span>
+            <span>{blok.content}</span>
+          </div>
+        </div>
+      </div>
+      <div className="marquee-section m-auto">
+        <div className="loop-div-left">
+          <div className="marquee flex gap-2 text-[24px]">
+            <span>{blok.content_2}</span>
+            <span>{blok.content_2}</span>
+            <span>{blok.content_2}</span>
+          </div>
+        </div>
       </div>
     </div>
   )

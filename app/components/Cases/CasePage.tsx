@@ -76,7 +76,7 @@ const CasePage = ({ props, config }: Props) => {
           <button
             key={100}
             onClick={() => handleCategoryClick('')}
-            className={`font-primary text-xl ${
+            className={`font-primary text-[16px] ${
               selectedCategory === '' ? 'text-[#FF6063]' : ''
             }`}
           >
@@ -85,7 +85,7 @@ const CasePage = ({ props, config }: Props) => {
           {Array.from(uniqueCategories).map((category: string, index: number) =>
             category ? (
               <button
-                className={`font-primary text-xl ${
+                className={`font-primary text-[16px] ${
                   selectedCategory === category ? 'text-[#FF6063]' : ''
                 }`}
                 key={index}

@@ -17,7 +17,7 @@ const ThemeSwitch = () => {
   if (!mounted) return null
 
   return (
-    <div className="px-2 flex justify-center items-center bg-gray-200 dark:bg-slate-500 rounded-3xl ml-8">
+    <div className="px-2 flex w-[50px] justify-center items-center bg-gray-200 dark:bg-slate-500 rounded-3xl ml-8">
       <button
         onClick={() => {
           setTheme(theme === 'light' ? 'dark' : 'light')
