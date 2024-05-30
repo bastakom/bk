@@ -5,6 +5,28 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: blue;
+  --foreground: black;
+}
+
+[data-theme='dark'] {
+  --background: black;
+  --foreground: white;
+}
+
+.dark {
+  background-color: #121212;
+}
+
+.light {
+  background-color: #fffbf6;
+}
+
+.link-color {
+  color: #ff6062;
+}
+
 @font-face {
   font-family: 'Sofia';
   src: url('/fonts/Sofia-Pro-Regular.ttf') format('truetype');
@@ -56,19 +78,8 @@ h1 {
   border-radius: 7px;
 }
 
-:root {
-  --background: white;
-  --foreground: black;
-}
-
-[data-theme='dark'] {
-  --background: black;
-  --foreground: white;
-}
-
 .slick-track {
   display: flex !important;
-  gap: 10px;
   margin-left: -10px;
 }
 
@@ -104,10 +115,6 @@ a {
   transition: 0.5s all ease-in-out;
 }
 
-a:hover {
-  opacity: 0.7;
-}
-
 @keyframes slideInFromRight {
   0% {
     transform: translateX(100%);
@@ -128,4 +135,49 @@ a:hover {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.5s linear;
+}
+
+/* LOOPING TEXT */
+.marquee-section {
+  position: relative;
+  min-height: 50px;
+}
+
+.marquee-section,
+.marquee-section * {
+  overflow: hidden;
+}
+
+.marquee {
+  white-space: nowrap;
+}
+
+.loop-div-right {
+  position: absolute;
+  animation: move-left-to-right linear 50s infinite;
+
+}
+
+.loop-div-left {
+  position: absolute;
+  animation: move-right-to-left linear 50s infinite;
+
+}
+
+@keyframes move-right-to-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes move-left-to-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }

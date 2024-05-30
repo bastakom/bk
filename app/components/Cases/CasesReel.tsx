@@ -73,7 +73,7 @@ function CasesReel({ props }: any) {
   }
 
   return (
-    <div className="flex flex-col gap-5 pt-10 relative">
+    <div className="flex flex-col gap-5 relative">
       <Slider
         {...settings}
         ref={sliderRef}
@@ -90,14 +90,14 @@ function CasesReel({ props }: any) {
               onMouseEnter={() => handleMouseEnter(item.uuid)}
               onMouseLeave={handleMouseLeave}
             >
-              {item.content?.videoimage?.is_external_url ? (
+              {item?.content?.videoimage?.filename.endsWith('.mp4') ? (
                 <video
                   autoPlay
                   loop
                   muted
                   className="object-cover absolute h-full w-full transition-opacity duration-300"
                 >
-                  <source src={`${item.content.videoimage.filename}`} />
+                  <source src={`${item?.content?.videoimage?.filename}`} />
                 </video>
               ) : (
                 <Image
@@ -146,7 +146,7 @@ function CasesReel({ props }: any) {
       </div>
       <Link
         href="/cases"
-        className="font-primary text-xl w-full text-center font-bold"
+        className="font-primary text-xl w-full text-center font-bold link-color"
       >
         Se alla cases
       </Link>

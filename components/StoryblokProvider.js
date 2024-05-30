@@ -16,6 +16,7 @@ import SmallHero from './SmallHero'
 import TitleText from './TitleText'
 import Tiles from './Tiles'
 import Team from './Team'
+import RichText from './RichText'
 
 const components = {
   feature: Feature,
@@ -31,6 +32,7 @@ const components = {
   title_text: TitleText,
   tiles: Tiles,
   vart_team: Team,
+  richtext_block: RichText,
 }
 /** 2. Initialize it as usual */
 storyblokInit({
