@@ -1,5 +1,6 @@
 import { storyblokEditable } from '@storyblok/react/rsc'
 import Link from 'next/link'
+import { render } from 'storyblok-rich-text-react-renderer'
 
 const CTA = ({ blok }) => {
   return (
@@ -22,12 +23,12 @@ const CTA = ({ blok }) => {
       >
         <p
           className={`${
-            blok.two_columns ? 'text-left w-full' : 'text-center max-w-[40%]'
+            blok.two_columns ? 'text-left w-full' : 'text-center max-w-[75%] flex flex-col gap-5'
           } ${
-            blok.smalltext ? 'text-[20px]' : 'text-[25px] leading-10'
+            blok.smalltext ? 'text-[20px]' : ''
           }  font-primary`}
         >
-          {blok.content}
+          {render(blok.content)}
         </p>
         {blok.two_columns && (
           <div className="flex mt-10">
