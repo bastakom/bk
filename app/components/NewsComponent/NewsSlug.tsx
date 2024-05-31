@@ -1,19 +1,24 @@
+'use client'
+
 import { format } from 'date-fns'
 import Image from 'next/image'
 import { render } from 'storyblok-rich-text-react-renderer'
 
 interface Props {
   props: any
+  enData: any
 }
 
-const NewsSlug = ({ props }: Props) => {
-  return props.map((item: any) => {
+const NewsSlug = ({ props, enData }: Props) => {
+  return props.map((item: any, index: number) => {
     // const formattedDate = item.published_at
     //   ? format(new Date(`${item?.published_at}`), 'yyyy-MM-dd')
     //   : null
 
+    console.log(enData)
     return (
       <div
+        key={index}
         className={`${
           item.content.full_width
             ? 'flex flex-col'

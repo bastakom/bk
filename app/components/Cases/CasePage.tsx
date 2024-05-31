@@ -98,7 +98,7 @@ const CasePage = ({ props, config }: Props) => {
         </div>
         <div className="flex m-auto">
           <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-start gap-2 pb-10 w-full m-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-start pb-10 w-full m-auto"
             ref={container}
           >
             {props

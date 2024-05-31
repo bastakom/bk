@@ -44,11 +44,11 @@ const NewsComponent = ({ props, kategories }: Props) => {
 
   return (
     <div className="mt-24">
-      <div className="h-[50vh] my-5 ">
-        <h1 className="font-bold-sofia">SENASTE NYHET</h1>
+      <div className="h-[70vh] my-5 ">
         {props.slice(0, 1).map((item: any) => (
           <div className="grid grid-cols-2 h-full items-center justify-center py-10 m-auto">
             <div className="flex flex-col gap-5 px-6 bg-[#EFE9E2] h-full justify-center">
+              <h1 className="font-bold-sofia">SENASTE NYHET</h1>
               {item.content.kategori
                 .map((kat: any) => kategories.find((k) => k.uuid === kat)?.name)
                 .join(' / ')}
@@ -78,7 +78,7 @@ const NewsComponent = ({ props, kategories }: Props) => {
                     : item?.content?.image?.filename
                 }
                 fill
-                className="object-cover"
+                className="object-fit"
                 alt={item.name}
               />
             </div>
@@ -104,7 +104,7 @@ const NewsComponent = ({ props, kategories }: Props) => {
           </button>
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-3">
         {filteredPosts.slice(1, 100).map((item) => {
           // const formattedDate = item.published_at
           //   ? format(new Date(`${item?.published_at}`), 'yyyy-MM-dd')
