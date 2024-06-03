@@ -6,16 +6,14 @@ import { render } from 'storyblok-rich-text-react-renderer'
 
 interface Props {
   props: any
-  enData: any
 }
 
-const NewsSlug = ({ props, enData }: Props) => {
+const NewsSlug = ({ props }: Props) => {
   return props.map((item: any, index: number) => {
     // const formattedDate = item.published_at
     //   ? format(new Date(`${item?.published_at}`), 'yyyy-MM-dd')
     //   : null
 
-    console.log(enData)
     return (
       <div
         key={index}

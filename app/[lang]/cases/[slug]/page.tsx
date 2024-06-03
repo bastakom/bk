@@ -2,19 +2,19 @@ import { getStoryblokApi } from '@storyblok/react'
 import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
 
-const getSlugData = async (slug: string) => {
-  let sbParams = { version: 'draft' as const }
+const getSlugData = async (slug: string, locale: string) => {
+  let sbParams = { version: 'draft' as const, langauge: locale }
 
   const storyblokApi = getStoryblokApi()
   return await storyblokApi.get(`cdn/stories/cases/${slug}`, sbParams)
 }
 
-const page = async ({ params }: { params: { slug: string } }) => {
+const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const pathname = params.slug
 
   const {
     data: { story },
-  } = await getSlugData(pathname)
+  } = await getSlugData(pathname, params.lang)
 
   return (
     <>

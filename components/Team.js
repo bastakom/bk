@@ -1,4 +1,4 @@
-import Team from '@/app/components/Team/Team'
+import Team from '@/app/[lang]/components/Team/Team'
 import { storyblokEditable } from '@storyblok/react'
 
 const VartTeam = ({ blok }) => {

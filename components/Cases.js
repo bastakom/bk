@@ -1,4 +1,4 @@
-import CasesReel from '@/app/components/Cases/CasesReel'
+import CasesReel from '@/app/[lang]/components/Cases/CasesReel'
 import { storyblokEditable } from '@storyblok/react'
 
 const Cases = ({ blok }) => {

@@ -1,12 +1,16 @@
 import type { Metadata } from 'next'
 import { storyblokInit, apiPlugin } from '@storyblok/react/rsc'
-import StoryblokProvider from '../components/StoryblokProvider'
+import StoryblokProvider from '../../components/StoryblokProvider'
 import { ThemeProvider } from './components/ThemeProvid/theme-provider'
 import Loading from './components/Loading/Loading'
 import dynamic from 'next/dynamic'
 
-const Footer = dynamic(() => import('./components/Footer'), { ssr: false })
-const Header = dynamic(() => import('./components/Header'), { ssr: false })
+const Footer = dynamic(() => import('./components/Footer'), {
+  ssr: false,
+})
+const Header = dynamic(() => import('./components/Header'), {
+  ssr: false,
+})
 
 import './globals.css'
 import './font.css'
@@ -26,16 +30,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode
+  params: { lang: string }
 }>) {
   return (
     <StoryblokProvider>
-      <html lang="en">
+      <html lang={params.lang}>
         <body className={`pb-10 px-10 relative`}>
           {/* <Loading /> */}
           <ThemeProvider defaultTheme="light" attribute="class">
-            <Header />
+            <Header lang={params.lang} />
             {children}
             <Footer />
           </ThemeProvider>
