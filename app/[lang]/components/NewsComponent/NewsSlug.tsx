@@ -2,20 +2,21 @@
 
 import { format } from 'date-fns'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { render } from 'storyblok-rich-text-react-renderer'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   props: any
-  enData: any
+  locale: any
 }
 
-const NewsSlug = ({ props, enData }: Props) => {
+const NewsSlug = ({ props, locale }: Props) => {
   return props.map((item: any, index: number) => {
     // const formattedDate = item.published_at
     //   ? format(new Date(`${item?.published_at}`), 'yyyy-MM-dd')
     //   : null
 
-    console.log(enData)
     return (
       <div
         key={index}

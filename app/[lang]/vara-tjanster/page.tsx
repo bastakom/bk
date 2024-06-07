@@ -1,7 +1,6 @@
 import { getStoryblokApi } from '@storyblok/react'
-import Staplar from '../components/Tjanster/Staplar'
 import Small from '../components/SmallHero/Small'
-import TitleText from '../components/TitleText/TitleText'
+import Staplar from '../components/Tjanster/Staplar'
 
 const page = async () => {
   const res = await getTjanster()

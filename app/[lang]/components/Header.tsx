@@ -1,8 +1,8 @@
 import Navigation from './Navigation'
 import { getStoryblokApi } from '@storyblok/react'
 
-export const fetchConfig = async () => {
-  let sbParams = { version: 'draft' as const }
+export const fetchConfig = async (locale: string) => {
+  let sbParams = { version: 'draft' as const, language: locale }
 
   const storyblokApi = getStoryblokApi()
   const config = await storyblokApi.get(`cdn/stories/config`, sbParams, {
@@ -11,9 +11,9 @@ export const fetchConfig = async () => {
   return { config }
 }
 
-const Header = async () => {
-  const { config } = await fetchConfig()
-  return <Navigation props={config.data} />
+const Header = async (locale: any) => {
+  const { config } = await fetchConfig(locale.locale)
+  return <Navigation props={config.data} locale={locale} />
 }
 
 export default Header

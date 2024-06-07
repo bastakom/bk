@@ -1,9 +1,10 @@
 import { StoryblokStory, getStoryblokApi } from '@storyblok/react/rsc'
 
-async function fetchData(slug: string) {
+async function fetchData(slug: string, locale: string) {
   let sbParams = {
     version: 'draft' as const,
     resolve_relations: 'varacases.referens',
+    language: locale,
   }
 
   const storyblokApi = getStoryblokApi()
@@ -14,10 +15,14 @@ async function fetchData(slug: string) {
   return { data }
 }
 
-export default async function page({ params }: { params: { slug: string } }) {
+export default async function page({
+  params,
+}: {
+  params: { slug: string; lang: string }
+}) {
   const pathname = params.slug
-  const slugName = pathname === undefined ? `home` : pathname
-  const { data } = await fetchData(slugName)
+  const slugName = pathname === undefined ? `hem` : pathname
+  const { data } = await fetchData(slugName, params.lang)
 
   return (
     <div className="mt-10">
