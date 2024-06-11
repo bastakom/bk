@@ -26,7 +26,7 @@ const Navigation = ({ props, locale }: Props) => {
   }
   return (
     <div className="flex py-2 items-center justify-between fixed z-50 w-full px-10 top-0 left-0 bg-[#FFFBF6] dark:bg-[#121212]">
-      <Link href="/" className="flex gap-5 w-1/3 items-center">
+      <Link href={`/${locale.locale}`} className="flex gap-5 w-1/3 items-center">
         <Image
           src={theme === 'dark' ? logowhite : logoblack}
           width={50}
@@ -45,7 +45,7 @@ const Navigation = ({ props, locale }: Props) => {
             <Link
               href={link}
               key={item._uid}
-              className="font-secondary text-[16px]"
+              className="font-secondary text-[14px] uppercase"
             >
               {item.name}
             </Link>

@@ -25,7 +25,7 @@ const CTA = ({ blok }) => {
           className={`${
             blok.two_columns ? 'text-left w-full' : 'text-center max-w-[75%] flex flex-col gap-5'
           } ${
-            blok.smalltext ? 'text-[20px]' : ''
+            blok.smalltext ? 'text-[20px]' : 'text-[20px]'
           }  font-primary`}
         >
           {render(blok.content)}

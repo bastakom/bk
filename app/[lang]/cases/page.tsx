@@ -5,7 +5,11 @@ const Page = async ({ params }: { params: { lang: string } }) => {
   const props = await fetchCases(params.lang)
   const config = await fetchConfig(params.lang)
   return (
-    <CasePage props={props.data.stories} config={config.config.data.story} />
+    <CasePage
+      props={props.data.stories}
+      config={config.config.data.story}
+      locale={params.lang}
+    />
   )
 }
 

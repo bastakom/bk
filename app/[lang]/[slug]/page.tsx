@@ -3,7 +3,7 @@ import { StoryblokStory, getStoryblokApi } from '@storyblok/react/rsc'
 async function fetchData(slug: string, locale: string) {
   let sbParams = {
     version: 'draft' as const,
-    resolve_relations: 'varacases.referens',
+    resolve_relations: ['varacases.referens', 'varacases.categories'],
     language: locale,
   }
 

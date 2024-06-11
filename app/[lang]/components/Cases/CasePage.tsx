@@ -11,13 +11,18 @@ import { useGSAP } from '@gsap/react'
 interface Props {
   props: any
   config: any
+  locale: string
 }
 
-const CasePage = ({ props, config }: Props) => {
+const CasePage = ({ props, config, locale }: Props) => {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [data, setData] = useState<{ data: { stories: any[] } } | null>(null)
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const container = useRef<HTMLInputElement>(null)
+
+  const enCat = props.flatMap((item: any) => item.content.categoriesen)
+
+  // ADD THIS if there is a english categori to the filter
 
   useGSAP(() => {
     async function fetchData() {
@@ -48,16 +53,23 @@ const CasePage = ({ props, config }: Props) => {
   }
 
   if (!data) return <div>Loading...</div>
-
   const uniqueCategories = new Set<string>()
 
   props.forEach((item: any) => {
-    if (Array.isArray(item.content.Kategori)) {
-      item.content.Kategori.forEach((category: string) => {
-        uniqueCategories.add(category)
-      })
+    if (locale === 'en') {
+      if (Array.isArray(item.content.categoriesen)) {
+        item.content.categoriesen.forEach((category: string) => {
+          uniqueCategories.add(category)
+        })
+      }
     } else {
-      uniqueCategories.add(item.content.Kategori)
+      if (Array.isArray(item.content.Kategori)) {
+        item.content.Kategori.forEach((category: string) => {
+          uniqueCategories.add(category)
+        })
+      } else {
+        uniqueCategories.add(item.content.Kategori)
+      }
     }
   })
 
@@ -98,22 +110,28 @@ const CasePage = ({ props, config }: Props) => {
         </div>
         <div className="flex m-auto">
           <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-start pb-10 w-full m-auto"
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 justify-start pb-10 w-full m-auto"
             ref={container}
           >
             {props
-              .filter(
-                (item: any) =>
-                  !selectedCategory ||
-                  (Array.isArray(item.content.Kategori) &&
-                    item.content.Kategori.includes(selectedCategory)) ||
-                  item.content.Kategori === selectedCategory
-              )
+              .filter((item: any) => {
+                const categories =
+                  locale === 'en'
+                    ? Array.isArray(item.content.categoriesen)
+                      ? item.content.categoriesen
+                      : []
+                    : Array.isArray(item.content.Kategori)
+                    ? item.content.Kategori
+                    : [item.content.Kategori]
+                return (
+                  !selectedCategory || categories.includes(selectedCategory)
+                )
+              })
               .map((item: any, index: number) => {
                 return (
                   <Link
                     key={index}
-                    href={item.full_slug}
+                    href={`/${item.full_slug}`}
                     className="w-full h-[400px] relative"
                     onMouseEnter={() => handleMouseEnter(item.uuid)}
                     onMouseLeave={handleMouseLeave}
@@ -160,13 +178,19 @@ const CasePage = ({ props, config }: Props) => {
                       >
                         {item.name}
                       </span>
-                      {item.content?.Kategori && (
-                        <span className="text-lg font-bold font-primary text-white">
-                          {Array.isArray(item.content.Kategori)
-                            ? item.content.Kategori.join(', ')
-                            : item.content.Kategori}
-                        </span>
-                      )}
+                      {locale === 'en'
+                        ? item.content.categoriesen && (
+                            <span className="text-lg font-bold font-primary text-white">
+                              {item.content.categoriesen.join(', ')}
+                            </span>
+                          )
+                        : item.content.Kategori && (
+                            <span className="text-lg font-bold font-primary text-white">
+                              {Array.isArray(item.content.Kategori)
+                                ? item.content.Kategori.join(', ')
+                                : item.content.Kategori}
+                            </span>
+                          )}
                     </div>
                   </Link>
                 )
