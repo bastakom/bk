@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useParams } from 'next/navigation'
 
 interface Props {
   props: any[]
@@ -13,6 +14,8 @@ const Staplar = ({ props }: Props) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
   const [open, setIsOpen] = useState(true)
+
+  const params = useParams()
 
   const handleView = (index: number) => {
     if (isAnimating) return
@@ -35,8 +38,12 @@ const Staplar = ({ props }: Props) => {
     }
   }
   return (
-    <div className="flex w-full relative gap-2">
+    <div className="flex w-full relative gap-2" id="tjanster">
       {props.map((item, index) => {
+        const translatedName = item.translated_slugs.flatMap(
+          (item: any) => item.name
+        )
+
         return (
           <div
             onClick={() => handleView(index)}
@@ -61,14 +68,22 @@ const Staplar = ({ props }: Props) => {
                 <h2
                   className={`p-2 font-bold text-[28px] text-white transition-opacity text-center`}
                 >
-                  <span>{item.name}</span>
+                  <span>
+                    {translatedName && params.lang === 'en'
+                      ? translatedName
+                      : item.name}
+                  </span>
                 </h2>
               )}
 
               {openIndex === index && (
                 <div className="p-5 flex flex-col gap-2 w-full h-full  justify-end">
                   <h2 className={`font-bold text-4xl text-white`}>
-                    <span>{item.name}</span>
+                    <span>
+                      {translatedName && params.lang === 'en'
+                        ? translatedName
+                        : item.name}
+                    </span>
                   </h2>
                   {typeof item?.content?.content === 'string' ? (
                     <div className="line-clamp-3 font-primary max-w-[60%] text-white reveal">
@@ -81,7 +96,7 @@ const Staplar = ({ props }: Props) => {
                     href={`${item.full_slug}`}
                     className="z-10 button absolute right-5 bottom-5"
                   >
-                    Läs mer
+                    {params.lang === 'en' ? 'Read more' : 'Läs mer'}
                   </Link>
                 </div>
               )}

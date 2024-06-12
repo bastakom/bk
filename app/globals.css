@@ -5,6 +5,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --background: blue;
   --foreground: black;
@@ -140,7 +144,7 @@ a {
 /* LOOPING TEXT */
 .marquee-section {
   position: relative;
-  min-height: 50px;
+  min-height: 30px;
 }
 
 .marquee-section,

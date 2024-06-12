@@ -1,8 +1,8 @@
-import Link from 'next/link'
+'use client'
 
-import { FaInstagram, FaFacebook, FaLinkedin, FaVimeo } from 'react-icons/fa6'
-import { FaYoutube } from 'react-icons/fa'
+import Link from 'next/link'
 import { render } from 'storyblok-rich-text-react-renderer'
+import { useParams } from 'next/navigation'
 
 interface Props {
   props: any
@@ -12,6 +12,8 @@ const FooterComponent = ({ props }: Props) => {
   const {
     story: { content },
   } = props
+
+  const params = useParams()
 
   return (
     <div className="w-full min-h-[60vh] justify-between flex flex-col bg-[#25364F] p-14 text-white relative">
@@ -28,18 +30,24 @@ const FooterComponent = ({ props }: Props) => {
         </div>
         <div className="flex flex-col mx-auto gap-14">
           <div>
-            <h3 className="font-bold mb-2 text-2xl">Besök oss</h3>
+            <h3 className="font-bold mb-2 text-xl">
+              {params.lang === 'en' ? 'Visit us' : 'Besök oss'}
+            </h3>
             <div dangerouslySetInnerHTML={{ __html: content.adress }} />
           </div>
           <div className="flex flex-col">
-            <h3 className="font-bold text-xl">Kontakt</h3>
+            <h3 className="font-bold text-xl">
+              {params.lang === 'en' ? 'Contact' : 'Kontakt'}
+            </h3>
             <Link href={`tel:${content.tel}`}>{content.tel}</Link>
             <Link href={`mailto:${content.mail}`}>{content.mail}</Link>
           </div>
         </div>
 
         <div className="flex flex-col mx-auto">
-          <h3 className="font-bold mb-2 text-2xl">Sociala kanaler</h3>
+          <h3 className="font-bold mb-2 text-xl">
+            {params.lang === 'en' ? 'Socials' : 'Sociala kanaler'}
+          </h3>
           <div className="flex flex-col gap-2 mb-4 mt-2">
             {content.socials.map((item: any) => {
               const handleIcon =
@@ -76,10 +84,12 @@ const FooterComponent = ({ props }: Props) => {
               Cookies
             </Link>
             <Link className="text-[16px]" href="/">
-              Integritetspolicy
+              {params.lang === 'en' ? 'Privacy Policy' : 'Integritetspolicy'}
             </Link>
             <Link className="text-[16px]" href="/">
-              Serviceavtal webbtjänster
+              {params.lang === 'en'
+                ? 'Service agreement web services'
+                : 'Serviceavtal webbtjänster'}
             </Link>
           </div>
         </div>

@@ -39,7 +39,7 @@ export default function RootLayout({
           <ThemeProvider defaultTheme="light" attribute="class">
             <Header locale={lang} />
             {children}
-            <Footer />
+            <Footer locale={lang} />
           </ThemeProvider>
         </body>
       </html>
