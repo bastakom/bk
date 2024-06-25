@@ -66,7 +66,7 @@ const Staplar = ({ props }: Props) => {
             <div className="z-10 h-full items-center flex justify-center">
               {open && (
                 <h2
-                  className={`p-2 font-bold text-[28px] text-white transition-opacity text-center`}
+                  className={`p-2 font-bold text-[22px] text-white transition-opacity text-center`}
                 >
                   <span>
                     {translatedName && params.lang === 'en'
@@ -78,7 +78,7 @@ const Staplar = ({ props }: Props) => {
 
               {openIndex === index && (
                 <div className="p-5 flex flex-col gap-2 w-full h-full  justify-end">
-                  <h2 className={`font-bold text-4xl text-white`}>
+                  <h2 className={`font-bold text-xl text-white`}>
                     <span>
                       {translatedName && params.lang === 'en'
                         ? translatedName
@@ -95,6 +95,7 @@ const Staplar = ({ props }: Props) => {
                   <Link
                     href={`${item.full_slug}`}
                     className="z-10 button absolute right-5 bottom-5"
+                    style={{ fontSize: '16px'}}
                   >
                     {params.lang === 'en' ? 'Read more' : 'Läs mer'}
                   </Link>

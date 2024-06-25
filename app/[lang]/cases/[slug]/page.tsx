@@ -2,7 +2,7 @@ import { getStoryblokApi } from '@storyblok/react'
 import CaseSlugPage from '../../components/Cases/CaseSlugPage'
 
 const getSlugData = async (slug: string) => {
-  let sbParams = { version: 'draft' as const }
+  let sbParams = { version: 'published' as const }
 
   const storyblokApi = getStoryblokApi()
   return await storyblokApi.get(`cdn/stories/cases/${slug}`, sbParams)

@@ -6,16 +6,14 @@ const page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTjanster(params.lang)
   const config = await fetchConfig(params.lang)
 
-  console.log(res)
-
   const firstContent =
     'Bästa Kompisar · Best Friends · Bedste venner · Parhaat ystävät · Migliori amici · Meilleurs amis · Beste vrienden · Mejores amigos · Beste Freunde ·'
   const nextContent =
     'Лучшие друзья- 最好的朋友 - 親友 - أعز اصدقاء · Amici optimi Bästa Kompisar · Best Friends · Bestevenner  · Parhaat ystävät · Migliori amici · Meilleurs amis ·'
 
   return (
-    <div className="mb-14">
-      <div className="mt-24">
+    <div className="mb-12">
+      <div className="mt-24 mb-14">
         <div className="marquee-section m-auto">
           <div className="loop-div-right">
             <div className="marquee flex gap-2 text-[18px]">

@@ -23,8 +23,10 @@ const FooterComponent = ({ props }: Props) => {
             {render(content.descriptionText)}
           </h2>
           <div className="flex flex-col gap-1 z-20">
-            {content.footer_menu.map((item: any) => (
-              <Link href={`${item.link.url}`}>{item.name}</Link>
+            {content.footer_menu.map((item: any, index: string) => (
+              <Link key={index} href={`${item.link.url}`}>
+                {item.name}
+              </Link>
             ))}
           </div>
         </div>

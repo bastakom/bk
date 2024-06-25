@@ -90,7 +90,6 @@ function CasesReelComponent({ props }: Props) {
         }
       >
         {props.map((item: any) => {
-          console.log(item.content.Kategori)
           return (
             <Link
               key={item.uuid}

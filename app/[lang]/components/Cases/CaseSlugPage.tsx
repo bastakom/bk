@@ -1,14 +1,19 @@
+'use client'
+
 import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
 
 interface Props {
   story: any
 }
 
 const CaseSlugPage = ({ story }: Props) => {
+  const locale = useParams()
+
   return (
     <>
-      <div className="relative bg-slate-50 dark:bg-[#121212] pb-20 ">
+      <div className="relative dark:bg-[#121212] pb-20 container m-auto">
         <div className="flex gap-14 mb-20 mt-16 flex-col items-center">
           <div className="w-full relative h-[600px]">
             <Image
@@ -19,16 +24,24 @@ const CaseSlugPage = ({ story }: Props) => {
               className="object-cover bg-[-200px]"
             />
           </div>
-
-          <div className="w-full justify-between flex-col flex gap-5 container m-auto ">
-            <div className="flex items-center gap-2">
-              <span className="font-light">Kund: </span>
-              <h2 className="font-bold">{story.content.title}</h2>
+          <div className="flex container">
+            <div className="w-1/2 flex-col flex gap-5 container">
+              <div className="flex gap-2 flex-col">
+                <div className="flex gap-2">
+                  <span className="font-light">
+                    {locale.lang === 'en' ? 'Customer: ' : 'Kund: '}
+                  </span>
+                  <h1 className="font-bold">{story.name}</h1>
+                </div>
+                <h2 className="text-[100px] leading-[1.3em]">
+                  {story.content.title}
+                </h2>
+              </div>
+              <span>{story?.content?.ingress}</span>
             </div>
-            <div className="w-[80%] flex flex-col gap-5 font-light-sofia text-[28px]">
+            <div className="w-1/2 flex flex-col gap-5 font-light-sofia text-[25px]">
               {render(story.content.content)}
             </div>
-            <span>{story?.content?.ingress}</span>
           </div>
         </div>
         <div className="w-full gap-5 container m-auto">
@@ -73,6 +86,19 @@ const CaseSlugPage = ({ story }: Props) => {
         <div className="flex flex-col gap-5 text-[20px] container m-auto my-10 font-light-sofia">
           {story.content?.text_under_gallery &&
             render(story.content.text_under_gallery)}
+          {story.content.extrattitlecontent && (
+            <div
+              className="max-w-[40%] mt-20 flex flex-col gap-14 pb-10 mb-14"
+              style={{ borderBottom: '1px solid #25364F' }}
+            >
+              <h3 className="text-[50px]">
+                {story.content.extrattitlecontent}
+              </h3>
+              <span className="text-[14px]">
+                {story.content.extratitlecontentingress}
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-5 my-5 container m-auto">
@@ -102,7 +128,7 @@ const CaseSlugPage = ({ story }: Props) => {
             ))}
         </div>
 
-        <div className="flex flex-col gap-5 text-[20px] container m-auto my-10 font-light-sofia">
+        <div className="flex flex-col gap-5 text-[20px] max-w-full lg:max-w-[50%] container my-10 font-light-sofia">
           {render(story.content.text_under_video)}
         </div>
         <div className="w-ful gap-5 container m-auto">

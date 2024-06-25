@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
+import { render } from 'storyblok-rich-text-react-renderer'
 
 interface Props {
   props: any
@@ -74,30 +75,36 @@ const CasePage = ({ props, config, locale }: Props) => {
   })
 
   return (
-    <div className="w-full m-auto">
-      <video
+    <div className="w-full m-auto container">
+      {/* <video
         autoPlay
         muted
         loop
         className="max-h-[55vh] w-full object-cover back mt-20"
       >
         <source src={config.content.casehero.filename} />
-      </video>
+      </video> */}
+      <div className="min-h-[55vh] mt-20 flex flex-col justify-center ml-10 gap-5">
+        <h1 className="text-[20px]">{config.content.case_title}</h1>
+        <span className="max-w-[50%] text-[25px]">
+          {render(config.content.case_content)}
+        </span>
+      </div>
       <div className="z-10 relative">
-        <div className="py-5 text-left flex gap-5 text-sm justify-center items-center left-0 z-50">
+        <div className="py-5 text-left flex gap-10 mb-5 text-sm ml-10 items-center left-0 z-50">
           <button
             key={100}
             onClick={() => handleCategoryClick('')}
-            className={`font-primary text-[16px] ${
+            className={`font-primary uppercase text-[14px] ${
               selectedCategory === '' ? 'text-[#FF6063]' : ''
             }`}
           >
-            Alla cases
+            {locale === 'en' ? 'All' : 'Alla'}
           </button>
           {Array.from(uniqueCategories).map((category: string, index: number) =>
             category ? (
               <button
-                className={`font-primary text-[16px] ${
+                className={`font-primary uppercase text-[14px] ${
                   selectedCategory === category ? 'text-[#FF6063]' : ''
                 }`}
                 key={index}
@@ -180,12 +187,12 @@ const CasePage = ({ props, config, locale }: Props) => {
                       </span>
                       {locale === 'en'
                         ? item.content.categoriesen && (
-                            <span className="text-lg font-bold font-primary text-white">
+                            <span className="text-[16px] font-light italic font-primary text-white">
                               {item.content.categoriesen.join(', ')}
                             </span>
                           )
                         : item.content.Kategori && (
-                            <span className="text-lg font-bold font-primary text-white">
+                            <span className="text-[16px] font-light italic font-primary text-white">
                               {Array.isArray(item.content.Kategori)
                                 ? item.content.Kategori.join(', ')
                                 : item.content.Kategori}
