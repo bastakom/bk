@@ -10,11 +10,11 @@ interface Props {
 
 const CaseSlugPage = ({ story }: Props) => {
   const locale = useParams()
-
+  console.log(story)
   return (
     <>
       <div className="relative dark:bg-[#121212] pb-20 container m-auto">
-        <div className="flex gap-14 mb-20 mt-16 flex-col items-center">
+        <div className="flex gap-14 mb-5 lg:mb-20 mt-16 flex-col items-center">
           <div className="w-full relative h-[600px]">
             <Image
               src={story?.content?.image?.filename || ''}
@@ -24,8 +24,8 @@ const CaseSlugPage = ({ story }: Props) => {
               className="object-cover bg-[-200px]"
             />
           </div>
-          <div className="flex container">
-            <div className="w-1/2 flex-col flex gap-5 container">
+          <div className="flex container flex-col lg:flex-row mb-10">
+            <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
               <div className="flex gap-2 flex-col">
                 <div className="flex gap-2">
                   <span className="font-light">
@@ -33,13 +33,13 @@ const CaseSlugPage = ({ story }: Props) => {
                   </span>
                   <h1 className="font-bold">{story.name}</h1>
                 </div>
-                <h2 className="text-[100px] leading-[1.3em]">
+                <h2 className="text-[40px] lg:text-[100px] leading-[1.3em]">
                   {story.content.title}
                 </h2>
               </div>
               <span>{story?.content?.ingress}</span>
             </div>
-            <div className="w-1/2 flex flex-col gap-5 font-light-sofia text-[25px]">
+            <div className="w-full lg:w-1/2 mt-5 lg:mt-0 flex flex-col gap-5 font-light-sofia text-[18px] lg:text-[25px]">
               {render(story.content.content)}
             </div>
           </div>
@@ -56,7 +56,7 @@ const CaseSlugPage = ({ story }: Props) => {
               </div>
             ))}
         </div>
-        <div className="grid grid-cols-2 gap-5 my-5 container m-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-5 container m-auto">
           {story.content &&
             Array.isArray(story.content.gallery) &&
             story.content.gallery.length > 0 &&
@@ -84,24 +84,36 @@ const CaseSlugPage = ({ story }: Props) => {
         </div>
 
         <div className="flex flex-col gap-5 text-[20px] container m-auto my-10 font-light-sofia">
-          {story.content?.text_under_gallery &&
-            render(story.content.text_under_gallery)}
+          {story.content.title_columns && (
+            <span className="text-[22px] font-normal">
+              {story.content.title_columns}
+            </span>
+          )}
+          {story.content?.text_under_gallery && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 font-light text-[18px] lg:text-[20px]">
+              <span>{render(story.content.text_under_gallery)}</span>
+              <span>
+                {story.content?.two_column_text_2 &&
+                  render(story.content.two_column_text_2)}
+              </span>
+            </div>
+          )}
           {story.content.extrattitlecontent && (
             <div
-              className="max-w-[40%] mt-20 flex flex-col gap-14 pb-10 mb-14"
+              className="max-w-full lg:max-w-[40%] mt-20 flex flex-col gap-14 pb-10 mb-14"
               style={{ borderBottom: '1px solid #25364F' }}
             >
-              <h3 className="text-[50px]">
+              <h3 className="text-[32px] lg:text-[50px] font-primary">
                 {story.content.extrattitlecontent}
               </h3>
-              <span className="text-[14px]">
+              <span className="text-[14px] font-normal font-primary">
                 {story.content.extratitlecontentingress}
               </span>
             </div>
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-5 my-5 container m-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-5 container m-auto">
           {story.content &&
             Array.isArray(story.content.gallery) &&
             story.content.gallery.length > 4 &&
@@ -128,7 +140,7 @@ const CaseSlugPage = ({ story }: Props) => {
             ))}
         </div>
 
-        <div className="flex flex-col gap-5 text-[20px] max-w-full lg:max-w-[50%] container my-10 font-light-sofia">
+        <div className="flex flex-col gap-5 text-[18px] lg:text-[20px] max-w-full lg:max-w-[50%] container my-10 font-light-sofia">
           {render(story.content.text_under_video)}
         </div>
         <div className="w-ful gap-5 container m-auto">

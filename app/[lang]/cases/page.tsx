@@ -4,10 +4,11 @@ import CasePage from '../components/Cases/CasePage'
 const Page = async ({ params }: { params: { lang: string } }) => {
   const props = await fetchCases(params.lang)
   const config = await fetchConfig(params.lang)
+
   return (
     <CasePage
       props={props.data.stories}
-      config={config.config.data.story}
+      config={config.data.story}
       locale={params.lang}
     />
   )
@@ -23,17 +24,28 @@ async function fetchCases(locale: string) {
   }
 
   const storyblokApi = getStoryblokApi()
-  return await storyblokApi.get(`cdn/stories/`, sbParams, {
-    cache: 'no-store',
-  })
+  try {
+    const response = await storyblokApi.get(`cdn/stories/`, sbParams, {
+      cache: 'no-store',
+    })
+    return response
+  } catch (error) {
+    console.error('Error fetching cases:')
+    return { data: { stories: [] } } // Return an empty array as a fallback
+  }
 }
 
 const fetchConfig = async (locale: string) => {
   let sbParams = { version: 'draft' as const, language: locale }
 
   const storyblokApi = getStoryblokApi()
-  const config = await storyblokApi.get(`cdn/stories/config`, sbParams, {
-    cache: 'no-store',
-  })
-  return { config }
+  try {
+    const response = await storyblokApi.get(`cdn/stories/config`, sbParams, {
+      cache: 'no-store',
+    })
+    return response
+  } catch (error) {
+    console.error('Error fetching config:')
+    return { data: { story: {} } } // Return an empty object as a fallback
+  }
 }
