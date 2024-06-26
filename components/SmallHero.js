@@ -6,13 +6,13 @@ import { render } from 'storyblok-rich-text-react-renderer'
 const Smallhero = ({ blok }) => {
   return (
     <div
-      className={`h-[80vh] flex ${
-        blok.marginleft ? 'w-[80%] m-auto my-24' : 'w-full '
+      className={`min-h-[80vh] flex flex-col lg:flex-row ${
+        blok.marginleft ? 'w-full lg:w-[80%] m-auto my-24' : 'w-full '
       } my-10 font-primary`}
       {...storyblokEditable(blok)}
     >
       <div
-        className={`w-1/2 h-full flex flex-col  ${
+        className={`w-full lg:w-1/2 h-full flex flex-col  ${
           blok.marginleft ? 'justify-start' : 'justify-center'
         }`}
       >
@@ -20,13 +20,13 @@ const Smallhero = ({ blok }) => {
           {blok.subtitle && (
             <span className="text-lg font-light-sofia">{blok.subtitle}</span>
           )}
-          <h1
-            className={`text-[70px] max-w-[80%] ${
+          <h2
+            className={`text-[28px] md:text-[50px] xl:text-[70px] max-w-full lg:max-w-[80%] ${
               blok.marginleft ? 'font-light' : 'font-bold'
             } leading-[1.5em]`}
           >
             {blok.title}
-          </h1>
+          </h2>
           <span className="flex flex-col gap-5 max-w-[90%] font-light-sofia text-[20px]">
             {render(blok.sub_text)}
           </span>
@@ -38,11 +38,12 @@ const Smallhero = ({ blok }) => {
         </div>
       </div>
       {blok.image && (
-        <div className="w-1/2 h-full relative h-[50vh]">
+        <div className="w-full mt-10 lg:mt-0 lg:w-1/2 h-full relative">
           <Image
             src={blok.image.filename}
-            className="object-cover"
-            fill
+            className="object-cover min-h-[100%] lg:min-h-[80vh]"
+            width={600}
+            height={600}
             alt=""
           />
         </div>

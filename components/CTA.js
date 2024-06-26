@@ -8,7 +8,7 @@ const CTA = ({ blok }) => {
       className={`${
         blok.two_columns
           ? 'grid grid-cols-2 my-32 mx-auto max-w-[80%]'
-          : 'flex flex-col justify-center items-center  md:h-[500px]'
+          : 'flex flex-col justify-center items-start  md:h-[500px]'
       }  gap-10 `}
       {...storyblokEditable(blok)}
     >
@@ -23,10 +23,10 @@ const CTA = ({ blok }) => {
       >
         <div
           className={`${
-            blok.two_columns ? 'text-left w-full' : 'text-center max-w-[75%] flex flex-col gap-5'
-          } ${
-            blok.smalltext ? 'text-[20px]' : 'text-[20px]'
-          }  font-primary`}
+            blok.two_columns
+              ? 'text-left w-full'
+              : 'text-left max-w-[75%] flex flex-col gap-5'
+          } ${blok.smalltext ? 'text-[20px]' : 'text-[20px]'}  font-primary`}
         >
           {render(blok.content)}
         </div>
@@ -36,7 +36,7 @@ const CTA = ({ blok }) => {
               <Link
                 href={item.link.cached_url}
                 key={item._uid}
-                className="link-color font-bold"
+                className="link-color font-normal"
               >
                 <span> {item.title}</span>
                 <span className="mx-2">
@@ -48,19 +48,21 @@ const CTA = ({ blok }) => {
         )}
       </div>
       {!blok.two_columns && (
-        <div className="flex">
-          {blok.buttons.map((item, index) => (
-            <Link
-              href={item.link.cached_url}
-              key={item._uid}
-              className="link-color font-bold"
-            >
-              <span> {item.title}</span>
-              <span className="mx-2">
-                {index !== blok.buttons.length - 1 && ' / '}
-              </span>
-            </Link>
-          ))}
+        <div className="flex justify-center w-full">
+          <div className="w-[75%]">
+            {blok.buttons.map((item, index) => (
+              <Link
+                href={item.link.cached_url}
+                key={item._uid}
+                className="link-color font-normal"
+              >
+                <span> {item.title}</span>
+                <span className="mx-2">
+                  {index !== blok.buttons.length - 1 && ' / '}
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </div>

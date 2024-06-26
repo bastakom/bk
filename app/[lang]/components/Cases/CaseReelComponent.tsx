@@ -164,7 +164,7 @@ function CasesReelComponent({ props }: Props) {
       </div>
       <Link
         href="/cases"
-        className="font-primary text-xl w-full text-center font-bold link-color"
+        className="font-primary text-xl w-full text-center font-normal link-color"
       >
         {router.lang == 'sv' ? ' Se alla cases' : 'See all cases'}
       </Link>

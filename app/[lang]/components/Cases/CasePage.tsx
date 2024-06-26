@@ -146,7 +146,7 @@ const CasePage = ({ props, config, locale }: Props) => {
                         className={`transition-opacity duration-300 ${
                           hoveredItem === item.uuid
                             ? 'opacity-80'
-                            : 'opacity-40'
+                            : 'opacity-0'
                         } absolute inset-0 bg-[#25364f] z-10`}
                       />
 

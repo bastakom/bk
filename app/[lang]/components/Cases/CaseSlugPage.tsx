@@ -24,13 +24,13 @@ const CaseSlugPage = ({ story }: Props) => {
               className="object-cover bg-[-200px]"
             />
           </div>
-          <div className="flex justify-start w-full gap-2 my-5 ml-0 lg:ml-10">
+          <div className="flex justify-start w-full gap-2 my-5 ml-0 lg:ml-[3.75rem]">
             <span className="font-light">
               {locale.lang === 'en' ? 'Customer: ' : 'Kund: '}
             </span>
             <h1 className="font-bold">{story.name}</h1>
           </div>
-          <div className="flex container flex-col lg:flex-row mb-10 ml-0 lg:ml-10">
+          <div className="flex container flex-col lg:flex-row mb-10 ml-0 lg:ml-[60px]">
             <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
               <div className="flex gap-2 flex-col">
                 <h2 className="text-[40px] lg:text-[100px] leading-[1.3em]">

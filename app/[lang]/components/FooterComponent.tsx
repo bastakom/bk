@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { render } from 'storyblok-rich-text-react-renderer'
 import { useParams } from 'next/navigation'
+import { IoMdArrowForward } from 'react-icons/io'
 
 interface Props {
   props: any
@@ -62,7 +63,7 @@ const FooterComponent = ({ props }: Props) => {
             {params.lang === 'en' ? 'Socials' : 'Sociala kanaler'}
           </h3>
           <div className="flex flex-col gap-2 mb-4 mt-2">
-            {content.socials.map((item: any) => {
+            {content.socials.map((item: any, index: number) => {
               const handleIcon =
                 item.icon === 'ig'
                   ? 'Instagram'
@@ -80,9 +81,13 @@ const FooterComponent = ({ props }: Props) => {
                   href={`https://${item.link.url}`}
                   passHref={true}
                   target="_blank"
-                  className="font-light"
+                  className="font-light flex gap-2"
+                  key={index}
                 >
                   {handleIcon}
+                  <span className="-rotate-45 font-light">
+                    <IoMdArrowForward fontSize={'1.5em'}/>
+                  </span>
                 </Link>
               )
             })}
