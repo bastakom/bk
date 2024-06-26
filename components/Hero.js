@@ -3,11 +3,11 @@ import { storyblokEditable } from '@storyblok/react/rsc'
 const Hero = ({ blok }) => {
   return (
     <>
-      <div className="tracking-[2.88px] fixed w-full z-20 top-[60%] left-3 h-fyll">
+      {/* <div className="tracking-[2.88px] fixed w-full z-20 top-[60%] left-3 h-fyll">
         <p className="transform -rotate-90 origin-top-left whitespace-nowrap font-bold text-xs font-secondary">
           VI ÄR EN FULLSERVICE BYRÅ
         </p>
-      </div>
+      </div> */}
 
       <div
         className={`w-full flex justify-${blok.position} h-[92vh] items-center relative`}

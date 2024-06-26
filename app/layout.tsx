@@ -29,12 +29,9 @@ export default function RootLayout({
   return (
     <StoryblokProvider>
       <html lang={lang}>
-        <body className={`pb-10 px-10 relative`}>
-          {/* <Loading /> */}
+        <body>
           <ThemeProvider defaultTheme="light" attribute="class">
-            {/* <Header locale={lang} /> */}
-            {children}
-            {/* <Footer locale={lang} /> */}
+            <main className={`pb-10 px-10 relative`}>{children}</main>
           </ThemeProvider>
         </body>
       </html>

@@ -19,12 +19,16 @@ const FooterComponent = ({ props }: Props) => {
     <div className="w-full min-h-[60vh] justify-between flex flex-col bg-[#25364F] p-14 text-white relative">
       <div className="w-full grid mx-auto grid-cols-[40%_30%_30%] gap-10">
         <div className="flex flex-col gap-10">
-          <h2 className="font-primary text-xl">
+          <h2 className="font-primary text-[25px] font-light">
             {render(content.descriptionText)}
           </h2>
           <div className="flex flex-col gap-1 z-20">
             {content.footer_menu.map((item: any, index: string) => (
-              <Link key={index} href={`${item.link.url}`}>
+              <Link
+                key={index}
+                href={`${item.link.url}`}
+                className="font-normal"
+              >
                 {item.name}
               </Link>
             ))}
@@ -32,22 +36,29 @@ const FooterComponent = ({ props }: Props) => {
         </div>
         <div className="flex flex-col mx-auto gap-14">
           <div>
-            <h3 className="font-bold mb-2 text-xl">
+            <h3 className="font-normal mb-2 text-xl">
               {params.lang === 'en' ? 'Visit us' : 'Besök oss'}
             </h3>
-            <div dangerouslySetInnerHTML={{ __html: content.adress }} />
+            <div
+              className="font-light"
+              dangerouslySetInnerHTML={{ __html: content.adress }}
+            />
           </div>
           <div className="flex flex-col">
-            <h3 className="font-bold text-xl">
+            <h3 className="font-normal text-xl">
               {params.lang === 'en' ? 'Contact' : 'Kontakt'}
             </h3>
-            <Link href={`tel:${content.tel}`}>{content.tel}</Link>
-            <Link href={`mailto:${content.mail}`}>{content.mail}</Link>
+            <Link href={`tel:${content.tel}`} className="font-light">
+              {content.tel}
+            </Link>
+            <Link href={`mailto:${content.mail}`} className="font-light">
+              {content.mail}
+            </Link>
           </div>
         </div>
 
         <div className="flex flex-col mx-auto">
-          <h3 className="font-bold mb-2 text-xl">
+          <h3 className="font-normal mb-2 text-xl">
             {params.lang === 'en' ? 'Socials' : 'Sociala kanaler'}
           </h3>
           <div className="flex flex-col gap-2 mb-4 mt-2">
@@ -69,6 +80,7 @@ const FooterComponent = ({ props }: Props) => {
                   href={`https://${item.link.url}`}
                   passHref={true}
                   target="_blank"
+                  className="font-light"
                 >
                   {handleIcon}
                 </Link>
@@ -80,15 +92,17 @@ const FooterComponent = ({ props }: Props) => {
 
       <div className="flex w-full items-center">
         <div className="flex gap-2 w-full justify-between text-[16px]">
-          <span>© Reklambyrån Bästa Kompisar</span>
+          <span className="font-light-sofia uppercase">
+            © Reklambyrån Bästa Kompisar 2024
+          </span>
           <div className="flex gap-10">
-            <Link className="text-[16px]" href="/">
+            <Link className="text-[16px] font-light" href="/">
               Cookies
             </Link>
-            <Link className="text-[16px]" href="/">
+            <Link className="text-[16px] font-light" href="/">
               {params.lang === 'en' ? 'Privacy Policy' : 'Integritetspolicy'}
             </Link>
-            <Link className="text-[16px]" href="/">
+            <Link className="text-[16px] font-light-sofia" href="/">
               {params.lang === 'en'
                 ? 'Service agreement web services'
                 : 'Serviceavtal webbtjänster'}

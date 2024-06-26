@@ -3,6 +3,7 @@
 import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
+import { FaArrowRight } from 'react-icons/fa'
 
 interface Props {
   story: any
@@ -10,11 +11,10 @@ interface Props {
 
 const CaseSlugPage = ({ story }: Props) => {
   const locale = useParams()
-  console.log(story)
   return (
     <>
       <div className="relative dark:bg-[#121212] pb-20 container m-auto">
-        <div className="flex gap-14 mb-5 lg:mb-20 mt-16 flex-col items-center">
+        <div className="flex gap-5 mb-5 lg:mb-20 mt-16 flex-col items-center">
           <div className="w-full relative h-[600px]">
             <Image
               src={story?.content?.image?.filename || ''}
@@ -24,15 +24,15 @@ const CaseSlugPage = ({ story }: Props) => {
               className="object-cover bg-[-200px]"
             />
           </div>
-          <div className="flex container flex-col lg:flex-row mb-10">
+          <div className="flex justify-start w-full gap-2 my-5 ml-0 lg:ml-10">
+            <span className="font-light">
+              {locale.lang === 'en' ? 'Customer: ' : 'Kund: '}
+            </span>
+            <h1 className="font-bold">{story.name}</h1>
+          </div>
+          <div className="flex container flex-col lg:flex-row mb-10 ml-0 lg:ml-10">
             <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
               <div className="flex gap-2 flex-col">
-                <div className="flex gap-2">
-                  <span className="font-light">
-                    {locale.lang === 'en' ? 'Customer: ' : 'Kund: '}
-                  </span>
-                  <h1 className="font-bold">{story.name}</h1>
-                </div>
                 <h2 className="text-[40px] lg:text-[100px] leading-[1.3em]">
                   {story.content.title}
                 </h2>
@@ -154,6 +154,23 @@ const CaseSlugPage = ({ story }: Props) => {
               </div>
             ))}
         </div>
+      </div>
+      {story?.content?.footer_image?.filename && (
+        <div className="w-full relative h-[600px] mb-5 container m-auto">
+          <Image
+            src={story?.content?.footer_image?.filename || ''}
+            fill
+            alt="placeholder"
+            quality={100}
+            className="object-cover bg-[-200px]"
+          />
+        </div>
+      )}
+      <div className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20">
+        {locale.lang === 'en' ? 'Next' : 'Nästa'}
+        <span className="mt-[4px]">
+          <FaArrowRight color="#FF6062" />
+        </span>
       </div>
     </>
   )

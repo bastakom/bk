@@ -23,8 +23,6 @@ const CasePage = ({ props, config, locale }: Props) => {
 
   const enCat = props.flatMap((item: any) => item.content.categoriesen)
 
-  // ADD THIS if there is a english categori to the filter
-
   useGSAP(() => {
     async function fetchData() {
       const casesData = props
@@ -75,7 +73,7 @@ const CasePage = ({ props, config, locale }: Props) => {
   })
 
   return (
-    <div className="w-full m-auto container">
+    <div className="w-full m-auto ">
       {/* <video
         autoPlay
         muted
@@ -180,7 +178,7 @@ const CasePage = ({ props, config, locale }: Props) => {
                         className={`transition-opacity duration-300 ${
                           hoveredItem === item.uuid
                             ? 'text-white opacity-100'
-                            : 'text-white opacity-50'
+                            : 'text-white opacity-100'
                         } text-[28px] leading-10 font-bold font-primary`}
                       >
                         {item.name}
@@ -194,7 +192,7 @@ const CasePage = ({ props, config, locale }: Props) => {
                         : item.content.Kategori && (
                             <span className="text-[16px] font-light italic font-primary text-white">
                               {Array.isArray(item.content.Kategori)
-                                ? item.content.Kategori.join(', ')
+                                ? item.content.Kategori.join(' / ')
                                 : item.content.Kategori}
                             </span>
                           )}

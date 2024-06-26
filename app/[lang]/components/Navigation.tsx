@@ -25,7 +25,7 @@ const Navigation = ({ props, locale }: Props) => {
     router.push(newPath, { scroll: false })
   }
   return (
-    <div className="flex py-2 items-center justify-between fixed z-50 w-full px-10 top-0 left-0 bg-[#FFFBF6] dark:bg-[#121212]">
+    <div className="flex py-2 items-center justify-between fixed z-50 w-full px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
       <Link href={`/${locale.locale}`} className="flex gap-5 w-1/3 items-center">
         <Image
           src={theme === 'dark' ? logowhite : logoblack}
@@ -34,7 +34,7 @@ const Navigation = ({ props, locale }: Props) => {
           alt="Bästa kompisar Reklambyrå"
           className="my-2"
         />
-        <TextAnimation />
+        {/* <TextAnimation /> */}
       </Link>
       <nav className="flex gap-5 w-1/3 justify-center">
         {props.story.content.header_menu.map((item: any) => {
