@@ -140,7 +140,7 @@ const CaseSlugPage = ({ story }: Props) => {
             ))}
         </div>
 
-        <div className="flex flex-col gap-5 text-[18px] lg:text-[20px] max-w-full lg:max-w-[50%] container my-10 font-light-sofia">
+        <div className="flex flex-col gap-5 text-[18px] lg:text-[20px] max-w-full lg:max-w-[50%] container mt-20 font-light-sofia">
           {render(story.content.text_under_video)}
         </div>
         <div className="w-ful gap-5 container m-auto">

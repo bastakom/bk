@@ -36,12 +36,10 @@ export default function RootLayout({
       <html lang={lang}>
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
-            <main className={`pb-10 px-10 relative`}>
-              <Header locale={lang} />
-              {/* <Loading /> */}
-              {children}
-              <Footer locale={lang} />
-            </main>
+            <Header locale={lang} />
+            {/* <Loading /> */}
+            <main className={`pb-10 px-10 relative`}>{children}</main>
+            <Footer locale={lang} />
           </ThemeProvider>
         </body>
       </html>

@@ -31,7 +31,7 @@ export default function RootLayout({
       <html lang={lang}>
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
-            <main className={`pb-10 px-10 relative`}>{children}</main>
+            {children}
           </ThemeProvider>
         </body>
       </html>
