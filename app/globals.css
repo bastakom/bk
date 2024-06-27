@@ -84,7 +84,7 @@ h1 {
 
 .slick-track {
   display: flex !important;
-  margin-left: -10px;
+  /* margin-left: -10px; */
 }
 
 /* Reveal Text */
@@ -182,4 +182,14 @@ a {
   to {
     transform: translateX(0);
   }
+}
+
+.full-width-element {
+  margin-left: -40px;
+  margin-right: -40px;
+  width: calc(100% + 80px);
+}
+
+.no-padding-bottom {
+  margin-bottom: -40px;
 }

@@ -38,7 +38,7 @@ const Staplar = ({ props }: Props) => {
     }
   }
   return (
-    <div className="flex w-full relative gap-2" id="tjanster">
+    <div className="flex w-full relative gap-2 mt-10" id="tjanster">
       {props.map((item, index) => {
         const translatedName = item.translated_slugs.flatMap(
           (item: any) => item.name
@@ -47,6 +47,7 @@ const Staplar = ({ props }: Props) => {
         return (
           <div
             onClick={() => handleView(index)}
+            id="tjanster"
             className={`h-[600px] ${
               openIndex === index ? 'w-full' : 'w-1/5'
             } bg-gray-200 flex flex-col justify-center transition-all duration-300 hover:cursor-pointer relative`}

@@ -19,7 +19,7 @@ const getTeam = async () => {
 const Team = async () => {
   const res = await getTeam()
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="dinakompisar">
       {res.map((member: any) => (
         <div key={member.id} className="relative group">
           <div className="relative max-h-[520px] xl:max-h-[800px]">

@@ -12,8 +12,8 @@ const page = async ({ params }: { params: { lang: string } }) => {
     'Лучшие друзья- 最好的朋友 - 親友 - أعز اصدقاء · Amici optimi Bästa Kompisar · Best Friends · Bestevenner  · Parhaat ystävät · Migliori amici · Meilleurs amis ·'
 
   return (
-    <div className="mb-12">
-      <div className="mt-24 mb-14">
+    <div className="no-padding-bottom">
+      <div className="pt-24 bg-[#F7F0EE] full-width-element">
         <div className="marquee-section m-auto">
           <div className="loop-div-right">
             <div className="marquee flex gap-2 text-[18px]">
@@ -33,12 +33,17 @@ const page = async ({ params }: { params: { lang: string } }) => {
           </div>
         </div>
       </div>
-      <Small
-        image={config.image_tjanster}
-        title={config.tjanster_title}
-        content={config.tjanster_content}
-      />
-      <Staplar props={res} config={config} />
+      <div className="full-width-element bg-[#F7F0EE] pb-20">
+        <div className="px-10">
+          <Small
+            image={config.image_tjanster}
+            title={config.tjanster_title}
+            content={config.tjanster_content}
+          />
+
+          <Staplar props={res} config={config} />
+        </div>
+      </div>
     </div>
   )
 }

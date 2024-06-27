@@ -127,23 +127,23 @@ function CasesReelComponent({ props }: Props) {
                   className={`transition-opacity duration-300 ${
                     hoveredItem === item.uuid
                       ? 'text-white opacity-100'
-                      : 'text-white opacity-50'
+                      : 'text-white opacity-100'
                   } text-[28px] leading-10 font-bold font-primary`}
                 >
                   {item.name}
                 </span>
                 {item.content?.Kategori && (
-                  <span className="text-[20px] font-bold font-primary text-white">
+                  <span className="text-[18px] font-light italic font-primary text-white">
                     {router.lang === 'en'
                       ? (() => {
                           const categories =
                             item.content.categoriesen || item.content.Kategori
                           return Array.isArray(categories)
-                            ? categories.join(', ')
+                            ? categories.join(' / ')
                             : categories
                         })()
                       : Array.isArray(item.content.Kategori)
-                      ? item.content.Kategori.join(', ')
+                      ? item.content.Kategori.join(' / ')
                       : item.content.Kategori}
                   </span>
                 )}
