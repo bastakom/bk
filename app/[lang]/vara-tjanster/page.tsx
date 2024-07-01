@@ -13,7 +13,7 @@ const page = async ({ params }: { params: { lang: string } }) => {
 
   return (
     <div className="no-padding-bottom">
-      <div className="pt-24 bg-[#F7F0EE] full-width-element">
+      <div className="pt-24 pb-5 bg-[#F7F0EE] full-width-element">
         <div className="marquee-section m-auto">
           <div className="loop-div-right">
             <div className="marquee flex gap-2 text-[18px]">

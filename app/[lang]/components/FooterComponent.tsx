@@ -81,7 +81,7 @@ const FooterComponent = ({ props }: Props) => {
                   href={`https://${item.link.url}`}
                   passHref={true}
                   target="_blank"
-                  className="font-light flex gap-2"
+                  className="font-light flex"
                   key={index}
                 >
                   {handleIcon}

@@ -4,6 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useParams } from 'next/navigation'
+import { GoPlus } from 'react-icons/go'
+import { IoMdArrowForward } from 'react-icons/io'
 
 interface Props {
   props: any[]
@@ -67,38 +69,55 @@ const Staplar = ({ props }: Props) => {
             <div className="z-10 h-full items-center flex justify-center">
               {open && (
                 <h2
-                  className={`p-2 font-bold text-[22px] text-white transition-opacity text-center`}
+                  className={`p-2 font-bold text-[22px] text-white transition-opacity text-center flex gap-2 items-center`}
                 >
                   <span>
                     {translatedName && params.lang === 'en'
                       ? translatedName
                       : item.name}
                   </span>
+                  <span>
+                    <GoPlus
+                      fontSize={'1.4em'}
+                      className="mt-1"
+                      color="#FF6062"
+                    />
+                  </span>
                 </h2>
               )}
 
               {openIndex === index && (
-                <div className="p-5 flex flex-col gap-2 w-full h-full  justify-end">
-                  <h2 className={`font-bold text-xl text-white`}>
-                    <span>
-                      {translatedName && params.lang === 'en'
-                        ? translatedName
-                        : item.name}
-                    </span>
-                  </h2>
-                  {typeof item?.content?.content === 'string' ? (
-                    <div className="line-clamp-3 font-primary max-w-[60%] text-white reveal">
-                      <span className="leading-[22px]">
-                        {item.content.content}
+                <div className="flex flex-col justify-center gap-2">
+                  <div className="p-5 flex justify-center gap-10 w-full h-full  justify-center items-center">
+                    <h2 className={`font-bold text-xl text-white`}>
+                      <span>
+                        {translatedName && params.lang === 'en'
+                          ? translatedName
+                          : item.name}
                       </span>
-                    </div>
-                  ) : null}
+                    </h2>
+                    {typeof item?.content?.content === 'string' ? (
+                      <div className="line-clamp-3 font-primary max-w-[60%] text-white reveal">
+                        <span className="leading-[22px]">
+                          {item.content.content}
+                        </span>
+                      </div>
+                    ) : null}
+                    <GoPlus
+                      className="rotate-45"
+                      fontSize={'2.4em'}
+                      color="#FF6062"
+                    />
+                  </div>
                   <Link
                     href={`${item.full_slug}`}
-                    className="z-10 button absolute right-5 bottom-5"
-                    style={{ fontSize: '16px'}}
+                    className="text-center text-[#FF6062] text-xl font-bold flex gap-2 justify-center items-center"
+                    style={{ fontSize: '16px' }}
                   >
                     {params.lang === 'en' ? 'Read more' : 'Läs mer'}
+                    <span className="">
+                      <IoMdArrowForward fontSize={'1.5em'} />
+                    </span>
                   </Link>
                 </div>
               )}
