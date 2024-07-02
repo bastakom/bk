@@ -1,6 +1,8 @@
 import { getStoryblokApi } from '@storyblok/react'
 import Small from '../components/SmallHero/Small'
 import Staplar from '../components/Tjanster/Staplar'
+import Link from 'next/link'
+import { IoMdArrowForward } from 'react-icons/io'
 
 const page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTjanster(params.lang)
@@ -16,7 +18,7 @@ const page = async ({ params }: { params: { lang: string } }) => {
       <div className="pt-24 pb-5 bg-[#F7F0EE] full-width-element">
         <div className="marquee-section m-auto">
           <div className="loop-div-right">
-            <div className="marquee flex gap-2 text-[18px]">
+            <div className="marquee flex gap-2 text-[18px] reel-text-color">
               <span>{firstContent}</span>
               <span>{firstContent}</span>
               <span>{firstContent}</span>
@@ -25,7 +27,7 @@ const page = async ({ params }: { params: { lang: string } }) => {
         </div>
         <div className="marquee-section m-auto">
           <div className="loop-div-left">
-            <div className="marquee flex gap-2 text-[18px]">
+            <div className="marquee flex gap-2 text-[18px] reel-text-color">
               <span>{nextContent}</span>
               <span>{nextContent}</span>
               <span>{nextContent}</span>
@@ -42,6 +44,16 @@ const page = async ({ params }: { params: { lang: string } }) => {
           />
 
           <Staplar props={res} config={config} />
+          <Link
+            href={''}
+            className="text-center text-[#FF6062] text-xl font-noraml flex gap-2 justify-center items-center mt-14"
+            style={{ fontSize: '16px' }}
+          >
+            {params.lang === 'en' ? 'See all case' : 'Se alla case'}
+            <span className="">
+              <IoMdArrowForward fontSize={'1.5em'} />
+            </span>
+          </Link>
         </div>
       </div>
     </div>

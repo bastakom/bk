@@ -40,7 +40,7 @@ const Staplar = ({ props }: Props) => {
     }
   }
   return (
-    <div className="flex w-full relative gap-2 mt-10" id="tjanster">
+    <div className="flex w-full relative mt-10" id="tjanster">
       {props.map((item, index) => {
         const translatedName = item.translated_slugs.flatMap(
           (item: any) => item.name

@@ -23,15 +23,15 @@ const Smallhero = ({ blok }) => {
           {blok.subtitle && (
             <span className="text-lg font-light-sofia">{blok.subtitle}</span>
           )}
-          <h2
-            className={`md:text-[50px]  max-w-full lg:max-w-[80%] ${
+          <div
+            className={`md:text-[50px] w-full max-w-full lg:max-w-[100%] ${
               blok.marginleft
                 ? 'text-[28px] xl:text-[70px] font-normal leading-[85px]'
                 : 'text-[28px] xl:text-[100px] w-[55%] font-normal leading-[100px]'
             }`}
           >
             {render(blok.title)}
-          </h2>
+          </div>
           <span className="flex flex-col gap-5 max-w-[90%] font-light-sofia text-[20px]">
             {render(blok.sub_text)}
           </span>

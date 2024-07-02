@@ -11,7 +11,7 @@ const RichText = ({ blok }) => {
       <div className="marquee-section m-auto">
         <div className="loop-div-right">
           <div
-            className={`marquee flex gap-2 ${
+            className={`marquee flex gap-2 reel-text-color ${
               blok.full_width ? 'text-[18px]' : 'text-[24px]'
             }`}
           >
@@ -24,7 +24,7 @@ const RichText = ({ blok }) => {
       <div className="marquee-section m-auto">
         <div className="loop-div-left">
           <div
-            className={`marquee flex gap-2 ${
+            className={`marquee flex gap-2 reel-text-color ${
               blok.full_width ? 'text-[18px]' : 'text-[24px]'
             }`}
           >

@@ -193,3 +193,7 @@ a {
 .no-padding-bottom {
   margin-bottom: -40px;
 }
+
+.reel-text-color {
+  color: #25364f;
+}
