@@ -57,20 +57,6 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
     setHoveredUuid(null)
   }
 
-  // const getCategoryName = (uuid: string) => {
-  //   const category = kategories.find((k) => k.uuid === uuid)
-  //   if (!category) return ''
-  //   if (locale === 'en' && category.translated_slugs) {
-  //     const translatedSlug = category.translated_slugs.find(
-  //       (slug) => slug.lang === 'en'
-  //     )
-  //     return translatedSlug && translatedSlug.name
-  //       ? translatedSlug.name
-  //       : category.name
-  //   }
-  //   return category.name
-  // }
-
   const firstContent =
     'Bästa Kompisar · Best Friends · Bedste venner · Parhaat ystävät · Migliori amici · Meilleurs amis · Beste vrienden · Mejores amigos · Beste Freunde ·'
   const nextContent =
@@ -146,7 +132,7 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
         onClick={handleOpenFilter}
       >
         Filter
-        <span className="mt-1">
+        <span>
           {!openFilter ? (
             <GoPlus fontSize={'1.5em'} color="#FF6062" />
           ) : (
@@ -202,11 +188,6 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
               alt={item.name}
             />
 
-            {/* <div
-                className={`bg-[#121212] absolute h-full w-full ${
-                  hoveredUuid == item.uuid ? 'opacity-80' : 'opacity-40'
-                } transition-opacity duration-300`}
-              /> */}
             <div className="flex flex-col gap-2">
               <h2
                 className={`text-[30px] max-w-[80%] font-primary font-normal ${
@@ -217,13 +198,6 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
               </h2>
               <span className="font-primary font-normal text-xl">23.12.18</span>
             </div>
-            {/* <div className="flex w-full justify-between">
-                  <span className="text-[16px]">
-                    {item.content.kategori
-                      .map((kat) => getCategoryName(kat))
-                      .join(' / ')}
-                  </span>
-                </div> */}
           </Link>
         ))}
       </div>

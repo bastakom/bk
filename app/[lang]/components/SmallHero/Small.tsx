@@ -45,7 +45,7 @@ const Small = ({ title, content, image }: Props) => {
           >
             {params.lang === 'en' ? 'Our services' : 'Våra tjänster'}
             <span>
-              <IoMdArrowDown fontSize={'1.2em'} className="mt-2" />
+              <IoMdArrowDown fontSize={'1.2em'} />
             </span>
           </Link>
         </div>

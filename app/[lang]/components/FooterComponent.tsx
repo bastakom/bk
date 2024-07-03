@@ -20,7 +20,7 @@ const FooterComponent = ({ props }: Props) => {
     <div className="w-full min-h-[65vh] justify-between flex flex-col bg-[#25364F] p-14 pb-5 text-white relative">
       <div className="w-full grid mx-auto grid-cols-[40%_30%_30%] gap-10">
         <div className="flex flex-col gap-10">
-          <h2 className="font-primary text-[25px] font-light">
+          <h2 className="font-primary text-[20px] font-light">
             {render(content.descriptionText)}
           </h2>
           <div className="flex flex-col gap-1 z-20">

@@ -79,7 +79,6 @@ const Staplar = ({ props }: Props) => {
                   <span>
                     <GoPlus
                       fontSize={'1.4em'}
-                      className="mt-1"
                       color="#FF6062"
                     />
                   </span>

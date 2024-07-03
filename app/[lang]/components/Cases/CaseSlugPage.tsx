@@ -90,7 +90,7 @@ const CaseSlugPage = ({ story }: Props) => {
             </span>
           )}
           {story.content?.text_under_gallery && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 font-light text-[18px] lg:text-[20px]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 font-light text-[18px] lg:text-[20px]">
               <span>{render(story.content.text_under_gallery)}</span>
               <span>
                 {story.content?.two_column_text_2 &&
@@ -140,7 +140,7 @@ const CaseSlugPage = ({ story }: Props) => {
             ))}
         </div>
 
-        <div className="flex flex-col gap-5 text-[18px] lg:text-[20px] max-w-full lg:max-w-[50%] container mt-20 font-light-sofia">
+        <div className="flex flex-col gap-2 text-[18px] lg:text-[20px] max-w-full lg:max-w-[40%] container mt-20 font-light-sofia">
           {render(story.content.text_under_video)}
         </div>
         <div className="w-ful gap-5 container m-auto">
@@ -166,7 +166,7 @@ const CaseSlugPage = ({ story }: Props) => {
           />
         </div>
       )}
-      <div className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20">
+      <div className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20">
         {locale.lang === 'en' ? 'Next' : 'Nästa'}
         <span className="mt-[4px]">
           <FaArrowRight color="#FF6062" />

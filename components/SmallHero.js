@@ -69,7 +69,7 @@ const Smallhero = ({ blok }) => {
             >
               {blok.link_name}
               <span>
-                <IoMdArrowDown fontSize={'1.2em'} className="mt-2" />
+                <IoMdArrowDown fontSize={'1.2em'} />
               </span>
             </Link>
           )}

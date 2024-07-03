@@ -163,12 +163,14 @@ function CasesReelComponent({ props }: Props) {
           style={{ display: showNextArrow ? 'block' : 'none' }}
         />
       </div>
-      <Link
-        href="/cases"
-        className="font-primary text-xl w-full text-center font-normal link-color"
-      >
-        <Button TextEN="See all cases" TextSV="Se alla cases" align="center" size="20" />
-      </Link>
+
+      <Button
+        TextEN="See all cases"
+        TextSV="Se alla cases"
+        align="center"
+        size="20"
+        href={`/cases`}
+      />
     </div>
   )
 }

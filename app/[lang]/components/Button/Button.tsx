@@ -28,7 +28,7 @@ const Button = ({ TextEN, TextSV, href, margin, size, text, align }: Props) => {
     >
       {params.lang === 'en' ? TextEN : TextSV}
       {text ? text : null}
-      <span className="mt-1">
+      <span>
         <IoMdArrowForward fontSize={'1.3em'} color="#FF6062" />
       </span>
     </Link>

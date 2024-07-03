@@ -26,10 +26,10 @@ const CTA = ({ blok }) => {
           className={`${
             blok.two_columns
               ? 'text-left w-full'
-              : 'text-left max-w-[75%] flex flex-col gap-5'
-          } ${blok.smalltext ? 'text-[20px]' : 'text-[20px]'}  font-primary`}
+              : 'text-left w-full flex flex-col gap-5'
+          } ${blok.smalltext ? 'text-[20px]' : 'text-[25px]'}  font-primary`}
         >
-          {render(blok.content)}
+          <span className="max-w-[50%] ml-14">{render(blok.content)}</span>
         </div>
         {blok.two_columns && (
           <div className="flex mt-10">
@@ -49,8 +49,8 @@ const CTA = ({ blok }) => {
         )}
       </div>
       {!blok.two_columns && (
-        <div className="flex justify-center w-full">
-          <div className="w-[75%] flex">
+        <div className="flex justify-start w-full ml-14">
+          <div className="flex">
             {blok.buttons.map((item, index) => (
               <Link
                 href={item.link.cached_url}
@@ -63,7 +63,7 @@ const CTA = ({ blok }) => {
                 </span>
               </Link>
             ))}
-            <span className="mt-1">
+            <span>
               <IoMdArrowForward fontSize={'1.4em'} color="#FF6062" />
             </span>
           </div>
