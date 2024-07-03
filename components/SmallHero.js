@@ -1,3 +1,4 @@
+import Button from '@/app/[lang]/components/Button/Button'
 import { storyblokEditable } from '@storyblok/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,7 +20,11 @@ const Smallhero = ({ blok }) => {
           blok.marginleft ? 'justify-start' : 'justify-center'
         }`}
       >
-        <div className={`flex flex-col w-full ${blok.marginleft ? 'gap-5' : 'gap-14'}`}>
+        <div
+          className={`flex flex-col w-full ${
+            blok.marginleft ? 'gap-5' : 'gap-14'
+          }`}
+        >
           {blok.subtitle && (
             <span className="text-lg font-light-sofia">{blok.subtitle}</span>
           )}
@@ -36,9 +41,7 @@ const Smallhero = ({ blok }) => {
             {render(blok.sub_text)}
           </span>
           {blok.link_name && blok.marginleft && (
-            <Link href="" className="link-color">
-              {blok.link_name}
-            </Link>
+            <Button href={''} text={blok.link_name} align="left" />
           )}
         </div>
       </div>

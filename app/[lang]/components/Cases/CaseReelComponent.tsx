@@ -7,6 +7,7 @@ import { useRef, useState } from 'react'
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'
 import Slider from 'react-slick'
 import { useParams } from 'next/navigation'
+import Button from '../Button/Button'
 
 interface Props {
   props: any
@@ -166,7 +167,7 @@ function CasesReelComponent({ props }: Props) {
         href="/cases"
         className="font-primary text-xl w-full text-center font-normal link-color"
       >
-        {router.lang == 'sv' ? ' Se alla cases' : 'See all cases'}
+        <Button TextEN="See all cases" TextSV="Se alla cases" align="center" size="20" />
       </Link>
     </div>
   )

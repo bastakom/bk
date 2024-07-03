@@ -1,5 +1,6 @@
 import { storyblokEditable } from '@storyblok/react/rsc'
 import Link from 'next/link'
+import { IoMdArrowForward } from 'react-icons/io'
 import { render } from 'storyblok-rich-text-react-renderer'
 
 const CTA = ({ blok }) => {
@@ -49,7 +50,7 @@ const CTA = ({ blok }) => {
       </div>
       {!blok.two_columns && (
         <div className="flex justify-center w-full">
-          <div className="w-[75%]">
+          <div className="w-[75%] flex">
             {blok.buttons.map((item, index) => (
               <Link
                 href={item.link.cached_url}
@@ -62,6 +63,9 @@ const CTA = ({ blok }) => {
                 </span>
               </Link>
             ))}
+            <span className="mt-1">
+              <IoMdArrowForward fontSize={'1.4em'} color="#FF6062" />
+            </span>
           </div>
         </div>
       )}
