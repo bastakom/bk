@@ -27,7 +27,7 @@ const FooterComponent = ({ props }: Props) => {
             {content.footer_menu.map((item: any, index: string) => (
               <Link
                 key={index}
-                href={`${item.link.url}`}
+                href={`${item.link.cached_url}`}
                 className="font-normal"
               >
                 {item.name}
