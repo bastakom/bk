@@ -3,9 +3,7 @@ import nodemailer from 'nodemailer'
 const usermail = 'philip@anlander.se'
 
 export async function POST(req: Request) {
-  const { name, email, message, attachment } = await req.json()
-
-  const attachmentPath = attachment.file ? attachment.file.path : null
+  const { name, email, message } = await req.json()
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -29,7 +27,11 @@ export async function POST(req: Request) {
       to: usermail,
       subject: `New message from ${name}`,
       html: messageBody,
-      attachments: attachmentPath,
+      attachments: [
+        {
+          filename: 'document.pdf', // Name of the file
+        },
+      ],
     })
     return Response.json({ message: 'works' }, { status: 200 })
   } catch (error) {

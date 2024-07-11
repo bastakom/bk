@@ -18,7 +18,7 @@ const Button = ({ TextEN, TextSV, href, margin, size, text, align }: Props) => {
   const params = useParams()
   return (
     <Link
-      href={`${href}`}
+      href={`/${href}`}
       className={`text-${
         align ? align : 'center'
       } text-[#FF6062] text-xl font-noraml flex gap-2 ${

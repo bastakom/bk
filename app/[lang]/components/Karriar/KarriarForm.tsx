@@ -7,7 +7,7 @@ interface Props {
   props: any
 }
 
-const FormBlock = ({ props }: Props) => {
+const KarriarForm = ({ props }: Props) => {
   const [sent, setSent] = useState(false)
   const [status, setStatus] = useState('')
   const [formData, setFormData] = useState({
@@ -95,15 +95,6 @@ const FormBlock = ({ props }: Props) => {
               GDPR
             </label>
           </div>
-          <div>
-            <input
-              type="file"
-              id="pdfFile"
-              name="pdfFile"
-              accept=".pdf"
-              required
-            />
-          </div>
 
           <button className="button primary m-auto" type="submit">
             Skicka
@@ -118,4 +109,4 @@ const FormBlock = ({ props }: Props) => {
   )
 }
 
-export default FormBlock
+export default KarriarForm
