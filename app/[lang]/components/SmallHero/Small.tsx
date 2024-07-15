@@ -17,20 +17,20 @@ interface Props {
 const Small = ({ title, content, image }: Props) => {
   const params = useParams()
   return (
-    <div className=" flex w-full gap-14 py-10">
-      <div className="w-1/2 h-full flex flex-col justify-center">
-        <h2 className="px-10 text-[20px] uppercase font-normal">
+    <div className="flex flex-col lg:flex-row w-full gap-14 py-10">
+      <div className="w-full gap-5 lg:gap-0 lg:w-1/2 h-full flex flex-col justify-center">
+        <h2 className="px-0 lg:px-10 text-[20px] uppercase font-normal">
           {params.lang === 'en' ? 'Our services' : 'Våra tjänster'}
         </h2>
-        <h1 className="text-[28px] xl:text-[100px] font-normal p-10 leading-[100px]">
+        <h1 className="text-[42px] xl:text-[100px] font-normal p-0 lg:p-10 leading-[50px] lg:leading-[100px] ">
           {render(title)}
         </h1>
-        <span className="flex flex-col font-light-sofia text-[20px] gap-5 px-10 max-w-[90%]">
+        <span className="flex flex-col font-light-sofia text-[20px] gap-5 px-0 lg:px-10 max-w-[100%] lg:max-w-[90%]">
           {render(content)}
         </span>
       </div>
       {image.filename && (
-        <div className="w-1/2 relative flex flex-col gap-5">
+        <div className="w-full lg:w-1/2 relative flex flex-col gap-5">
           <Image
             src={image.filename}
             className="object-cover w-full"

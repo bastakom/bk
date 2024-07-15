@@ -3,6 +3,7 @@ import Small from '../components/SmallHero/Small'
 import Staplar from '../components/Tjanster/Staplar'
 import Link from 'next/link'
 import { IoMdArrowForward } from 'react-icons/io'
+import NameLoop from '../components/NameLoop/NameLoop'
 
 const page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTjanster(params.lang)
@@ -15,28 +16,9 @@ const page = async ({ params }: { params: { lang: string } }) => {
 
   return (
     <div className="no-padding-bottom">
-      <div className="pt-24 pb-5 bg-[#F7F0EE] full-width-element">
-        <div className="marquee-section m-auto">
-          <div className="loop-div-right">
-            <div className="marquee flex gap-2 text-[18px] reel-text-color">
-              <span>{firstContent}</span>
-              <span>{firstContent}</span>
-              <span>{firstContent}</span>
-            </div>
-          </div>
-        </div>
-        <div className="marquee-section m-auto">
-          <div className="loop-div-left">
-            <div className="marquee flex gap-2 text-[18px] reel-text-color">
-              <span>{nextContent}</span>
-              <span>{nextContent}</span>
-              <span>{nextContent}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <NameLoop />
       <div className="full-width-element bg-[#F7F0EE] pb-20">
-        <div className="px-10">
+        <div className="px-5 lg:px-10">
           <Small
             image={config.image_tjanster}
             title={config.tjanster_title}
@@ -45,8 +27,8 @@ const page = async ({ params }: { params: { lang: string } }) => {
 
           <Staplar props={res} config={config} />
           <Link
-            href={''}
-            className="text-center text-[#FF6062] text-xl font-noraml flex gap-2 justify-center items-center mt-14"
+            href={'/cases'}
+            className="text-center text-[#FF6062] text-xl font-normal lg:mx-0 flex gap-2 justify-center items-center mt-14"
             style={{ fontSize: '16px' }}
           >
             {params.lang === 'en' ? 'See all case' : 'Se alla case'}

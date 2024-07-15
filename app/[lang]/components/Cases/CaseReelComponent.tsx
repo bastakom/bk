@@ -79,11 +79,29 @@ function CasesReelComponent({ props }: Props) {
     speed: 500,
     slidesToShow: 2.5,
     slidesToScroll: 2,
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   }
 
   return (
     <div className="flex flex-col gap-5 relative">
       <Slider
+        key="1"
         {...settings}
         ref={sliderRef}
         afterChange={(currentSlide: number) =>
@@ -94,7 +112,7 @@ function CasesReelComponent({ props }: Props) {
           return (
             <Link
               key={item.uuid}
-              href={`${item.full_slug ? item.full_slug : ''} `}
+              href={`/${item.full_slug ? item.full_slug : ''} `}
               className="relative h-[500px] overflow-hidden"
               onMouseEnter={() => handleMouseEnter(item.uuid)}
               onMouseLeave={handleMouseLeave}
@@ -153,17 +171,18 @@ function CasesReelComponent({ props }: Props) {
           )
         })}
       </Slider>
-      <div className="flex justify-end z-20">
-        <PrevArrow
-          onClick={prevSlide}
-          style={{ display: showPrevArrow ? 'block' : 'none' }}
-        />
-        <NextArrow
-          onClick={nextSlide}
-          style={{ display: showNextArrow ? 'block' : 'none' }}
-        />
-      </div>
-
+      {props.length > 3 && (
+        <div className="flex justify-end z-20">
+          <PrevArrow
+            onClick={prevSlide}
+            style={{ display: showPrevArrow ? 'block' : 'none' }}
+          />
+          <NextArrow
+            onClick={nextSlide}
+            style={{ display: showNextArrow ? 'block' : 'none' }}
+          />
+        </div>
+      )}
       <Button
         TextEN="See all cases"
         TextSV="Se alla cases"

@@ -190,10 +190,102 @@ a {
   width: calc(100% + 80px);
 }
 
+@media screen and (max-width: 800px) {
+  .full-width-element {
+    width: calc(100% + 15px);
+    margin-left: -10px;
+    margin-right: 0;
+  }
+}
+
 .no-padding-bottom {
   margin-bottom: -40px;
 }
 
 .reel-text-color {
   color: #25364f;
+}
+
+/* MENU MOBILE */
+
+.menu-btn-6 {
+  height: 32px;
+  width: 40px;
+  cursor: pointer;
+}
+
+.menu-btn-6 span,
+.menu-btn-6 span::before,
+.menu-btn-6 span::after {
+  background: #25364f;
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 3px;
+  margin-top: 7px;
+
+  -webkit-transition: 0.3s ease-in-out 0.3s;
+  -moz-transition: 0.3s ease-in-out 0.3s;
+  -o-transition: 0.3s ease-in-out 0.3s;
+  transition: 0.3s ease-in-out 0.3s;
+}
+
+.menu-btn-6 span::before {
+  margin-top: -12px;
+
+  -webkit-transition: 0.3s ease-in-out;
+  -moz-transition: 0.3s ease-in-out;
+  -o-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.menu-btn-6 span::after {
+  margin-top: 12px;
+
+  -webkit-transition: 0.3s ease-in-out;
+  -moz-transition: 0.3s ease-in-out;
+  -o-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.menu-btn-6.active span {
+  background: transparent;
+
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.menu-btn-6.active span::before {
+  margin-top: 0;
+
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+
+  -webkit-transition-delay: 0.5s;
+  -moz-transition-delay: 0.5s;
+  -o-transition-delay: 0.5s;
+  transition-delay: 0.5s;
+}
+
+.menu-btn-6.active span::after {
+  margin-top: 0;
+
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+
+  -webkit-transition-delay: 0.6s;
+  -moz-transition-delay: 0.6s;
+  -o-transition-delay: 0.6s;
+  transition-delay: 0.5s;
 }

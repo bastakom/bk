@@ -17,9 +17,9 @@ const FooterComponent = ({ props }: Props) => {
   const params = useParams()
 
   return (
-    <div className="w-full min-h-[65vh] justify-between flex flex-col bg-[#25364F] p-14 pb-5 text-white relative">
-      <div className="w-full grid mx-auto grid-cols-[40%_30%_30%] gap-10">
-        <div className="flex flex-col gap-10">
+    <div className="w-full min-h-[65vh] justify-between flex flex-col bg-[#25364F] p-5 lg:p-14 pb-5 text-white relative">
+      <div className="w-full grid mx-auto grid-cols-1 lg:grid-cols-[40%_30%_30%] gap-10">
+        <div className="flex flex-col gap-10 mt-5 lg:mt-0">
           <h2 className="font-primary text-[20px] font-light">
             {render(content.descriptionText)}
           </h2>
@@ -35,7 +35,7 @@ const FooterComponent = ({ props }: Props) => {
             ))}
           </div>
         </div>
-        <div className="flex flex-col mx-auto gap-14">
+        <div className="flex flex-col lg:mx-auto gap-14">
           <div>
             <h3 className="font-normal mb-2 text-xl">
               {params.lang === 'en' ? 'Visit us' : 'Besök oss'}
@@ -58,7 +58,7 @@ const FooterComponent = ({ props }: Props) => {
           </div>
         </div>
 
-        <div className="flex flex-col mx-auto">
+        <div className="flex flex-col lg:mx-auto">
           <h3 className="font-normal mb-2 text-xl">
             {params.lang === 'en' ? 'Socials' : 'Sociala kanaler'}
           </h3>
@@ -86,7 +86,7 @@ const FooterComponent = ({ props }: Props) => {
                 >
                   {handleIcon}
                   <span className="-rotate-45 font-light">
-                    <IoMdArrowForward fontSize={'1.5em'}/>
+                    <IoMdArrowForward fontSize={'1.5em'} />
                   </span>
                 </Link>
               )
@@ -96,11 +96,11 @@ const FooterComponent = ({ props }: Props) => {
       </div>
 
       <div className="flex w-full items-center">
-        <div className="flex gap-2 w-full justify-between text-[16px]">
-          <span className="font-light-sofia uppercase">
+        <div className="flex flex-col lg:flex-row gap-5 lg:gap-2 w-full justify-between text-[16px]">
+          <span className="font-light-sofia uppercase lg:mt-0 mt-10">
             © Reklambyrån Bästa Kompisar 2024
           </span>
-          <div className="flex gap-10">
+          <div className="flex flex-col lg:flex-row gap-2 lg:gap-10">
             <Link className="text-[16px] font-light" href="/">
               Cookies
             </Link>

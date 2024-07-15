@@ -6,6 +6,7 @@ import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
 import { GoPlus } from 'react-icons/go'
 import { FiMinus } from 'react-icons/fi'
+import NameLoop from '../NameLoop/NameLoop'
 
 interface Props {
   props: {
@@ -57,33 +58,9 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
     setHoveredUuid(null)
   }
 
-  const firstContent =
-    'Bästa Kompisar · Best Friends · Bedste venner · Parhaat ystävät · Migliori amici · Meilleurs amis · Beste vrienden · Mejores amigos · Beste Freunde ·'
-  const nextContent =
-    'Лучшие друзья- 最好的朋友 - 親友 - أعز اصدقاء · Amici optimi Bästa Kompisar · Best Friends · Bestevenner  · Parhaat ystävät · Migliori amici · Meilleurs amis ·'
-
   return (
     <div className="m-auto">
-      <div className="pt-24 pb-5 bg-[#F7F0EE] full-width-element">
-        <div className="marquee-section m-auto">
-          <div className="loop-div-right">
-            <div className="marquee flex gap-2 text-[18px] reel-text-color">
-              <span>{firstContent}</span>
-              <span>{firstContent}</span>
-              <span>{firstContent}</span>
-            </div>
-          </div>
-        </div>
-        <div className="marquee-section m-auto">
-          <div className="loop-div-left">
-            <div className="marquee flex gap-2 text-[18px] reel-text-color">
-              <span>{nextContent}</span>
-              <span>{nextContent}</span>
-              <span>{nextContent}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <NameLoop />
       <div className="full-width-element bg-[#F7F0EE] mb-14 pb-10">
         <div className=" flex container m-auto">
           {props.slice(0, 1).map((item: any, index: number) => (

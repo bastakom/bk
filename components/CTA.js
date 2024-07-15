@@ -18,7 +18,7 @@ const CTA = ({ blok }) => {
       )}
 
       <div
-        className={`${
+        className={`pt-10 lg:pt-0 ${
           blok.two_columns ? 'text-left w-full' : 'justify-center flex'
         }`}
       >
@@ -29,10 +29,12 @@ const CTA = ({ blok }) => {
               : 'text-left w-full flex flex-col gap-5'
           } ${blok.smalltext ? 'text-[20px]' : 'text-[25px]'}  font-primary`}
         >
-          <span className="max-w-[50%] ml-14">{render(blok.content)}</span>
+          <span className="max-w-[100%] lg:max-w-[50%] ml-0 px-2 lg:ml-14">
+            {render(blok.content)}
+          </span>
         </div>
         {blok.two_columns && (
-          <div className="flex mt-10">
+          <div className="flex mt-0 lg:mt-10">
             {blok.buttons.map((item, index) => (
               <Link
                 href={item.link.cached_url}
@@ -49,7 +51,7 @@ const CTA = ({ blok }) => {
         )}
       </div>
       {!blok.two_columns && (
-        <div className="flex justify-start w-full ml-14">
+        <div className="flex justify-start w-full ml-2 mb-5 lg:mb-0 lg:ml-14">
           <div className="flex">
             {blok.buttons.map((item, index) => (
               <Link

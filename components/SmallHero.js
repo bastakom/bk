@@ -8,11 +8,11 @@ import { render } from 'storyblok-rich-text-react-renderer'
 const Smallhero = ({ blok }) => {
   return (
     <div
-      className={`min-h-[80vh] flex flex-col lg:flex-row ${
+      className={`min-h-[100%] lg:min-h-[80vh] flex flex-col lg:flex-row ${
         blok.marginleft
-          ? 'w-full lg:w-[80%] m-auto my-24 gap-20'
+          ? 'w-full lg:w-[80%] m-auto my-10 lg:my-24 gap-10 lg:gap-20'
           : 'w-full items-center bg-[#F7F0EE] full-width-element px-32 gap-10'
-      } pt-10 pb-14 mb-14 font-primary`}
+      } pt-5 lg:pt-10 pb-5 lg:pb-14 mb-0 lg:mb-14 font-primary`}
       {...storyblokEditable(blok)}
     >
       <div
@@ -31,13 +31,13 @@ const Smallhero = ({ blok }) => {
           <div
             className={`md:text-[50px] w-full max-w-full lg:max-w-[100%] ${
               blok.marginleft
-                ? 'text-[28px] xl:text-[70px] font-normal leading-[85px]'
+                ? 'text-[28px] xl:text-[70px] font-normal leading-[30px] lg:leading-[85px]'
                 : 'text-[28px] xl:text-[100px] w-[55%] font-normal leading-[100px]'
             }`}
           >
             {render(blok.title)}
           </div>
-          <span className="flex flex-col gap-5 max-w-[90%] font-light-sofia text-[20px]">
+          <span className="flex flex-col gap-5 max-w-[100%] lg:max-w-[90%] font-light-sofia text-[20px]">
             {render(blok.sub_text)}
           </span>
           {blok.link_name && blok.marginleft && (
@@ -47,7 +47,7 @@ const Smallhero = ({ blok }) => {
       </div>
       {blok.image && (
         <div
-          className={`w-full mt-10 lg:mt-0 lg:w-1/2 h-full relative ${
+          className={`w-full mt-0 lg:mt-10 lg:mt-0 lg:w-1/2 h-full relative ${
             blok.marginleft ? '' : 'flex-col flex gap-10'
           }`}
         >
