@@ -11,7 +11,7 @@ const NameLoop = ({ className, bg, pt }: Props) => {
     'Лучшие друзья- 最好的朋友 - 親友 - أعز اصدقاء · Amici optimi Bästa Kompisar · Best Friends · Bestevenner  · Parhaat ystävät · Migliori amici · Meilleurs amis ·'
   return (
     <div
-      className={`${className} pt-24 pb-5 ${
+      className={`${className ? className : 'pt-24 pb-5'} ${
         bg ? bg : 'bg-[#F7F0EE]'
       } full-width-element`}
     >

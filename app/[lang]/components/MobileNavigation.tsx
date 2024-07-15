@@ -18,6 +18,11 @@ const MobileNavigation = ({ props }: any) => {
     setIsOpen(false)
   }
 
+  const firstContent =
+    'Bästa Kompisar · Best Friends · Bedste venner · Parhaat ystävät · Migliori amici · Meilleurs amis · Beste vrienden · Mejores amigos · Beste Freunde ·'
+  const nextContent =
+    'Лучшие друзья- 最好的朋友 - 親友 - أعز اصدقاء · Amici optimi Bästa Kompisar · Best Friends · Bestevenner  · Parhaat ystävät · Migliori amici · Meilleurs amis ·'
+
   return (
     <>
       <div
@@ -27,16 +32,27 @@ const MobileNavigation = ({ props }: any) => {
         onClick={() => setIsOpen(false)}
       />
       <nav
-        className={`flex flex-col lg:hidden h-[100vh] top-0 z-10 bg-[#F7F0EE] gap-2 w-[100%] px-10  justify-center  absolute transition-all duration-500 right-0 ${
+        className={`flex flex-col lg:hidden h-[100vh] top-0 z-10 bg-[#F7F0EE] gap-2 w-[100%] justify-center absolute transition-all duration-500 right-0 ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <NameLoop
+        {/* <NameLoop
           bg={'bg-transparent'}
-          className="pt-0 pb-0 absolute top-0 right-0 z-40 left-[14px]"
-          pt="pt-0"
-        />
-        <div className="flex flex-col mt-5">
+          className="pt-0 pb-0 top-0 absolute w-full right-0 z-40 left-[14px]"
+        /> */}
+        <div>
+          <div className="marquee-section m-auto">
+            <div className="loop-div-left">
+              <div className="marquee flex gap-2 text-[18px] reel-text-color">
+                <span>{nextContent}</span>
+                <span>{nextContent}</span>
+                <span>{nextContent}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col mt-5 px-5">
           {props.story.content.header_menu.map((item: any) => {
             const link = item.link.cached_url.startsWith('/')
               ? item.link.cached_url
@@ -54,7 +70,7 @@ const MobileNavigation = ({ props }: any) => {
           })}
         </div>
 
-        <div className="flex flex-col gap-2 mb-4 mt-5">
+        <div className="flex flex-col gap-2 mb-4 mt-5 px-5">
           {props.story.content.socials.map((item: any, index: number) => {
             const handleIcon =
               item.icon === 'ig'
@@ -83,6 +99,17 @@ const MobileNavigation = ({ props }: any) => {
               </Link>
             )
           })}
+        </div>
+        <div className="mt-5">
+          <div className="marquee-section m-auto">
+            <div className="loop-div-right">
+              <div className="marquee flex gap-2 text-[18px] reel-text-color">
+                <span>{firstContent}</span>
+                <span>{firstContent}</span>
+                <span>{firstContent}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex gap-2 items-center  text-[25px] w-full flex justify-center left-0 absolute top-5 z-40">
