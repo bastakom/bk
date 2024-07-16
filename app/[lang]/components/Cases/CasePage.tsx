@@ -127,9 +127,10 @@ const CasePage = ({ props, config, locale }: Props) => {
                   )
                 })
                 .map((item: any, index: number) => {
+                  console.log(item.content.videoimage.filename)
                   return (
                     <Link
-                      key={index}
+                      key={item.uuid}
                       href={`/${item.full_slug}`}
                       className="w-full h-[300px] lg:h-[400px] relative"
                       onMouseEnter={() => handleMouseEnter(item.uuid)}
