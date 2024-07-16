@@ -33,7 +33,7 @@ const Navigation = ({ props, locale }: Props) => {
   }
 
   return (
-    <div className="flex py-2 items-center justify-between fixed z-20 w-full px-5 lg:px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
+    <div className="flex py-2 items-center justify-between fixed z-30 w-full px-5 lg:px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
       <Link
         href={`/${locale.locale}`}
         className="flex gap-5 w-full lg:w-1/3 items-center"
@@ -80,7 +80,7 @@ const Navigation = ({ props, locale }: Props) => {
             SV
           </button>
 
-          <span>/</span>
+          <span>|</span>
           <button
             onClick={() => changeLanguage('en')}
             className="font-secondary text-[16px]"

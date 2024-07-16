@@ -17,8 +17,8 @@ const page = async ({ params }: { params: { lang: string } }) => {
   return (
     <div className="no-padding-bottom">
       <NameLoop />
-      <div className="full-width-element bg-[#F7F0EE] pb-20">
-        <div className="px-5 lg:px-10">
+      <div className="full-width-element bg-[#F7F0EE] pb-20 px-2">
+        <div className="px-2 lg:px-10">
           <Small
             image={config.image_tjanster}
             title={config.tjanster_title}

@@ -10,6 +10,7 @@ const Header = dynamic(() => import('./components/Header'), { ssr: false })
 
 import '../globals.css'
 import '../font.css'
+import LoadingLogo from './components/Loading/LoadingLogo'
 
 storyblokInit({
   accessToken: 'faVE0ToH7Y41wHZy0uSt3Qtt',
@@ -37,8 +38,10 @@ export default function RootLayout({
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
             <Header locale={lang} />
-            {/* <Loading /> */}
-            <main className={`pb-10 px-2 lg:px-10 relative`}>{children}</main>
+
+            <LoadingLogo />
+
+            <main className={`pb-10 px-3 lg:px-10 relative`}>{children}</main>
             <Footer locale={lang} />
           </ThemeProvider>
         </body>

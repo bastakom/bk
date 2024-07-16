@@ -18,6 +18,7 @@ import Tiles from './Tiles'
 import Team from './Team'
 import RichText from './RichText'
 import Form from './Form'
+import KarriarForm from './Karriar'
 
 const components = {
   feature: Feature,
@@ -35,6 +36,7 @@ const components = {
   vart_team: Team,
   richtext_block: RichText,
   form: Form,
+  karriarform: KarriarForm,
 }
 /** 2. Initialize it as usual */
 storyblokInit({

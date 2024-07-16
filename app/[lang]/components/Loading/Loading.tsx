@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 
@@ -39,7 +39,7 @@ const Loading = () => {
             if (loadingRef.current) {
               gsap.to(loadingRef.current, {
                 opacity: 0,
-                duration: 1,
+                duration: 0.4,
                 onComplete: () => setLoading(true),
               })
             } else {
@@ -51,7 +51,7 @@ const Loading = () => {
         if (loadingRef.current) {
           gsap.to(loadingRef.current, {
             opacity: 0,
-            duration: 1,
+            duration: 0.4,
             onComplete: () => setLoading(true),
           })
         } else {
@@ -88,11 +88,11 @@ const Loading = () => {
   return !loading ? (
     <div
       ref={loadingRef}
-      className="w-full pb-8 px-10 pt-16 bg-white dark:bg-[#121212] h-screen left-0 top-0 flex items-center justify-center  fixed"
+      className="w-full pb-8 px-10 pt-16 bg-white dark:bg-white h-screen left-0 top-0 flex items-center justify-center  fixed"
       style={{ zIndex: 49 }}
     >
       <div
-        className="h-full w-full left-0 bg-black top-0 z-50 text-white flex justify-center items-center"
+        className="h-full w-full left-0 bg-[#FF6062] top-0 z-50 text-white flex justify-center items-center"
         style={{ zIndex: 99 }}
       >
         {!loadingText && (

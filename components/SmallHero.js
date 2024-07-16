@@ -11,7 +11,7 @@ const Smallhero = ({ blok }) => {
       className={`min-h-[100%] lg:min-h-[80vh] flex flex-col lg:flex-row ${
         blok.marginleft
           ? 'w-full lg:w-[80%] m-auto my-10 lg:my-24 gap-10 lg:gap-20'
-          : 'w-full items-center bg-[#F7F0EE] full-width-element px-32 gap-10'
+          : 'w-full items-center bg-[#F7F0EE] full-width-element px-4 lg:px-32 gap-10'
       } pt-5 lg:pt-10 pb-5 lg:pb-14 mb-0 lg:mb-14 font-primary`}
       {...storyblokEditable(blok)}
     >
@@ -22,17 +22,17 @@ const Smallhero = ({ blok }) => {
       >
         <div
           className={`flex flex-col w-full ${
-            blok.marginleft ? 'gap-5' : 'gap-14'
+            blok.marginleft ? 'gap-5' : 'gap-5 lg:gap-14'
           }`}
         >
           {blok.subtitle && (
             <span className="text-lg font-light-sofia">{blok.subtitle}</span>
           )}
           <div
-            className={`md:text-[50px] w-full max-w-full lg:max-w-[100%] ${
+            className={`w-full max-w-full lg:max-w-[100%] ${
               blok.marginleft
-                ? 'text-[28px] xl:text-[70px] font-normal leading-[30px] lg:leading-[85px]'
-                : 'text-[28px] xl:text-[100px] w-[55%] font-normal leading-[100px]'
+                ? 'text-[35px] lg:text-[70px] font-normal leading-[40px] lg:leading-[85px]'
+                : 'text-[50px] lg:text-[100px] w-[55%] font-normal leading-[50px] lg:leading-[100px]'
             }`}
           >
             {render(blok.title)}

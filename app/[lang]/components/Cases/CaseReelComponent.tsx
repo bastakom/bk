@@ -122,6 +122,7 @@ function CasesReelComponent({ props }: Props) {
                   autoPlay
                   loop
                   muted
+                  playsInline
                   className="object-cover absolute h-full w-full transition-opacity duration-300"
                 >
                   <source src={`${item?.content?.videoimage?.filename}`} />
@@ -188,7 +189,7 @@ function CasesReelComponent({ props }: Props) {
         TextSV="Se alla cases"
         align="center"
         size="20"
-        href={`/cases`}
+        href={`cases`}
       />
     </div>
   )

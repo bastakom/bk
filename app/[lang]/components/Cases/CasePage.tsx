@@ -73,16 +73,16 @@ const CasePage = ({ props, config, locale }: Props) => {
   })
 
   return (
-    <div className="w-full m-auto bg-[#F7F0EE] full-width-element pb-14 no-padding-bottom">
+    <div className="w-full m-auto bg-[#F7F0EE] full-width-element pb-14 no-padding-bottom px-4 lg:px-0">
       <div className="container m-auto">
-        <div className="min-h-[55vh] flex flex-col justify-center ml-10 gap-5">
+        <div className="min-h-[55vh] flex flex-col justify-center mt-14  lg:mt-0 lg:ml-10 gap-5">
           <h1 className="text-[20px]">{config.content.case_title}</h1>
-          <span className="max-w-[50%] text-[25px]">
+          <span className="lg:max-w-[50%] text-[20px] lg:text-[25px]">
             {render(config.content.case_content)}
           </span>
         </div>
         <div className="z-10 relative">
-          <div className="py-5 text-left flex gap-10 mb-5 text-sm ml-10 items-center left-0 z-50">
+          <div className="py-5 text-left flex gap-5 lg:gap-10 mb-5 text-sm lg:ml-10 items-center left-0 z-50 flex-wrap">
             <button
               key={100}
               onClick={() => handleCategoryClick('')}
@@ -131,7 +131,7 @@ const CasePage = ({ props, config, locale }: Props) => {
                     <Link
                       key={index}
                       href={`/${item.full_slug}`}
-                      className="w-full h-[400px] relative"
+                      className="w-full h-[300px] lg:h-[400px] relative"
                       onMouseEnter={() => handleMouseEnter(item.uuid)}
                       onMouseLeave={handleMouseLeave}
                     >
@@ -149,6 +149,7 @@ const CasePage = ({ props, config, locale }: Props) => {
                             autoPlay
                             loop
                             muted
+                            playsInline
                             className="object-cover absolute h-full w-full transition-opacity duration-300"
                           >
                             <source

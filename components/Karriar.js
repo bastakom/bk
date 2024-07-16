@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { render } from 'storyblok-rich-text-react-renderer'
 import { IoMdArrowForward } from 'react-icons/io'
 
-const Form = ({ blok }) => {
+const KarriarForm = ({ blok }) => {
   const [sent, setSent] = useState(false)
   const [status, setStatus] = useState('')
   const [formData, setFormData] = useState({
@@ -48,7 +48,7 @@ const Form = ({ blok }) => {
       className="bg-[#F7F0EE] full-width-element no-padding-bottom"
       {...storyblokEditable(blok)}
     >
-      <div className="flex w-full justify-center items-center py-20 gap-10 flex-col max-md:text-center max-md:px-4">
+      <div className="flex w-full justify-center items-center py-20 gap-10 flex-col max-md:px-4">
         <h1 className="text-[20px] uppercase font-normal">{blok.title}</h1>
         <span className="text-[30px] font-normal">{render(blok.content)}</span>
         <span className="text-[20px] font-normal text-center">
@@ -106,8 +106,8 @@ const Form = ({ blok }) => {
               />
             </div>
             <div className="flex gap-5">
-              <input type="checkbox" style={{width: '35px'}} />
-              <label className="flex items-start md:items-center text-left gap-2">
+              <input type="checkbox" />
+              <label className="flex items-start md:items-center gap-2">
                 {params.lang === 'en'
                   ? 'I agree that Best Buddies use the specified personal data to contact me.*'
                   : 'Jag godkänner att Bästa Kompisar använder angivna personuppgifter för att kontakta mig.*'}
@@ -135,4 +135,4 @@ const Form = ({ blok }) => {
   )
 }
 
-export default Form
+export default KarriarForm

@@ -25,21 +25,11 @@ const MobileNavigation = ({ props }: any) => {
 
   return (
     <>
-      <div
-        className={`block hover:cursor-pointer lg:hidden full-width-element h-[100vh] left-0 top-0 w-full bg-black transition-opacity duration-500 ${
-          open ? 'opacity-70 z-10' : 'opacity-0 hidden'
-        } absolute `}
-        onClick={() => setIsOpen(false)}
-      />
       <nav
         className={`flex flex-col lg:hidden h-[100vh] top-0 z-10 bg-[#F7F0EE] gap-2 w-[100%] justify-center absolute transition-all duration-500 right-0 ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        {/* <NameLoop
-          bg={'bg-transparent'}
-          className="pt-0 pb-0 top-0 absolute w-full right-0 z-40 left-[14px]"
-        /> */}
         <div>
           <div className="marquee-section m-auto">
             <div className="loop-div-left">

@@ -7,9 +7,11 @@ import Image from 'next/image'
 import { GoPlus } from 'react-icons/go'
 import { FiMinus } from 'react-icons/fi'
 import NameLoop from '../NameLoop/NameLoop'
+import { format } from 'date-fns'
 
 interface Props {
   props: {
+    sort_by_date: any
     slug: any
     full_slug: string
     name: string
@@ -61,47 +63,53 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
   return (
     <div className="m-auto">
       <NameLoop />
-      <div className="full-width-element bg-[#F7F0EE] mb-14 pb-10">
+      <div className="full-width-element bg-[#F7F0EE] mb-14 pb-10 px-4 lg:px-0">
         <div className=" flex container m-auto">
-          {props.slice(0, 1).map((item: any, index: number) => (
-            <Link href={`nyheter/${item.slug}`} key={item.uuid}>
-              <div
-                className="grid grid-cols-2 gap-5 h-full items-center justify-center py-10 m-auto"
-                key={index}
-              >
-                <div className="flex flex-col gap-10 px-6 h-full justify-center">
-                  <h1 className="font-normal font-primary text-[20px]">
-                    {locale === 'en' ? 'LATEST NEWS' : 'SENASTE NYHET'}
-                  </h1>
-                  <h2
-                    className={`text-[70px] w-full font-normal leading-[85px] ${
-                      hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-80'
-                    }`}
-                  >
-                    {item.name}
-                  </h2>
-                  <span className="font-primary font-normal text-xl">
-                    23.12.18
-                  </span>
-                  <span className="max-w-[80%] text-[20px] leading-[32px] line-clamp-5 font-normal font-primary">
-                    {render(item.content.content)}
-                  </span>
+          {props.slice(0, 1).map((item: any, index: number) => {
+            const formattedDate = item.sort_by_date
+              ? format(new Date(`${item.sort_by_date}`), 'yyyy.MM.dd')
+              : format(new Date(`${item.published_at}`), 'yyyy.MM.dd')
+
+            return (
+              <Link href={`nyheter/${item.slug}`} key={item.uuid}>
+                <div
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-5 h-full items-center justify-center py-10 lg:m-auto"
+                  key={index}
+                >
+                  <div className="flex flex-col gap-5 lg:gap-10 px-0 lg:px-6 h-full justify-center">
+                    <h1 className="font-normal font-primary text-[20px]">
+                      {locale === 'en' ? 'LATEST NEWS' : 'SENASTE NYHET'}
+                    </h1>
+                    <h2
+                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] ${
+                        hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-80'
+                      }`}
+                    >
+                      {item.name}
+                    </h2>
+                    <span className="font-primary font-normal text-xl">
+                      {formattedDate}
+                    </span>
+                    {/* <span className="max-md:hidden max-w-[100%] lg:max-w-[80%] text-[20px] leading-[32px] line-clamp font-normal font-primary">
+                      {render(item.content.content)}
+                    </span> */}
+                  </div>
+                  <div className="relative h-[300px] lg:h-full w-full lg:w-[500px]">
+                    <Image
+                      src={
+                        item.content.future_picture.filename
+                          ? item.content.image.filename
+                          : item?.content?.image?.filename
+                      }
+                      fill
+                      className="object-contain"
+                      alt={item.name}
+                    />
+                  </div>
                 </div>
-                <div className="relative h-full w-[500px]">
-                  <Image
-                    src={
-                      item.content.future_picture.filename
-                        ? item.content.image.filename
-                        : item?.content?.image?.filename
-                    }
-                    fill
-                    className="object-contain"
-                    alt={item.name}
-                  />
-                </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            )
+          })}
         </div>
       </div>
       <button
@@ -143,40 +151,47 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
           ))}
         </div>
       )}
-      <div className="grid h-full gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-3">
-        {filteredPosts.slice(1, 100).map((item) => (
-          <Link
-            href={`nyheter/${item.slug}`}
-            key={item.uuid}
-            className="flex flex-col gap-5 mb-10"
-            onMouseEnter={() => handleMouseEnter(item.uuid)}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Image
-              src={
-                item.content.future_picture.filename
-                  ? item.content.future_picture.filename
-                  : item?.content?.image?.filename
-              }
-              height={390}
-              width={500}
-              className="object-cover"
-              style={{ height: '521px', width: '100%' }}
-              alt={item.name}
-            />
+      <div className="grid h-full gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-3 lg:px-0">
+        {filteredPosts.slice(1, 100).map((item) => {
+          const formattedDate = item.sort_by_date
+            ? format(new Date(`${item.sort_by_date}`), 'yyyy.MM.dd')
+            : format(new Date(`${item.published_at}`), 'yyyy.MM.dd')
+          return (
+            <Link
+              href={`nyheter/${item.slug}`}
+              key={item.uuid}
+              className="flex flex-col gap-5 mb-10"
+              onMouseEnter={() => handleMouseEnter(item.uuid)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Image
+                src={
+                  item.content.future_picture.filename
+                    ? item.content.future_picture.filename
+                    : item?.content?.image?.filename
+                }
+                height={390}
+                width={500}
+                className="object-cover"
+                style={{ height: '521px', width: '100%' }}
+                alt={item.name}
+              />
 
-            <div className="flex flex-col gap-2">
-              <h2
-                className={`text-[30px] max-w-[80%] font-primary font-normal ${
-                  hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
-                }`}
-              >
-                {item.name}
-              </h2>
-              <span className="font-primary font-normal text-xl">23.12.18</span>
-            </div>
-          </Link>
-        ))}
+              <div className="flex flex-col gap-2">
+                <h2
+                  className={`text-[30px] max-w-[80%] font-primary font-normal ${
+                    hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
+                  }`}
+                >
+                  {item.name}
+                </h2>
+                <span className="font-primary font-normal text-xl">
+                  {formattedDate}
+                </span>
+              </div>
+            </Link>
+          )
+        })}
       </div>
     </div>
   )

@@ -51,7 +51,7 @@ const CTA = ({ blok }) => {
         )}
       </div>
       {!blok.two_columns && (
-        <div className="flex justify-start w-full ml-2 mb-5 lg:mb-0 lg:ml-14">
+        <div className="flex justify-start ml-2 mb-5 lg:mb-0 lg:ml-14">
           <div className="flex">
             {blok.buttons.map((item, index) => (
               <Link

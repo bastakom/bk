@@ -51,6 +51,8 @@ const Staplar = ({ props }: Props) => {
           (item: any) => item.name
         )
 
+        console.log(item)
+
         return (
           <div
             onClick={() => handleView(index)}
@@ -112,7 +114,7 @@ const Staplar = ({ props }: Props) => {
                     />
                   </div>
                   <Link
-                    href={`${item.full_slug}`}
+                    href={`vara-tjanster/${item.slug}`}
                     onClick={() => isSetClicked(true)}
                     className="text-center text-[#FF6062] text-[19px] lg:text-[16px] font-bold flex gap-2 justify-center items-center z-20"
                   >

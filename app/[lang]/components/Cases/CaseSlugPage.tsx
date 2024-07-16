@@ -11,18 +11,31 @@ interface Props {
 
 const CaseSlugPage = ({ story }: Props) => {
   const locale = useParams()
+
   return (
     <>
       <div className="relative dark:bg-[#121212] pb-20 container m-auto">
         <div className="flex gap-5 mb-5 lg:mb-20 mt-16 flex-col items-center">
-          <div className="w-full relative h-[600px]">
-            <Image
-              src={story?.content?.image?.filename || ''}
-              fill
-              alt="placeholder"
-              quality={100}
-              className="object-cover bg-[-200px]"
-            />
+          <div className="w-full relative h-[300px] lg:h-[600px]">
+            {story?.content?.image?.filename.endsWith('.mp4') ? (
+              <video
+                autoPlay
+                muted
+                playsInline
+                loop
+                className="object-cover h-full w-full"
+              >
+                <source src={story.content.image?.filename || ''} />
+              </video>
+            ) : (
+              <Image
+                src={story?.content?.image?.filename || ''}
+                fill
+                alt="placeholder"
+                quality={100}
+                className="object-cover bg-[-200px]"
+              />
+            )}
           </div>
           <div className="flex justify-start w-full gap-2 my-5 ml-0 lg:ml-[3.75rem]">
             <span className="font-light">
@@ -33,7 +46,7 @@ const CaseSlugPage = ({ story }: Props) => {
           <div className="flex container flex-col lg:flex-row mb-10 ml-0 lg:ml-[60px]">
             <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
               <div className="flex gap-2 flex-col">
-                <h2 className="text-[40px] lg:text-[100px] leading-[1.3em]">
+                <h2 className="text-[40px] lg:max-w-[80%] break-words lg:text-[100px] leading-[50px] lg:leading-[100px]">
                   {story.content.title}
                 </h2>
               </div>
@@ -49,39 +62,47 @@ const CaseSlugPage = ({ story }: Props) => {
             Array.isArray(story.content.videos) &&
             story.content.videos.length > 0 &&
             story.content.videos.slice(0, 1).map((item: any) => (
-              <div className="object-cover relative w-full" key={item.filename}>
-                <video controls className="w-full">
+              <div
+                className={`object-cover relative ${
+                  story.content.sound ? 'w-full lg:w-2/3 m-auto' : 'w-full'
+                } `}
+                key={item.filename}
+              >
+                <video controls playsInline className="w-full">
                   <source src={item.filename} />
                 </video>
               </div>
             ))}
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-5 container m-auto">
-          {story.content &&
-            Array.isArray(story.content.gallery) &&
-            story.content.gallery.length > 0 &&
-            story.content.gallery.slice(0, 4).map((item: any) => (
-              <div className="h-[400px] relative w-full" key={item.filename}>
-                {item.filename.endsWith('.mp4') ? (
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    className="object-cover h-full w-full"
-                  >
-                    <source src={item?.filename || ''} />
-                  </video>
-                ) : (
-                  <Image
-                    src={item?.filename || ''}
-                    fill
-                    alt=""
-                    className="object-cover"
-                  />
-                )}
-              </div>
-            ))}
-        </div>
+        {story.content && Array.isArray(story.content.gallery) && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-5 container m-auto">
+            {story.content &&
+              Array.isArray(story.content.gallery) &&
+              story.content.gallery.length > 0 &&
+              story.content.gallery.slice(0, 4).map((item: any) => (
+                <div className="h-[400px] relative w-full" key={item.filename}>
+                  {item.filename.endsWith('.mp4') ? (
+                    <video
+                      autoPlay
+                      muted
+                      playsInline
+                      loop
+                      className="object-cover h-full w-full"
+                    >
+                      <source src={item?.filename || ''} />
+                    </video>
+                  ) : (
+                    <Image
+                      src={item?.filename || ''}
+                      fill
+                      alt=""
+                      className="object-cover"
+                    />
+                  )}
+                </div>
+              ))}
+          </div>
+        )}
 
         <div className="flex flex-col gap-5 text-[20px] container m-auto my-10 font-light-sofia">
           {story.content.title_columns && (
@@ -124,6 +145,7 @@ const CaseSlugPage = ({ story }: Props) => {
                     autoPlay
                     muted
                     loop
+                    playsInline
                     className="object-cover h-full w-full"
                   >
                     <source src={item?.filename || ''} />
@@ -140,7 +162,7 @@ const CaseSlugPage = ({ story }: Props) => {
             ))}
         </div>
 
-        <div className="flex flex-col gap-2 text-[18px] lg:text-[20px] max-w-full lg:max-w-[40%] container mt-20 font-light-sofia">
+        <div className="flex flex-col gap-2 text-[18px] lg:text-[20px] max-w-full lg:max-w-[40%] container font-light-sofia">
           {render(story.content.text_under_video)}
         </div>
         <div className="w-ful gap-5 container m-auto">
@@ -148,7 +170,7 @@ const CaseSlugPage = ({ story }: Props) => {
             story.content.videos.length === 2 &&
             story.content.videos.slice(1, 2).map((item: any) => (
               <div className="object-cover relative w-full">
-                <video controls className="w-full">
+                <video controls playsInline className="w-full">
                   <source src={item.filename} />
                 </video>
               </div>

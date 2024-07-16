@@ -55,7 +55,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
 
   return (
     <div
-      className={`full-width-element pt-24 no-padding-bottom pb-20`}
+      className={`full-width-element pt-24 no-padding-bottom pb-20 px-1`}
       style={{
         background: `${
           story.content.background ? story.content.background : 'none'
@@ -82,7 +82,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
           </div>
         </div>
       </div>
-      <div className="container m-auto px-5 lg:px-0">
+      <div className="container m-auto px-2 lg:px-0">
         <div className="text-center flex flex-col gap-5 lg:gap-10 justify-center">
           <h1 className="text-[20px]">{story.name}</h1>
           {story.content.title && (
@@ -120,7 +120,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
           </div>
         </div>
       </div>
-      <div className="pl-5 px-5 lg:px-0 lg:pl-14 py-14">
+      <div className="pl-2 px-1 lg:px-0 lg:pl-14 py-14">
         <h2 className="py-10 text-center uppercase text-[20px]">
           {params.lang === 'en' ? 'Selection case' : 'Urval case'}
         </h2>
