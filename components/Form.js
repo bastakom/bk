@@ -109,7 +109,7 @@ const Form = ({ blok }) => {
               <input type="checkbox" style={{width: '35px'}} />
               <label className="flex items-start md:items-center text-left gap-2">
                 {params.lang === 'en'
-                  ? 'I agree that Best Buddies use the specified personal data to contact me.*'
+                  ? 'I agree that Best Friends use the specified personal data to contact me.*'
                   : 'Jag godkänner att Bästa Kompisar använder angivna personuppgifter för att kontakta mig.*'}
               </label>
             </div>
