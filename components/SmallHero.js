@@ -41,7 +41,11 @@ const Smallhero = ({ blok }) => {
             {render(blok.sub_text)}
           </span>
           {blok.link_name && blok.marginleft && (
-            <Button href={''} text={blok.link_name} align="left" />
+            <Button
+              href={blok.link.cached_url}
+              text={blok.link_name}
+              align="left"
+            />
           )}
         </div>
       </div>
@@ -64,7 +68,7 @@ const Smallhero = ({ blok }) => {
           />
           {blok.link_name && !blok.marginleft && (
             <Link
-              href={`${blok.link.url}`}
+              href={`${blok.link.cached_url}`}
               className="link-color flex gap-2 items-center"
             >
               {blok.link_name}

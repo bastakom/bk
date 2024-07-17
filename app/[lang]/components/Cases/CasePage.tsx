@@ -127,7 +127,6 @@ const CasePage = ({ props, config, locale }: Props) => {
                   )
                 })
                 .map((item: any, index: number) => {
-                  console.log(item.content.videoimage.filename)
                   return (
                     <Link
                       key={item.uuid}

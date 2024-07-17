@@ -2,15 +2,21 @@
 
 import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { FaArrowRight } from 'react-icons/fa'
 
 interface Props {
   story: any
+  nextCaseSlug: string
 }
 
-const CaseSlugPage = ({ story }: Props) => {
+const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
+  const router = useRouter()
   const locale = useParams()
+
+  const handleNextClick = () => {
+    router.push(`${nextCaseSlug}`)
+  }
 
   return (
     <>
@@ -168,8 +174,8 @@ const CaseSlugPage = ({ story }: Props) => {
         <div className="w-ful gap-5 container m-auto">
           {Array.isArray(story.content.gallery) &&
             story.content.videos.length === 2 &&
-            story.content.videos.slice(1, 2).map((item: any) => (
-              <div className="object-cover relative w-full">
+            story.content.videos.slice(1, 2).map((item: any, index: number) => (
+              <div className="object-cover relative w-full" key={index}>
                 <video controls playsInline className="w-full">
                   <source src={item.filename} />
                 </video>
@@ -188,12 +194,13 @@ const CaseSlugPage = ({ story }: Props) => {
           />
         </div>
       )}
-      <div className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20">
+      <button
+        className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
+        onClick={handleNextClick}
+      >
         {locale.lang === 'en' ? 'Next' : 'Nästa'}
-        <span className="mt-[4px]">
-          <FaArrowRight color="#FF6062" />
-        </span>
-      </div>
+        <FaArrowRight color="#FF6062" />
+      </button>
     </>
   )
 }

@@ -1,9 +1,11 @@
 'use client'
 
 import { motion, SVGMotionProps } from 'framer-motion'
-import { FC, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { FC, useEffect, useState } from 'react'
 
 const LoadingLogo: FC = () => {
+  const params = useParams()
   const [loaded, isSetLoading] = useState(false)
   const pathVariants: SVGMotionProps<SVGPathElement>['variants'] = {
     hidden: { pathLength: 0 },
@@ -15,9 +17,11 @@ const LoadingLogo: FC = () => {
     },
   }
 
-  setTimeout(() => {
-    isSetLoading(true)
-  }, 2700)
+  useEffect(() => {
+    setTimeout(() => {
+      isSetLoading(true)
+    }, 2700)
+  })
 
   return (
     !loaded && (
@@ -106,7 +110,7 @@ const LoadingLogo: FC = () => {
             transition={{ delay: 0.5, duration: 1 }}
             className="text-[20px] font-light uppercase z-0"
           >
-            Bästa Kompisar
+            {params.lang === 'en' ? 'Best Friends' : 'Bästa Kompisar'}
           </motion.h2>
         </div>
       </motion.div>

@@ -51,8 +51,6 @@ const Staplar = ({ props }: Props) => {
           (item: any) => item.name
         )
 
-        console.log(item)
-
         return (
           <div
             onClick={() => handleView(index)}

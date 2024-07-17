@@ -3,25 +3,30 @@
 import { format } from 'date-fns'
 import Image from 'next/image'
 import { render } from 'storyblok-rich-text-react-renderer'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Button from '../Button/Button'
 import { FacebookShareButton, LinkedinShareButton } from 'react-share'
 import { IoMdArrowForward } from 'react-icons/io'
 import { useParams } from 'next/navigation'
+import { FaArrowRight } from 'react-icons/fa'
 
 interface Props {
   props: any
   locale: any
+  nextCaseSlug: string
 }
 
-const NewsSlug = ({ props }: Props) => {
+const NewsSlug = ({ props, nextCaseSlug }: Props) => {
   const params = useParams()
+  const router = useRouter()
   return props.map((item: any, index: number) => {
     const formattedDate = item.sort_by_date
       ? format(new Date(`${item.sort_by_date}`), 'yyyy.MM.dd')
       : format(new Date(`${item.published_at}`), 'yyyy.MM.dd')
 
-    const router = usePathname()
+    const handleNextClick = () => {
+      router.push(`${nextCaseSlug}`)
+    }
 
     return (
       <div className="py-10">
@@ -35,13 +40,13 @@ const NewsSlug = ({ props }: Props) => {
         </span>
         <div className="m-auto container">
           <span className="flex justify-end">
-            <Button
-              href={''}
-              TextEN="Next"
-              TextSV="Nästa"
-              margin="mb-10"
-              size="20"
-            />
+            <button
+              className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
+              onClick={handleNextClick}
+            >
+              {params.lang === 'en' ? 'Next' : 'Nästa'}
+              <FaArrowRight color="#FF6062" />
+            </button>
           </span>
         </div>
         <div
