@@ -31,7 +31,7 @@ async function fetchCases(locale: string) {
     return response
   } catch (error) {
     console.error('Error fetching cases:')
-    return { data: { stories: [] } } // Return an empty array as a fallback
+    return { data: { stories: [] } }
   }
 }
 

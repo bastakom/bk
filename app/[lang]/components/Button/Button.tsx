@@ -12,6 +12,7 @@ interface Props {
   size?: string
   text?: string
   align?: string
+  onClick?: any
 }
 
 const Button = ({ TextEN, TextSV, href, margin, size, text, align }: Props) => {

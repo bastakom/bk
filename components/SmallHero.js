@@ -2,7 +2,7 @@ import Button from '@/app/[lang]/components/Button/Button'
 import { storyblokEditable } from '@storyblok/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { IoMdArrowDown } from 'react-icons/io'
+import { IoMdArrowDown, IoMdArrowForward } from 'react-icons/io'
 import { render } from 'storyblok-rich-text-react-renderer'
 
 const Smallhero = ({ blok }) => {
@@ -41,11 +41,18 @@ const Smallhero = ({ blok }) => {
             {render(blok.sub_text)}
           </span>
           {blok.link_name && blok.marginleft && (
-            <Button
-              href={blok.link.cached_url}
-              text={blok.link_name}
-              align="left"
-            />
+            <div className="flex">
+              <Link
+                href={`${blok.link.cached_url}`}
+                className="link-color font-normal"
+              >
+                <span> {blok.link_name}</span>
+              </Link>
+
+              <span>
+                <IoMdArrowForward fontSize={'1.4em'} color="#FF6062" />
+              </span>
+            </div>
           )}
         </div>
       </div>
