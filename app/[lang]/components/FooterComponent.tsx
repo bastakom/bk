@@ -104,12 +104,12 @@ const FooterComponent = ({ props }: Props) => {
             <Link className="text-[16px] font-light" href="/">
               Cookies
             </Link>
-            <Link className="text-[16px] font-light" href="/privacy-policy">
+            <Link className="text-[16px] font-light" href="privacy-policy">
               {params.lang === 'en' ? 'Privacy Policy' : 'Integritetspolicy'}
             </Link>
             <Link
               className="text-[16px] font-light-sofia"
-              href="/service-avtal-webbtjaenster"
+              href="service-avtal-webbtjaenster"
             >
               {params.lang === 'en'
                 ? 'Service agreement web services'
