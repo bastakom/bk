@@ -31,17 +31,17 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
     return (
       <div className="py-10">
         <h1
-          className={`text-[50px] lg:text-[70px] w-full lg:max-w-[80%] m-auto text-center justify-center pb-10 flex leading-[60px] lg:leading-[85px] lg:mb-10 font-normal`}
+          className={`text-[40px] lg:text-[70px] w-full lg:max-w-[80%] m-auto text-center justify-center pb-2 lg:pb-10 flex leading-[60px] lg:leading-[85px] lg:mb-10 font-normal`}
         >
           {item.name}.
         </h1>
-        <span className="justify-center mb-10 w-full flex text-[20px]">
+        <span className="justify-center mb-1 lg:mb-10 w-full flex text-[20px]">
           {formattedDate}
         </span>
         <div className="m-auto container">
           <span className="flex justify-end">
             <button
-              className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
+              className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] my-5 lg:my-20"
               onClick={handleNextClick}
             >
               {params.lang === 'en' ? 'Next' : 'Nästa'}

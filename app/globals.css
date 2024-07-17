@@ -298,8 +298,7 @@ a {
   height: 4.5rem;
 }
 
-
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
@@ -312,4 +311,25 @@ input[type="file"] {
   padding: 6px 12px;
   cursor: pointer;
   height: 150px;
+}
+
+.service h3 {
+  font: bold;
+  font-size: 30px;
+}
+.service a {
+  font-size: 20px;
+  color: #ff6062;
+  font-weight: bolder;
+}
+
+@media screen and (max-width: 900px) {
+  .service a {
+    font-size: 16px;
+  }
+
+  .service h3 {
+    font: bolder;
+    font-size: 22px;
+  }
 }

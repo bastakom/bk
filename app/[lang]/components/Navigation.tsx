@@ -8,6 +8,7 @@ import { useTheme } from 'next-themes'
 import { usePathname, useRouter } from 'next/navigation'
 import MobileNavigation from './MobileNavigation'
 import useStore from '@/app/lib/store'
+import TextAnimation from './TextAnimation/TextAnimation'
 
 interface Props {
   props?: any
@@ -37,6 +38,7 @@ const Navigation = ({ props, locale }: Props) => {
       <Link
         href={`/${locale.locale}`}
         className="flex gap-5 w-full lg:w-1/3 items-center"
+        onClick={() => setIsOpen(false)}
       >
         <Image
           src={theme === 'dark' ? logowhite : logoblack}

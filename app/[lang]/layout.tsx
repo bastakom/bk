@@ -38,9 +38,7 @@ export default function RootLayout({
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
             <Header locale={lang} />
-
-            {/* <LoadingLogo /> */}
-
+            <LoadingLogo />
             <main className={`pb-10 px-3 lg:px-10 relative`}>{children}</main>
             <Footer locale={lang} />
           </ThemeProvider>

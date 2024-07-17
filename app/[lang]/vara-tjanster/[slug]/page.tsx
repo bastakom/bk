@@ -83,10 +83,10 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
         </div>
       </div>
       <div className="container m-auto px-2 lg:px-0">
-        <div className="text-center flex flex-col gap-5 lg:gap-10 justify-center">
+        <div className="text-left lg:text-center flex flex-col gap-5 lg:gap-10 justify-center">
           <h1 className="text-[20px]">{story.name}</h1>
           {story.content.title && (
-            <div className="text-[50px] lg:text-[100px] leading-[60px] lg:leading-[120px]">
+            <div className="text-[40px] lg:text-[100px] leading-[50px] lg:leading-[120px]">
               {render(story.content.title)}
             </div>
           )}
@@ -97,9 +97,9 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
           )}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 mt-5 lg:mt-24">
-          <div className="lg:max-w-[80%] flex flex-col gap-5 my-8 lg:mb-0 lg:gap-14 items-center lg:items-start">
+          <div className="lg:max-w-[80%] flex flex-col gap-5 my-8 lg:mb-0 lg:gap-14 ">
             {story.content.single_content && (
-              <span className="text-[20px] font-normal leading-[32px] text-center lg:text-left">
+              <span className="text-[20px] font-normal leading-[32px] text-left">
                 {render(story.content.single_content)}
               </span>
             )}
