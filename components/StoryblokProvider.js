@@ -36,7 +36,7 @@ const components = {
   vart_team: Team,
   richtext_block: RichText,
   form: Form,
-  karriarform: KarriarForm,
+  karriar: KarriarForm,
 }
 /** 2. Initialize it as usual */
 storyblokInit({

@@ -15,6 +15,17 @@ const KarriarForm = ({ blok }) => {
 
   const params = useParams()
 
+  const [fileName, setFileName] = useState('Välj fil')
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setFileName(file.name)
+    } else {
+      setFileName('Välj fil')
+    }
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
@@ -45,15 +56,15 @@ const KarriarForm = ({ blok }) => {
   }
   return (
     <div
-      className="bg-[#F7F0EE] full-width-element no-padding-bottom"
+      className=" full-width-element no-padding-bottom"
       {...storyblokEditable(blok)}
     >
-      <div className="flex w-full justify-center items-center py-20 gap-10 flex-col max-md:px-4">
-        <h1 className="text-[20px] uppercase font-normal">{blok.title}</h1>
+      <div className="flex w-full justify-center items-center  py-10 gap-10 flex-col max-md:px-4">
+        {/* <h1 className="text-[20px] uppercase font-normal">{blok.title}</h1>
         <span className="text-[30px] font-normal">{render(blok.content)}</span>
         <span className="text-[20px] font-normal text-center">
           {render(blok.adress)}
-        </span>
+        </span> */}
         {/* FORM */}
 
         {!sent ? (
@@ -90,12 +101,26 @@ const KarriarForm = ({ blok }) => {
                 value={formData.email}
               />
             </div>
+            <div className={`flex flex-col gap-5`}>
+              <label>
+                {params.lang === 'en'
+                  ? 'The area that I would like to work/practice in is…*'
+                  : 'Området som jag skulle vilja jobba/praktisera inom är…*'}
+              </label>
+              <input
+                className="bg-transparent border border-black rounded-[22px] py-2 px-5"
+                type="email"
+                onChange={handleChange}
+                name="email"
+                value={formData.email}
+              />
+            </div>
 
             <div className="w-full  flex flex-col gap-4 ">
               <label>
-                {params.lang === 'en'
-                  ? 'I would like to know more about…*'
-                  : 'Jag skulle vilja veta mer om…*'}
+                {params.lang === 'sv'
+                  ? 'Och här är lite kort information om mig…*'
+                  : 'And here is some brief information about me…*'}
               </label>
               <textarea
                 className="bg-transparent border border-black rounded-[22px] py-5 px-5"
@@ -105,6 +130,17 @@ const KarriarForm = ({ blok }) => {
                 value={formData.message}
               />
             </div>
+
+            <div className="flex gap-5 flex-col">
+              <label className="flex items-start md:items-center gap-2">
+                {params.lang === 'en' ? 'CV, PM, Other' : 'CV, PM, Övrigt'}
+              </label>
+              <label htmlFor="file-upload" className="custom-file-upload">
+                {fileName}
+              </label>
+              <input id="file-upload" type="file" onChange={handleFileChange} />
+            </div>
+
             <div className="flex gap-5">
               <input type="checkbox" />
               <label className="flex items-start md:items-center gap-2">
