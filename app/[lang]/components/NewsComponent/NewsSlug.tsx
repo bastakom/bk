@@ -9,6 +9,7 @@ import { FacebookShareButton, LinkedinShareButton } from 'react-share'
 import { IoMdArrowForward } from 'react-icons/io'
 import { useParams } from 'next/navigation'
 import { FaArrowRight } from 'react-icons/fa'
+import { motion } from 'framer-motion'
 
 interface Props {
   props: any
@@ -39,15 +40,22 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
           {formattedDate}
         </span>
         <div className="m-auto container">
-          <span className="flex justify-end">
+          <motion.div whileHover="hover">
             <button
-              className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] my-5 lg:my-20"
+              className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
               onClick={handleNextClick}
             >
               {params.lang === 'en' ? 'Next' : 'Nästa'}
-              <FaArrowRight color="#FF6062" />
+              <motion.span
+                variants={{
+                  hover: { x: 5 },
+                }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                <IoMdArrowForward fontSize={'1.3em'} color="#FF6062" />
+              </motion.span>
             </button>
-          </span>
+          </motion.div>
         </div>
         <div
           key={index}

@@ -49,39 +49,19 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
     (item: any) => item.content.Kategori.toString() === story.name
   )
 
-  const storyElements = filteredStories.map((item: any, index: number) => {
-    return <div key={index}>{item.name}</div>
-  })
+  // const storyElements = filteredStories.map((item: any, index: number) => {
+  //   return <div key={index}>{item.name}</div>
+  // })
 
   return (
     <div
-      className={`full-width-element pt-24 no-padding-bottom pb-20 px-1`}
+      className={`full-width-element pt-32 no-padding-bottom pb-20 px-1`}
       style={{
         background: `${
           story.content.background ? story.content.background : 'none'
         }`,
       }}
     >
-      <div className="pb-5 mb-14">
-        <div className="marquee-section m-auto">
-          <div className="loop-div-right">
-            <div className="marquee flex gap-2 text-[18px] reel-text-color">
-              <span>{firstContent}</span>
-              <span>{firstContent}</span>
-              <span>{firstContent}</span>
-            </div>
-          </div>
-        </div>
-        <div className="marquee-section m-auto">
-          <div className="loop-div-left">
-            <div className="marquee flex gap-2 text-[18px] reel-text-color">
-              <span>{nextContent}</span>
-              <span>{nextContent}</span>
-              <span>{nextContent}</span>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="container m-auto px-2 lg:px-0">
         <div className="text-left lg:text-center flex flex-col gap-5 lg:gap-10 justify-center">
           <h1 className="text-[20px]">{story.name}</h1>

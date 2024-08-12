@@ -4,6 +4,8 @@ import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { FaArrowRight } from 'react-icons/fa'
+import { motion } from 'framer-motion'
+import { IoMdArrowForward } from 'react-icons/io'
 
 interface Props {
   story: any
@@ -45,7 +47,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
           </div>
           <div className="flex justify-start w-full gap-2 my-5 ml-0 lg:ml-[3.75rem]">
             <span className="font-light">
-              {locale.lang === 'en' ? 'Customer: ' : 'Kund: '}
+              {locale.lang === 'en' ? 'Client: ' : 'Kund: '}
             </span>
             <h1 className="font-bold">{story.name}</h1>
           </div>
@@ -58,7 +60,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
               </div>
               <span>{story?.content?.ingress}</span>
             </div>
-            <div className="w-full lg:w-1/2 mt-5 lg:mt-0 flex flex-col gap-5 font-light-sofia text-[18px] lg:text-[25px]">
+            <div className="w-full lg:w-[47.6%] mt-5 lg:mt-0 flex flex-col gap-10 font-light-sofia text-[18px] lg:text-[25px]">
               {render(story.content.content)}
             </div>
           </div>
@@ -87,7 +89,8 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
               story.content.gallery.length > 0 &&
               story.content.gallery.slice(0, 4).map((item: any) => (
                 <div className="h-[400px] relative w-full" key={item.filename}>
-                  {item.filename.endsWith('.mp4') ? (
+                  {item.filename.endsWith('.mp4') ||
+                  item.filename.endsWith('.mov') ? (
                     <video
                       autoPlay
                       muted
@@ -194,13 +197,22 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
           />
         </div>
       )}
-      <button
-        className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
-        onClick={handleNextClick}
-      >
-        {locale.lang === 'en' ? 'Next' : 'Nästa'}
-        <FaArrowRight color="#FF6062" />
-      </button>
+      <motion.div whileHover="hover">
+        <button
+          className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
+          onClick={handleNextClick}
+        >
+          {locale.lang === 'en' ? 'Next' : 'Nästa'}
+          <motion.span
+            variants={{
+              hover: { x: 5 },
+            }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <IoMdArrowForward fontSize={'1.3em'} color="#FF6062" />
+          </motion.span>
+        </button>
+      </motion.div>
     </>
   )
 }

@@ -46,6 +46,6 @@ const fetchConfig = async (locale: string) => {
     return response
   } catch (error) {
     console.error('Error fetching config:')
-    return { data: { story: {} } } // Return an empty object as a fallback
+    return { data: { story: {} } }
   }
 }

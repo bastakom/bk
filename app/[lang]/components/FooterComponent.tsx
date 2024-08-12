@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { render } from 'storyblok-rich-text-react-renderer'
 import { useParams } from 'next/navigation'
 import { IoMdArrowForward } from 'react-icons/io'
+import Image from 'next/image'
 
 interface Props {
   props: any
@@ -15,14 +16,16 @@ const FooterComponent = ({ props }: Props) => {
   } = props
 
   const params = useParams()
+  console.log()
 
   return (
     <div className="w-full min-h-[65vh] justify-between flex flex-col bg-[#25364F] p-4 lg:p-14 pb-5 text-white relative">
-      <div className="w-full grid mx-auto grid-cols-1 lg:grid-cols-[40%_30%_30%] gap-10">
+      <div className="w-full grid mx-auto grid-cols-1 lg:grid-cols-[40%_30%_30%] gap-10 pt-10">
         <div className="flex flex-col gap-10 mt-5 lg:mt-0">
           <h2 className="font-primary text-[20px] font-light">
             {render(content.descriptionText)}
           </h2>
+
           <div className="flex flex-col gap-1 z-20">
             {content.footer_menu.map((item: any, index: string) => (
               <Link
@@ -78,7 +81,7 @@ const FooterComponent = ({ props }: Props) => {
                   : null
               return (
                 <Link
-                  href={`https://${item.link.url}`}
+                  href={`${item.link.url}`}
                   passHref={true}
                   target="_blank"
                   className="font-light flex"
@@ -97,10 +100,24 @@ const FooterComponent = ({ props }: Props) => {
 
       <div className="flex w-full items-center">
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-2 w-full justify-between text-[16px]">
-          <span className="font-light-sofia uppercase lg:mt-0 mt-10">
-            © Reklambyrån Bästa Kompisar 2024
+          <span className="font-light-sofia uppercase lg:mt-0 mt-10 flex flex-col gap-10">
+            <div className="flex gap-5">
+              {content.Logos.map((el: any) => {
+                return (
+                  <Image
+                    src={el.filename}
+                    alt={el.filename}
+                    width={80}
+                    className="object-contain"
+                    height={50}
+                    key={el.id}
+                  />
+                )
+              })}
+            </div>
+            <span>© Reklambyrån Bästa Kompisar 2024</span>
           </span>
-          <div className="flex flex-col lg:flex-row gap-2 lg:gap-10">
+          <div className="flex flex-col lg:flex-row gap-2 lg:gap-10 items-end">
             <Link className="text-[16px] font-light" href="/">
               Cookies
             </Link>

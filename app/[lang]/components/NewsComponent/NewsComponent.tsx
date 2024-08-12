@@ -62,14 +62,9 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
 
   return (
     <div className="m-auto">
-      <NameLoop />
-      <div className="full-width-element bg-[#F7F0EE] mb-14 pb-10 px-4 lg:px-0">
+      <div className="full-width-element bg-[#F7F0EE] mb-14 pb-10 pt-32 px-4 lg:px-0">
         <div className=" flex container m-auto">
           {props.slice(0, 1).map((item: any, index: number) => {
-            const formattedDate = item.sort_by_date
-              ? format(new Date(`${item.sort_by_date}`), 'yyyy.MM.dd')
-              : format(new Date(`${item.published_at}`), 'yyyy.MM.dd')
-
             return (
               <Link href={`nyheter/${item.slug}`} key={item.uuid}>
                 <div
@@ -87,12 +82,9 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                     >
                       {item.name}
                     </h2>
-                    <span className="font-primary font-normal text-xl">
-                      {formattedDate}
-                    </span>
-                    {/* <span className="max-md:hidden max-w-[100%] lg:max-w-[80%] text-[20px] leading-[32px] line-clamp font-normal font-primary">
+                    <span className="max-md:hidden max-w-[100%] lg:max-w-[80%] text-[20px] leading-[32px] line-clamp font-normal font-primary">
                       {render(item.content.content)}
-                    </span> */}
+                    </span>
                   </div>
                   <div className="relative h-[300px] lg:h-full w-full lg:w-[500px]">
                     <Image
@@ -153,9 +145,6 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
       )}
       <div className="grid h-full gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-3 lg:px-0">
         {filteredPosts.slice(1, 100).map((item) => {
-          const formattedDate = item.sort_by_date
-            ? format(new Date(`${item.sort_by_date}`), 'yyyy.MM.dd')
-            : format(new Date(`${item.published_at}`), 'yyyy.MM.dd')
           return (
             <Link
               href={`nyheter/${item.slug}`}
@@ -185,9 +174,6 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                 >
                   {item.name}
                 </h2>
-                <span className="font-primary font-normal text-xl">
-                  {formattedDate}
-                </span>
               </div>
             </Link>
           )

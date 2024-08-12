@@ -1,3 +1,4 @@
+import Button from '@/app/[lang]/components/Button/Button'
 import { storyblokEditable } from '@storyblok/react/rsc'
 import Link from 'next/link'
 import { IoMdArrowForward } from 'react-icons/io'
@@ -51,7 +52,7 @@ const CTA = ({ blok }) => {
         )}
       </div>
       {!blok.two_columns && (
-        <div className="flex justify-start ml-2 mb-5 lg:mb-0 lg:ml-14">
+        <div className="flex justify-start pl-3 mb-5 lg:mb-0 lg:ml-14">
           <div className="flex">
             {blok.buttons.map((item, index) => (
               <Link
@@ -66,7 +67,7 @@ const CTA = ({ blok }) => {
               </Link>
             ))}
             <span>
-              <IoMdArrowForward fontSize={'1.4em'} color="#FF6062" />
+              <IoMdArrowForward fontSize={'1.6em'} color="#FF6062" />
             </span>
           </div>
         </div>

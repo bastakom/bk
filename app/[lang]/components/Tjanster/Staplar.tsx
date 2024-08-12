@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation'
 import { GoPlus } from 'react-icons/go'
 import { IoMdArrowForward } from 'react-icons/io'
 import './loading.css'
+import { render } from 'storyblok-rich-text-react-renderer'
 
 interface Props {
   props: any[]
@@ -89,8 +90,8 @@ const Staplar = ({ props }: Props) => {
               )}
 
               {openIndex === index && (
-                <div className="flex flex-col justify-center gap-2">
-                  <div className="p-5 flex justify-center gap-10 w-full h-full justify-center flex-col lg:flex-row items-center">
+                <div className="flex flex-col justify-center gap-2 items-center w-full p-2">
+                  <div className="p-0 flex justify-center gap-14 w-full h-full flex-col lg:flex-row items-center">
                     <h2 className={`font-bold text-xl text-white`}>
                       <span>
                         {translatedName && params.lang === 'en'
@@ -98,29 +99,31 @@ const Staplar = ({ props }: Props) => {
                           : item.name}
                       </span>
                     </h2>
-                    {typeof item?.content?.content === 'string' ? (
-                      <div className="line-clamp-3 font-primary max-w-[100%] lg:max-w-[60%] text-white reveal">
-                        <span className="leading-[22px] text-center">
-                          {item.content.content}
-                        </span>
-                      </div>
-                    ) : null}
+
+                    <div className="font-primary max-w-[100%] lg:max-w-[60%] text-white reveal">
+                      <span className="leading-[22px] text-left mb-5">
+                        {render(item.content.content)}
+                      </span>
+                      <span>
+                        <Link
+                          href={`vara-tjanster/${item.slug}`}
+                          onClick={() => isSetClicked(true)}
+                          className="text-left text-[#FF6062] text-[19px] lg:text-[16px] font-bold flex gap-2 items-center z-20"
+                        >
+                          {params.lang === 'en' ? 'Read more' : 'Läs mer'}
+                          <span>
+                            <IoMdArrowForward fontSize={'1.5em'} />
+                          </span>
+                        </Link>
+                      </span>
+                    </div>
+
                     <GoPlus
                       className="rotate-45"
                       fontSize={'2.4em'}
                       color="#FF6062"
                     />
                   </div>
-                  <Link
-                    href={`vara-tjanster/${item.slug}`}
-                    onClick={() => isSetClicked(true)}
-                    className="text-center text-[#FF6062] text-[19px] lg:text-[16px] font-bold flex gap-2 justify-center items-center z-20"
-                  >
-                    {params.lang === 'en' ? 'Read more' : 'Läs mer'}
-                    <span className="">
-                      <IoMdArrowForward fontSize={'1.5em'} />
-                    </span>
-                  </Link>
                 </div>
               )}
             </div>

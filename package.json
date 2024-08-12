@@ -22,6 +22,7 @@
     "local-ssl-proxy": "^2.0.5",
     "next": "14.0.3",
     "next-themes": "^0.3.0",
+    "nextjs-toploader": "^1.6.12",
     "nodemailer": "^6.9.14",
     "react": "^18",
     "react-countup": "^6.5.3",

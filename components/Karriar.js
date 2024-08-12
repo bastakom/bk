@@ -145,7 +145,7 @@ const KarriarForm = ({ blok }) => {
               <input type="checkbox" />
               <label className="flex items-start md:items-center gap-2">
                 {params.lang === 'en'
-                  ? 'I agree that Best Friends use the specified personal data to contact me.*'
+                  ? 'I agree that Bästa Kompisar use the specified personal data to contact me.*'
                   : 'Jag godkänner att Bästa Kompisar använder angivna personuppgifter för att kontakta mig.*'}
               </label>
             </div>

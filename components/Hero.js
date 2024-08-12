@@ -1,6 +1,13 @@
 import { storyblokEditable } from '@storyblok/react/rsc'
+import { useState } from 'react'
+import { GoMute, GoUnmute } from 'react-icons/go'
 
 const Hero = ({ blok }) => {
+  const [isMuted, isSetMuted] = useState(true)
+  const handleMuted = () => {
+    isSetMuted(!isMuted)
+  }
+
   return (
     <>
       <div
@@ -8,11 +15,11 @@ const Hero = ({ blok }) => {
       >
         <div className="h-full absolute w-full bg-black z-10 opacity-30" />
         <video
-          muted
           autoPlay
           playsInline
           loop
-          className="absolute w-full h-full top-0 object-cover"
+          muted={isMuted}
+          className="absolute w-full h-full top-0 object-cover hero-video"
         >
           <source src={blok.Video.filename} />
         </video>
@@ -28,6 +35,15 @@ const Hero = ({ blok }) => {
           <h1 className="text-6xl font-bold" {...storyblokEditable(blok)}>
             {blok?.headline}
           </h1>
+          <div className="aboslute bottom-0 right-0 w-full z-50 flex justify-end items-end h-[85vh] py-2 px-5">
+            <button onClick={handleMuted} className="z-10">
+              {isMuted ? (
+                <GoMute fontSize={'2.5rem'} color="#fff" />
+              ) : (
+                <GoUnmute fontSize={'2.5rem'} color="#fff" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </>

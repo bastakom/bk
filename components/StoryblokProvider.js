@@ -20,6 +20,7 @@ import Team from './Team'
 import RichText from './RichText'
 import Form from './Form'
 import KarriarForm from './Karriar'
+import Divide from './Divide'
 
 const components = {
   feature: Feature,
@@ -38,6 +39,7 @@ const components = {
   richtext_block: RichText,
   form: Form,
   karriar: KarriarForm,
+  divide: Divide,
 }
 /** 2. Initialize it as usual */
 storyblokInit({

@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { storyblokInit, apiPlugin } from '@storyblok/react/rsc'
 import StoryblokProvider from '../../components/StoryblokProvider'
 import { ThemeProvider } from './components/ThemeProvid/theme-provider'
-import Loading from './components/Loading/Loading'
 import dynamic from 'next/dynamic'
 
 const Footer = dynamic(() => import('./components/Footer'), { ssr: false })
@@ -39,6 +38,7 @@ export default function RootLayout({
           <ThemeProvider defaultTheme="light" attribute="class">
             <Header locale={lang} />
             <LoadingLogo />
+
             <main className={`pb-10 px-3 lg:px-10 relative`}>{children}</main>
             <Footer locale={lang} />
           </ThemeProvider>

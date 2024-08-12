@@ -12,7 +12,7 @@ const Smallhero = ({ blok }) => {
         blok.marginleft
           ? 'w-full lg:w-[80%] m-auto my-10 lg:my-24 gap-10 lg:gap-20'
           : 'w-full items-center bg-[#F7F0EE] full-width-element px-4 lg:px-32 gap-10'
-      } pt-5 lg:pt-10 pb-5 lg:pb-14 mb-0 lg:mb-14 font-primary`}
+      } pt-5 lg:pt-10 pb-5 lg:pb-24 mb-0 lg:mb-14 font-primary`}
       {...storyblokEditable(blok)}
     >
       <div
@@ -41,18 +41,7 @@ const Smallhero = ({ blok }) => {
             {render(blok.sub_text)}
           </span>
           {blok.link_name && blok.marginleft && (
-            <div className="flex">
-              <Link
-                href={`${blok.link.cached_url}`}
-                className="link-color font-normal"
-              >
-                <span> {blok.link_name}</span>
-              </Link>
-
-              <span>
-                <IoMdArrowForward fontSize={'1.4em'} color="#FF6062" />
-              </span>
-            </div>
+            <Button href={`${blok.link.cached_url}`} text={blok.link_name} />
           )}
         </div>
       </div>

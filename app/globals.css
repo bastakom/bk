@@ -74,14 +74,6 @@ h1 {
   font-weight: 700;
 }
 
-.button {
-  background: #fff;
-  color: black;
-  padding: 10px 20px;
-  font-family: 'Geologica', sans-serif;
-  border-radius: 7px;
-}
-
 .slick-track {
   display: flex !important;
   /* margin-left: -10px; */
@@ -332,4 +324,9 @@ input[type='file'] {
     font: bolder;
     font-size: 22px;
   }
+}
+
+
+.arrow-hover:hover ~ .isHovered {
+  border: 10px solid black;
 }
