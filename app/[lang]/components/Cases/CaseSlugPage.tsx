@@ -5,6 +5,9 @@ import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { IoMdArrowForward } from 'react-icons/io'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import { useState } from 'react'
 
 interface Props {
   story: any
@@ -12,6 +15,7 @@ interface Props {
 }
 
 const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
+  const [loading, isLoaded] = useState(false)
   const router = useRouter()
   const locale = useParams()
 
@@ -19,31 +23,41 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
     router.push(`${nextCaseSlug}`)
   }
 
+  setTimeout(() => {
+    isLoaded(true)
+  }, 1000)
+
   return (
     <>
       <div className="relative dark:bg-[#121212] pb-20 container m-auto">
         <div className="flex gap-5 mb-5 lg:mb-20 mt-16 flex-col items-center">
-          <div className="w-full relative h-[300px] lg:h-[602px]">
-            {story?.content?.image?.filename.endsWith('.mp4') ? (
-              <video
-                autoPlay
-                muted
-                playsInline
-                loop
-                className="object-cover h-full w-full"
-              >
-                <source src={story.content.image?.filename || ''} />
-              </video>
-            ) : (
-              <Image
-                src={story?.content?.image?.filename || ''}
-                fill
-                alt="placeholder"
-                quality={100}
-                className="object-cover bg-[-200px]"
-              />
-            )}
-          </div>
+          {!loading ? (
+            <div className="w-full">
+              <Skeleton height={602} />
+            </div>
+          ) : (
+            <div className="w-full relative h-[300px] lg:h-[602px]">
+              {story?.content?.image?.filename.endsWith('.mp4') ? (
+                <video
+                  autoPlay
+                  muted
+                  playsInline
+                  loop
+                  className="object-cover h-full w-full"
+                >
+                  <source src={story.content.image?.filename || ''} />
+                </video>
+              ) : (
+                <Image
+                  src={story?.content?.image?.filename || ''}
+                  fill
+                  alt="placeholder"
+                  quality={100}
+                  className="object-cover bg-[-200px]"
+                />
+              )}
+            </div>
+          )}
           <div className="flex justify-start w-full gap-2 my-5 ml-0 lg:ml-[3.75rem]">
             <span className="font-light">
               {locale.lang === 'en' ? 'Client: ' : 'Kund: '}
