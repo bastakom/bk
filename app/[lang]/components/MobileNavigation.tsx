@@ -1,9 +1,7 @@
 import useStore from '@/app/lib/store'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { IoMdArrowForward } from 'react-icons/io'
-import NameLoop from './NameLoop/NameLoop'
 
 const MobileNavigation = ({ props }: any) => {
   const open = useStore((state) => state.open)
@@ -18,10 +16,15 @@ const MobileNavigation = ({ props }: any) => {
     setIsOpen(false)
   }
 
+  if (open === true) {
+    document.body.classList.add('no-scroll')
+  } else {
+    document.body.classList.remove('no-scroll')
+  }
   return (
     <>
       <nav
-        className={`flex flex-col lg:hidden h-[100vh] top-0 z-10 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${
+        className={`flex flex-col h-[100vh] top-0 z-10 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -43,7 +46,7 @@ const MobileNavigation = ({ props }: any) => {
           })}
         </div>
         <div className="justify-center flex w-full">
-          <div className="w-[90%] border-[0.5px] border-black" />
+          <div className="w-[95%] border-[0.5px] border-black" />
         </div>
 
         <div className="flex flex-col gap-2 mb-4 mt-5 px-5">

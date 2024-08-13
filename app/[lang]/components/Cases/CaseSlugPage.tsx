@@ -3,7 +3,6 @@
 import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
-import { FaArrowRight } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import { IoMdArrowForward } from 'react-icons/io'
 
@@ -24,7 +23,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
     <>
       <div className="relative dark:bg-[#121212] pb-20 container m-auto">
         <div className="flex gap-5 mb-5 lg:mb-20 mt-16 flex-col items-center">
-          <div className="w-full relative h-[300px] lg:h-[600px]">
+          <div className="w-full relative h-[300px] lg:h-[602px]">
             {story?.content?.image?.filename.endsWith('.mp4') ? (
               <video
                 autoPlay
@@ -88,7 +87,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
               Array.isArray(story.content.gallery) &&
               story.content.gallery.length > 0 &&
               story.content.gallery.slice(0, 4).map((item: any) => (
-                <div className="h-[400px] relative w-full" key={item.filename}>
+                <div className="h-[339px] relative w-full" key={item.filename}>
                   {item.filename.endsWith('.mp4') ||
                   item.filename.endsWith('.mov') ? (
                     <video
@@ -112,44 +111,45 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
               ))}
           </div>
         )}
-
-        <div className="flex flex-col gap-5 text-[20px] container m-auto my-10 font-light-sofia">
-          {story.content.title_columns && (
-            <span className="text-[22px] font-normal">
-              {story.content.title_columns}
-            </span>
-          )}
-          {story.content?.text_under_gallery && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 font-light text-[18px] lg:text-[20px]">
-              <span>{render(story.content.text_under_gallery)}</span>
-              <span>
-                {story.content?.two_column_text_2 &&
-                  render(story.content.two_column_text_2)}
+        {!story.content.hide_content_under_gallery && (
+          <div className="flex flex-col gap-5 text-[20px] container m-auto my-10 font-light-sofia">
+            {story.content.title_columns && (
+              <span className="text-[22px] font-normal">
+                {story.content.title_columns}
               </span>
-            </div>
-          )}
-          {story.content.extrattitlecontent && (
-            <div
-              className="max-w-full lg:max-w-[40%] mt-20 flex flex-col gap-14 pb-10 mb-14"
-              style={{ borderBottom: '1px solid #25364F' }}
-            >
-              <h3 className="text-[32px] lg:text-[50px] font-primary">
-                {story.content.extrattitlecontent}
-              </h3>
-              <span className="text-[14px] font-normal font-primary">
-                {story.content.extratitlecontentingress}
-              </span>
-            </div>
-          )}
-        </div>
-
+            )}
+            {story.content?.text_under_gallery && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 font-light text-[18px] lg:text-[20px]">
+                <span>{render(story.content.text_under_gallery)}</span>
+                <span>
+                  {story.content?.two_column_text_2 &&
+                    render(story.content.two_column_text_2)}
+                </span>
+              </div>
+            )}
+            {story.content.extrattitlecontent && (
+              <div
+                className="max-w-full lg:max-w-[40%] mt-20 flex flex-col gap-14 pb-10 mb-14"
+                style={{ borderBottom: '1px solid #25364F' }}
+              >
+                <h3 className="text-[32px] lg:text-[50px] font-primary">
+                  {story.content.extrattitlecontent}
+                </h3>
+                <span className="text-[14px] font-normal font-primary">
+                  {story.content.extratitlecontentingress}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-5 container m-auto">
           {story.content &&
             Array.isArray(story.content.gallery) &&
             story.content.gallery.length > 4 &&
             story.content.gallery.slice(4, 8).map((item: any) => (
-              <div className="h-[400px] relative w-full" key={item.filename}>
-                {item.filename.endsWith('.mp4') ? (
+              <div className="h-[339px] relative w-full" key={item.filename}>
+                {item.filename.endsWith('.mp4') ||
+                item.filename.endsWith('.mov') ? (
                   <video
                     autoPlay
                     muted
@@ -187,7 +187,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
         </div>
       </div>
       {story?.content?.footer_image?.filename && (
-        <div className="w-full relative h-[600px] mb-5 container m-auto">
+        <div className="w-full relative h-[602px] mb-5 container m-auto">
           <Image
             src={story?.content?.footer_image?.filename || ''}
             fill

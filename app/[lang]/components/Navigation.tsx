@@ -51,12 +51,12 @@ const Navigation = ({ props, locale }: Props) => {
       </Link>
 
       <div
-        className={`menu-btn-6 mt-4 z-20 lg:hidden ${open ? 'active' : ''}`}
+        className={`menu-btn-6 mt-4 z-20 xl:hidden ${open ? 'active' : ''}`}
         onClick={handleMenuOpen}
       >
         <span />
       </div>
-      <nav className="hidden lg:flex gap-5 w-1/3 justify-center">
+      <nav className="hidden xl:flex gap-5 w-1/3 justify-center">
         {props.story.content.header_menu.map((item: any) => {
           const link = item.link.cached_url.startsWith('/')
             ? item.link.cached_url
@@ -73,7 +73,7 @@ const Navigation = ({ props, locale }: Props) => {
         })}
       </nav>
       <MobileNavigation props={props} />
-      <div className="w-1/3 hidden lg:flex justify-end gap-5">
+      <div className="w-1/3 hidden xl:flex justify-end gap-5">
         <div className="flex gap-2 items-center">
           <button
             onClick={() => changeLanguage('sv')}

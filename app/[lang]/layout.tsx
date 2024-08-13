@@ -39,7 +39,7 @@ export default function RootLayout({
             <Header locale={lang} />
             <LoadingLogo />
 
-            <main className={`pb-10 px-3 lg:px-10 relative`}>{children}</main>
+            <main className={`pb-10 px-3 md:px-10 relative`}>{children}</main>
             <Footer locale={lang} />
           </ThemeProvider>
         </body>

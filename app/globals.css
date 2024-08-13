@@ -326,7 +326,10 @@ input[type='file'] {
   }
 }
 
-
 .arrow-hover:hover ~ .isHovered {
   border: 10px solid black;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
