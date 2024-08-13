@@ -28,7 +28,7 @@ const Button = ({ TextEN, TextSV, href, margin, size, text, align }: Props) => {
       } items-center ${margin}`}
       style={{ fontSize: `${size}px` }}
     >
-      <Link href={`/${href}`} className="flex items-center gap-2">
+      <Link href={`${href}`} className="flex items-center gap-2">
         {params.lang === 'en' ? TextEN : TextSV}
         {text ? text : null}
         <motion.span
