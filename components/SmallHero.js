@@ -11,7 +11,7 @@ const Smallhero = ({ blok }) => {
       className={`min-h-[100%] lg:min-h-[80vh] flex flex-col lg:flex-row ${
         blok.marginleft
           ? 'w-full lg:w-[80%] m-auto my-10 lg:my-24 gap-10 lg:gap-20'
-          : 'w-full items-center bg-[#F7F0EE] full-width-element px-4 lg:px-32 gap-10'
+          : 'w-full items-start bg-[#F7F0EE] full-width-element px-4 lg:px-32 gap-10'
       } pt-5 lg:pt-10 pb-5 lg:pb-24 mb-0 lg:mb-14 font-primary`}
       {...storyblokEditable(blok)}
     >
