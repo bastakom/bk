@@ -144,7 +144,12 @@ const CasePage = ({ props, config, locale }: Props) => {
                           } absolute inset-0 bg-[#25364f] z-10`}
                         />
 
-                        {item.content.videoimage?.filename.endsWith('.mp4') ? (
+                        {item?.content?.videoimage?.filename?.endsWith(
+                          '.mp4'
+                        ) ||
+                        item?.content?.videoimage?.filename?.endsWith(
+                          '.mov'
+                        ) ? (
                           <video
                             autoPlay
                             loop

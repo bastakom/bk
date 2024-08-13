@@ -19,7 +19,7 @@ const FooterComponent = ({ props }: Props) => {
   console.log()
 
   return (
-    <div className="w-full min-h-[65vh] justify-between flex flex-col bg-[#25364F] p-4 lg:p-14 pb-5 text-white relative">
+    <div className="w-full min-h-[80vh] justify-between flex flex-col bg-[#25364F] p-4 lg:p-14 pb-5 text-white relative">
       <div className="w-full grid mx-auto grid-cols-1 lg:grid-cols-[40%_30%_30%] gap-10 pt-10">
         <div className="flex flex-col gap-10 mt-5 lg:mt-0">
           <h2 className="font-primary text-[20px] font-light">

@@ -117,7 +117,8 @@ function CasesReelComponent({ props }: Props) {
               onMouseEnter={() => handleMouseEnter(item.uuid)}
               onMouseLeave={handleMouseLeave}
             >
-              {item?.content?.videoimage?.filename.endsWith('.mp4') ? (
+              {item?.content?.videoimage?.filename.endsWith('.mp4') ||
+              item.filename.endsWith('.mov') ? (
                 <video
                   autoPlay
                   loop
