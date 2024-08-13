@@ -21,6 +21,7 @@ const MobileNavigation = ({ props }: any) => {
   } else {
     document.body.classList.remove('no-scroll')
   }
+
   return (
     <>
       <nav
@@ -46,7 +47,7 @@ const MobileNavigation = ({ props }: any) => {
           })}
         </div>
         <div className="justify-center flex w-full">
-          <div className="w-[95%] border-[0.5px] border-black" />
+          <div className="w-[95%] mt-2 border-[0.5px] border-black" />
         </div>
 
         <div className="flex flex-col gap-2 mb-4 mt-5 px-5">
@@ -78,9 +79,17 @@ const MobileNavigation = ({ props }: any) => {
               </Link>
             )
           })}
+          <div className=" bottom-24 right-4 flex flex-col text-left mt-10">
+            <Link className="text-[18px]" href={`tel:${props.story.content.tel}`}>
+              {props.story.content.tel}
+            </Link>
+            <Link className="text-[14px]" href={`mailto:${props.story.content.mail}`}>
+              {props.story.content.mail}
+            </Link>
+          </div>
         </div>
 
-        <div className="flex gap-2 items-center  text-[25px] w-full flex justify-center left-0 absolute py-4 top-0 z-40 bg-white">
+        <div className="flex gap-2 items-center text-[25px] w-full flex justify-center left-0 absolute py-4 top-0 z-40 bg-white">
           <button
             onClick={() => changeLanguage('sv')}
             className="font-secondary"
