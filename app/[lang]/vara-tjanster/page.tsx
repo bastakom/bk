@@ -3,10 +3,13 @@ import Small from '../components/SmallHero/Small'
 import Staplar from '../components/Tjanster/Staplar'
 import Link from 'next/link'
 import { IoMdArrowForward } from 'react-icons/io'
+import TilesIcons from '../components/TilesIcons/TilesIcons'
+import Kompetens from '../components/Kompetens/Kompetens'
 
 const page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTjanster(params.lang)
   const config = await fetchConfig(params.lang)
+  console.log(config.kompetens_tiles)
 
   return (
     <div className="no-padding-bottom">
@@ -22,7 +25,7 @@ const page = async ({ params }: { params: { lang: string } }) => {
           <Link
             href={'/cases'}
             className="text-center text-[#FF6062] text-xl font-normal lg:mx-0 flex gap-2 justify-center items-center mt-14"
-            style={{ fontSize: '16px' }}
+            style={{ fontSize: '18px' }}
           >
             {params.lang === 'en' ? 'See all case' : 'Se alla case'}
             <span className="">
@@ -30,6 +33,17 @@ const page = async ({ params }: { params: { lang: string } }) => {
             </span>
           </Link>
         </div>
+        <Kompetens
+          title={config.kompetens_title}
+          content={config.kompetens_content}
+          image={config.kompetens_image}
+          tiles={config.kompetens_tiles}
+        />
+        <TilesIcons
+          tiles={config.tile}
+          header={config.tile_header}
+          content={config.tile_content}
+        />
       </div>
     </div>
   )

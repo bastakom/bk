@@ -21,6 +21,7 @@ import RichText from './RichText'
 import Form from './Form'
 import KarriarForm from './Karriar'
 import Divide from './Divide'
+import Tilesicon from './Tilesicon'
 
 const components = {
   feature: Feature,
@@ -40,6 +41,7 @@ const components = {
   form: Form,
   karriar: KarriarForm,
   divide: Divide,
+  tiles_icon: Tilesicon,
 }
 /** 2. Initialize it as usual */
 storyblokInit({

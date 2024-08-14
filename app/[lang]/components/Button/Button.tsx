@@ -26,9 +26,12 @@ const Button = ({ TextEN, TextSV, href, margin, size, text, align }: Props) => {
       } text-[#FF6062] text-xl font-normal flex gap-2 ${
         align === 'center' && 'justify-center'
       } items-center ${margin}`}
-      style={{ fontSize: `${size}px` }}
     >
-      <Link href={`${href}`} className="flex items-center gap-2">
+      <Link
+        href={`${href}`}
+        className="flex items-center gap-2"
+        style={{ fontSize: `${size}px` }}
+      >
         {params.lang === 'en' ? TextEN : TextSV}
         {text ? text : null}
         <motion.span
