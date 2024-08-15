@@ -16,7 +16,6 @@ const FooterComponent = ({ props }: Props) => {
   } = props
 
   const params = useParams()
-  console.log()
 
   return (
     <div className="w-full min-h-[80vh] justify-between flex flex-col bg-[#25364F] p-4 lg:p-14 pb-5 text-white relative">

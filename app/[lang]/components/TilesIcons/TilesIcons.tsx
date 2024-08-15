@@ -15,12 +15,9 @@ const TilesIcons = ({ tiles, header, content }: Props) => {
         <h2 className="text-[70px] font-normal text-[#ef6966]">{header}</h2>
         <span className="text-[20px]">{content}</span>
       </div>
-      <div className="flex flex-wrap lg:flex-none justify-center pt-32 gap-14">
+      <div className="grid grid-cols-1 lg:grid-cols-5 justify-center pt-32 gap-14">
         {tiles.map((item: any, index: number) => (
-          <div
-            key={item._uid}
-            className="w-full lg:w-1/5 flex flex-col gap-10 justify"
-          >
+          <div key={item._uid} className="flex flex-col gap-10 justify">
             <Image
               src={item.icon.filename}
               width={120}

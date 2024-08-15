@@ -9,7 +9,6 @@ import Kompetens from '../components/Kompetens/Kompetens'
 const page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTjanster(params.lang)
   const config = await fetchConfig(params.lang)
-  console.log(config.kompetens_tiles)
 
   return (
     <div className="no-padding-bottom">
