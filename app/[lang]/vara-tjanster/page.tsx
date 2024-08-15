@@ -33,12 +33,12 @@ const page = async ({ params }: { params: { lang: string } }) => {
             </span>
           </Link>
         </div>
-        <Kompetens
+        {/* <Kompetens
           title={config.kompetens_title}
           content={config.kompetens_content}
           image={config.kompetens_image}
           tiles={config.kompetens_tiles}
-        />
+        /> */}
         <TilesIcons
           tiles={config.tile}
           header={config.tile_header}
