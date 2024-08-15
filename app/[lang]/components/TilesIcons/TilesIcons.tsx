@@ -10,14 +10,17 @@ interface Props {
 
 const TilesIcons = ({ tiles, header, content }: Props) => {
   return (
-    <div className="px-10 pb-14 pt-14">
-      <div className="flex flex-col w-1/2">
+    <div className="px-5 lg:px-10 pb-14 pt-14">
+      <div className="flex flex-col lg:w-1/2 w-full">
         <h2 className="text-[70px] font-normal text-[#ef6966]">{header}</h2>
         <span className="text-[20px]">{content}</span>
       </div>
-      <div className="flex justify-center pt-32 gap-14">
+      <div className="flex flex-wrap lg:flex-none justify-center pt-32 gap-14">
         {tiles.map((item: any, index: number) => (
-          <div key={item._uid} className="w-1/5 flex flex-col gap-10 justify">
+          <div
+            key={item._uid}
+            className="w-full lg:w-1/5 flex flex-col gap-10 justify"
+          >
             <Image
               src={item.icon.filename}
               width={120}
