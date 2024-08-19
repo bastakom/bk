@@ -4,7 +4,6 @@ import Staplar from '../components/Tjanster/Staplar'
 import Link from 'next/link'
 import { IoMdArrowForward } from 'react-icons/io'
 import TilesIcons from '../components/TilesIcons/TilesIcons'
-import Kompetens from '../components/Kompetens/Kompetens'
 
 const page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTjanster(params.lang)
@@ -12,7 +11,7 @@ const page = async ({ params }: { params: { lang: string } }) => {
 
   return (
     <div className="no-padding-bottom">
-      <div className="full-width-element bg-[#F7F0EE] pb-20 pt-32 px-2">
+      <div className="full-width-element bg-[#F7F0EE] pt-32 px-2">
         <div className="px-2 lg:px-10">
           <Small
             image={config.image_tjanster}
@@ -32,17 +31,13 @@ const page = async ({ params }: { params: { lang: string } }) => {
             </span>
           </Link>
         </div>
-        {/* <Kompetens
-          title={config.kompetens_title}
-          content={config.kompetens_content}
-          image={config.kompetens_image}
-          tiles={config.kompetens_tiles}
-        /> */}
-        <TilesIcons
-          tiles={config.tile}
-          header={config.tile_header}
-          content={config.tile_content}
-        />
+        <div className="bg-[#F7DAD2] mt-10 lg:px-20 full-width-element  no-padding-bottom">
+          <TilesIcons
+            tiles={config.tile}
+            header={config.tile_header}
+            content={config.tile_content}
+          />
+        </div>
       </div>
     </div>
   )

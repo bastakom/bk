@@ -190,6 +190,7 @@ function CasesReelComponent({ props }: Props) {
         TextSV="Se alla cases"
         align="center"
         size="20"
+        margin="mt-5"
         href={`cases`}
       />
     </div>

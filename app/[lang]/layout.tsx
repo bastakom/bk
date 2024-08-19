@@ -20,7 +20,7 @@ storyblokInit({
 })
 
 export const metadata: Metadata = {
-  title: 'Bästa kompisar malmö',
+  title: 'Bästa Kompisar',
   description: 'En fullservice reklam byrå',
 }
 

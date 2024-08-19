@@ -8,7 +8,6 @@ import { useTheme } from 'next-themes'
 import { usePathname, useRouter } from 'next/navigation'
 import MobileNavigation from './MobileNavigation'
 import useStore from '@/app/lib/store'
-import TextAnimation from './TextAnimation/TextAnimation'
 
 interface Props {
   props?: any
@@ -47,7 +46,6 @@ const Navigation = ({ props, locale }: Props) => {
           alt="Bästa kompisar Reklambyrå"
           className="my-2 z-20"
         />
-        {/* <TextAnimation /> */}
       </Link>
 
       <div

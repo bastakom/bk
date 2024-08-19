@@ -17,12 +17,12 @@ interface Props {
 const Small = ({ title, content, image }: Props) => {
   const params = useParams()
   return (
-    <div className="flex flex-col lg:flex-row w-full gap-14 py-10">
+    <div className="flex flex-col lg:flex-row w-full gap-14 pt-10 pb-10">
       <div className="w-full gap-5 lg:gap-0 lg:w-1/2 h-full flex flex-col justify-center">
         <h2 className="px-0 lg:px-10 text-[20px] uppercase font-normal">
           {params.lang === 'en' ? 'Our services' : 'Våra tjänster'}
         </h2>
-        <h1 className="text-[42px] xl:text-[100px] font-normal p-0 lg:p-10 leading-[50px] lg:leading-[100px] ">
+        <h1 className="text-[42px] xl:text-[100px] font-normal p-0 lg:p-10 leading-[50px] lg:leading-[100px] text-[#25364F]">
           {render(title)}
         </h1>
         <span className="flex flex-col font-light-sofia text-[20px] gap-5 px-0 lg:px-10 max-w-[100%] lg:max-w-[90%]">
@@ -39,15 +39,26 @@ const Small = ({ title, content, image }: Props) => {
             height={400}
             alt=""
           />
-          <Link
-            href={`#tjanster`}
-            className="link-color flex gap-2 items-center"
-          >
-            {params.lang === 'en' ? 'Our services' : 'Våra tjänster'}
-            <span>
-              <IoMdArrowDown fontSize={'1.2em'} />
-            </span>
-          </Link>
+          <div className="flex gap-10">
+            <Link
+              href={`#tjanster`}
+              className="link-color flex gap-2 items-center"
+            >
+              {params.lang === 'en' ? 'Our services' : 'Våra tjänster'}
+              <span>
+                <IoMdArrowDown fontSize={'1.2em'} />
+              </span>
+            </Link>
+            <Link
+              href={`#process`}
+              className="link-color flex gap-2 items-center"
+            >
+              {params.lang === 'en' ? 'Our process' : 'Vår process'}
+              <span>
+                <IoMdArrowDown fontSize={'1.2em'} />
+              </span>
+            </Link>
+          </div>
         </div>
       )}
     </div>

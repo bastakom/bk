@@ -11,6 +11,11 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 :root {
@@ -338,6 +343,27 @@ input[type='file'] {
   overflow: hidden;
 }
 
-.bullets ul{
-  list-style: circle;
+.bullets ul {
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+h1,
+h2 {
+  color: #25364f;
 }
