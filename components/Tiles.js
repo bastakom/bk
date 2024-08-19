@@ -30,7 +30,7 @@ const Tiles = ({ blok }) => {
             </div>
 
             {index === 3 && (
-              <div className="col-span-full flex flex-col gap-5">
+              <div className="col-span-full flex flex-col gap-5 lg:-mb-14">
                 <h2 className="font-normal text-6xl text-[#25364F]">
                   {blok.tiles_title}
                 </h2>
