@@ -48,7 +48,7 @@ const Form = ({ blok }) => {
       className="bg-[#F7F0EE] full-width-element no-padding-bottom"
       {...storyblokEditable(blok)}
     >
-      <div className="flex w-full justify-center items-center py-20 gap-10 flex-col max-md:text-center max-md:px-4">
+      <div className="flex w-full justify-center items-center py-10 lg:py-20 gap-10 flex-col max-md:text-center max-md:px-4">
         <h1 className="text-[20px] uppercase font-normal">{blok.title}</h1>
         <span className="text-[30px] font-normal">{render(blok.content)}</span>
         <span className="text-[20px] font-normal text-center">

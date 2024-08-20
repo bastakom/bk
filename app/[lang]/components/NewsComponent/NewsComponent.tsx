@@ -62,7 +62,7 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
 
   return (
     <div className="m-auto">
-      <div className="full-width-element bg-[#F7F0EE] mb-14 pb-10 pt-32 px-4 lg:px-0">
+      <div className="full-width-element bg-[#F7F0EE] mb-14 pb-10 pt-20 lg:pt-32 px-4 lg:px-0">
         <div className=" flex container m-auto">
           {props.slice(0, 1).map((item: any, index: number) => {
             return (

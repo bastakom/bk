@@ -7,7 +7,7 @@ const Tiles = ({ blok }) => {
   return (
     <div
       {...storyblokEditable(blok)}
-      className="grid grid-cols-1 full-width-element no-padding-bottom lg:grid-cols-4 p-5 lg:p-14 gap-20 mt-10 py-28 bg-[#F7DAD2] dark:bg-[#121212] text-[#25364F] dark:text-white"
+      className="grid grid-cols-1 full-width-element no-padding-bottom lg:grid-cols-4 p-5 lg:p-14 gap-10 lg:gap-20 mt-10 py-20 lg:py-28 bg-[#F7DAD2] dark:bg-[#121212] text-[#25364F] dark:text-white"
     >
       {blok.tile.map((item, index) => {
         const { ref, inView } = useInView({

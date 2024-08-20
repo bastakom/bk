@@ -11,7 +11,7 @@ const page = async ({ params }: { params: { lang: string } }) => {
 
   return (
     <div className="no-padding-bottom">
-      <div className="full-width-element bg-[#F7F0EE] pt-32 px-2">
+      <div className="full-width-element bg-[#F7F0EE] pt-20 lg:pt-32 px-2">
         <div className="px-2 lg:px-10">
           <Small
             image={config.image_tjanster}

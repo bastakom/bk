@@ -67,7 +67,6 @@ const CasePage = ({ props, config, locale }: Props) => {
           uniqueCategories.add(category)
         })
       } else {
-        //localhost:3000/cases/kaehrs
         http: uniqueCategories.add(item.content.Kategori)
       }
     }
@@ -76,7 +75,7 @@ const CasePage = ({ props, config, locale }: Props) => {
   return (
     <div className="w-full m-auto bg-[#F7F0EE] full-width-element pb-14 no-padding-bottom px-4 lg:px-0">
       <div className="container m-auto">
-        <div className="h-full pt-28 lg:pt-44 pb-20 flex flex-col justify-center mt-14  lg:mt-0 lg:ml-10 gap-5">
+        <div className="h-full pt-16 lg:pt-44 pb-20 flex flex-col justify-center mt-14  lg:mt-0 lg:ml-10 gap-5">
           <h1 className="text-[20px]">{config.content.case_title}</h1>
           <span className="lg:max-w-[50%] text-[20px] lg:text-[25px]">
             {render(config.content.case_content)}
@@ -132,7 +131,7 @@ const CasePage = ({ props, config, locale }: Props) => {
                     <Link
                       key={item.uuid}
                       href={`/${item.full_slug}`}
-                      className="w-full h-[300px] lg:h-[400px] relative"
+                      className="w-full h-[400px] lg:h-[400px] relative"
                       onMouseEnter={() => handleMouseEnter(item.uuid)}
                       onMouseLeave={handleMouseLeave}
                     >

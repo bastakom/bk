@@ -10,7 +10,7 @@ const CTA = ({ blok }) => {
       className={`${
         blok.two_columns
           ? 'grid grid-cols-2 my-32 mx-auto max-w-[80%]'
-          : 'flex flex-col justify-center items-start  md:h-[500px]'
+          : 'flex flex-col justify-center items-start md:h-[500px] mb-14 lg:mb-0'
       }  gap-10 `}
       {...storyblokEditable(blok)}
     >
