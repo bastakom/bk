@@ -19,9 +19,18 @@ const Hero = ({ blok }) => {
           playsInline
           loop
           muted={isMuted}
-          className="absolute w-full h-full top-0 object-cover hero-video"
+          className="absolute hidden lg:block w-full h-full top-0 object-cover hero-video"
         >
           <source src={blok.Video.filename} />
+        </video>
+        <video
+          autoPlay
+          playsInline
+          loop
+          muted={isMuted}
+          className="absolute lg:hidden w-full h-full top-0 object-cover hero-video"
+        >
+          <source src={blok.mobile_video.filename} />
         </video>
         <div
           className={`w-full text-white flex flex-col gap-5 items-${blok.position} z-10`}
