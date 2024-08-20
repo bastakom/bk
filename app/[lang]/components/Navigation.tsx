@@ -73,7 +73,7 @@ const Navigation = ({ props, locale }: Props) => {
       <MobileNavigation props={props} />
       <div className="w-1/3 hidden xl:flex justify-end gap-5">
         <div className="flex gap-2 items-center">
-          <button
+          {/* <button
             onClick={() => changeLanguage('sv')}
             className="font-secondary text-[16px]"
           >
@@ -86,7 +86,7 @@ const Navigation = ({ props, locale }: Props) => {
             className="font-secondary text-[16px]"
           >
             EN
-          </button>
+          </button> */}
         </div>
         {/* <ThemeSwitch /> */}
       </div>

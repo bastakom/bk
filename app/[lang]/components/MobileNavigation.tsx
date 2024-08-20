@@ -90,7 +90,7 @@ const MobileNavigation = ({ props }: any) => {
         </div>
 
         <div className="flex gap-2 items-center text-[25px] w-full flex justify-center left-0 absolute py-4 top-0 z-40 bg-white">
-          <button
+          {/* <button
             onClick={() => changeLanguage('sv')}
             className="font-secondary"
           >
@@ -103,7 +103,7 @@ const MobileNavigation = ({ props }: any) => {
             className="font-secondary"
           >
             EN
-          </button>
+          </button> */}
         </div>
       </nav>
     </>
