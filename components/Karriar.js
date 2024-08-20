@@ -11,6 +11,7 @@ const KarriarForm = ({ blok }) => {
     name: '',
     email: '',
     message: '',
+    praktik: '',
   })
 
   const params = useParams()
@@ -102,10 +103,10 @@ const KarriarForm = ({ blok }) => {
               </label>
               <input
                 className="bg-transparent border border-black rounded-[22px] py-2 px-5"
-                type="email"
+                type="praktik"
                 onChange={handleChange}
-                name="email"
-                value={formData.email}
+                name="praktik"
+                value={formData.praktik}
               />
             </div>
 
