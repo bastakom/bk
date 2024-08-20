@@ -1,40 +1,38 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 
-const usermail = 'philip@anlander.se'
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: Request) {
-  const { name, email, message } = await req.json()
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'sentemailform@gmail.com',
-      pass: 'poxmwlharcpoidqt',
-    },
-  })
+  const { name, email, message, file, praktik } = await req.json()
 
   const messageBody = `
     <div style="background-color: #f9f9f9; padding: 20px;">
       <p>Meddelande från: ${name}</p>
       <h3>Email: ${email}</h3>
+      <p>Jag skulle vilja praktisera som: ${praktik}</p>
       <p>Meddelande: ${message}</p>
     </div>
   `
-
   try {
-    transporter.sendMail({
-      from: `${email}`,
-      to: usermail,
-      subject: `New message from ${name}`,
+    const { data, error } = await resend.emails.send({
+      from: 'Notifikation: BK-Karriar <onboarding@resend.dev>',
+      to: ['info@bastakompisar.se'],
+      subject: 'Notifikation från BK Karriar',
       html: messageBody,
       attachments: [
         {
-          filename: 'document.pdf', // Name of the file
+          path: 'https://pdfobject.com/pdf/sample.pdf',
+          filename: 'fungerar ej förtillfället',
         },
       ],
     })
-    return Response.json({ message: 'works' }, { status: 200 })
+
+    if (error) {
+      return Response.json({ error }, { status: 500 })
+    }
+
+    return Response.json(data)
   } catch (error) {
-    return Response.json({ error: 'Urls GET Error' }, { status: 500 })
+    return Response.json({ error }, { status: 500 })
   }
 }

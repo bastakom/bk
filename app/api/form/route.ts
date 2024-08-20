@@ -1,19 +1,9 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 
-const usermail = 'philip@anlander.se'
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: Request) {
-  const { name, email, message, attachment } = await req.json()
-
-  const attachmentPath = attachment.file ? attachment.file.path : null
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'sentemailform@gmail.com',
-      pass: 'poxmwlharcpoidqt',
-    },
-  })
+  const { name, email, message } = await req.json()
 
   const messageBody = `
     <div style="background-color: #f9f9f9; padding: 20px;">
@@ -22,17 +12,20 @@ export async function POST(req: Request) {
       <p>Meddelande: ${message}</p>
     </div>
   `
-
   try {
-    transporter.sendMail({
-      from: `${email}`,
-      to: usermail,
-      subject: `New message from ${name}`,
+    const { data, error } = await resend.emails.send({
+      from: 'Notifikation: BK-Kontakt <onboarding@resend.dev>',
+      to: ['info@bastakompisar.se'],
+      subject: 'Notifikation från BK kontakt',
       html: messageBody,
-      attachments: attachmentPath,
     })
-    return Response.json({ message: 'works' }, { status: 200 })
+
+    if (error) {
+      return Response.json({ error }, { status: 500 })
+    }
+
+    return Response.json(data)
   } catch (error) {
-    return Response.json({ error: 'Urls GET Error' }, { status: 500 })
+    return Response.json({ error }, { status: 500 })
   }
 }
