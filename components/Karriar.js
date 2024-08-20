@@ -1,7 +1,6 @@
 import { storyblokEditable } from '@storyblok/react/rsc'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
-import { render } from 'storyblok-rich-text-react-renderer'
 import { IoMdArrowForward } from 'react-icons/io'
 
 const KarriarForm = ({ blok }) => {

@@ -49,8 +49,12 @@ const Form = ({ blok }) => {
       {...storyblokEditable(blok)}
     >
       <div className="flex w-full justify-center items-center py-10 lg:py-20 gap-10 flex-col max-md:text-center max-md:px-4">
-        <h1 className="text-[20px] uppercase font-normal">{blok.title}</h1>
-        <span className="text-[30px] font-normal">{render(blok.content)}</span>
+        <h1 className="text-[20px] uppercase font-normal text-black">
+          {blok.title}
+        </h1>
+        <span className="text-[30px] font-normal text-[#25364f]">
+          {render(blok.content)}
+        </span>
         <span className="text-[20px] font-normal text-center">
           {render(blok.adress)}
         </span>
@@ -106,7 +110,7 @@ const Form = ({ blok }) => {
               />
             </div>
             <div className="flex gap-5">
-              <input type="checkbox" style={{width: '35px'}} />
+              <input type="checkbox" style={{ width: '35px' }} />
               <label className="flex items-start md:items-center text-left gap-2">
                 {params.lang === 'en'
                   ? 'I agree that Bästa Kompisar use the specified personal data to contact me.*'

@@ -294,7 +294,7 @@ a {
 .line-clamp {
   overflow: hidden;
   display: block;
-  font-size: 1rem;
+  font-size: 20px;
   line-height: 1.5rem;
   height: 4.5rem;
 }
@@ -372,4 +372,8 @@ h2 {
 .in_link p a {
  font-size: 25px !important;
  text-decoration: underline;
+}
+
+.text-render p {
+  font-size: 20px;
 }

@@ -72,12 +72,12 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                   key={index}
                 >
                   <div className="flex flex-col gap-5 lg:gap-10 px-0 lg:px-6 h-full justify-center">
-                    <h1 className="font-normal font-primary text-[20px]">
+                    <h1 className="font-normal font-primary text-[20px] text-black">
                       {locale === 'en' ? 'LATEST NEWS' : 'SENASTE NYHET'}
                     </h1>
                     <h2
-                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] ${
-                        hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-80'
+                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] text-[#25364f] ${
+                        hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
                       }`}
                     >
                       {item.name}

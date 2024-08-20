@@ -16,7 +16,7 @@ const Tiles = ({ blok }) => {
         })
         return (
           <React.Fragment key={index}>
-            <div className={`flex flex-col gap-5 lg:pb-20 lg:pt-20`} ref={ref}>
+            <div className={`flex flex-col gap-5 lg:pb-10 lg:pt-5`} ref={ref}>
               <span className="flex flex-col gap-2">
                 <h2 className="uppercase font-normal text-black">
                   {item.title}
@@ -30,7 +30,7 @@ const Tiles = ({ blok }) => {
             </div>
 
             {index === 3 && (
-              <div className="col-span-full flex flex-col gap-5 lg:-mb-14">
+              <div className="col-span-full flex flex-col gap-5 lg:-mb-5">
                 <h2 className="font-normal text-6xl text-[#25364F]">
                   {blok.tiles_title}
                 </h2>

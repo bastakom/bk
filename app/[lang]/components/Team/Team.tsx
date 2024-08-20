@@ -4,7 +4,7 @@ import { render } from 'storyblok-rich-text-react-renderer'
 
 const getTeam = async () => {
   let sbParams = {
-    version: 'draft' as const,
+    version: 'published' as const,
     starts_with: 'team',
   }
 
@@ -41,7 +41,7 @@ const Team = async () => {
               alt={member.name}
             />
           </div>
-          <h2 className="text-[24px] font-bold-sofia mt-2">{member.name}</h2>
+          <h2 className="text-[24px] font-bold-sofia mt-2 text-black">{member.name}</h2>
           <span className="font-light-sofia text-[14px]">
             <span className="uppercase"> {member.content.yrkesroll}</span>{' '}
             <br />
