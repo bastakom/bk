@@ -35,7 +35,7 @@ const KarriarForm = ({ blok }) => {
   const handleButtonClick = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('/api/form', {
+      const response = await fetch('/api/karriarform', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
