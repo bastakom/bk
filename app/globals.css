@@ -367,3 +367,9 @@ h1,
 h2 {
   color: #25364f;
 }
+
+
+.in_link p a {
+ font-size: 25px !important;
+ text-decoration: underline;
+}

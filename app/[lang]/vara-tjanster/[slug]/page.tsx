@@ -40,18 +40,13 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
     data: { story },
   } = res
 
-  const firstContent =
-    'Bästa Kompisar · Best Friends · Bedste venner · Parhaat ystävät · Migliori amici · Meilleurs amis · Beste vrienden · Mejores amigos · Beste Freunde ·'
-  const nextContent =
-    'Лучшие друзья- 最好的朋友 - 親友 - أعز اصدقاء · Amici optimi Bästa Kompisar · Best Friends · Bestevenner  · Parhaat ystävät · Migliori amici · Meilleurs amis ·'
-
-  const filteredStories = cases.data.stories.filter(
-    (item: any) => item.content.Kategori.toString() === story.name
-  )
-
-  // const storyElements = filteredStories.map((item: any, index: number) => {
-  //   return <div key={index}>{item.name}</div>
-  // })
+  const filteredStories = cases.data.stories.filter((item: any) => {
+    const categories = item.content.Kategori
+    if (Array.isArray(categories)) {
+      return categories.includes(story.name)
+    }
+    return categories.toString() === story.name
+  })
 
   return (
     <div
@@ -86,7 +81,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
             {story.content.link_text && (
               <Button
                 text={story.content.link_text}
-                href={story?.content.link?.cached_url}
+                href={`/${story?.content.link?.cached_url}`}
               />
             )}
           </div>

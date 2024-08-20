@@ -60,13 +60,6 @@ const KarriarForm = ({ blok }) => {
       {...storyblokEditable(blok)}
     >
       <div className="flex w-full justify-center items-center  py-10 gap-10 flex-col max-md:px-4">
-        {/* <h1 className="text-[20px] uppercase font-normal">{blok.title}</h1>
-        <span className="text-[30px] font-normal">{render(blok.content)}</span>
-        <span className="text-[20px] font-normal text-center">
-          {render(blok.adress)}
-        </span> */}
-        {/* FORM */}
-
         {!sent ? (
           <form
             className={`w-full lg:max-w-[30%] m-auto flex flex-col gap-10`}

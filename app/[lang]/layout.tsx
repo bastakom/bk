@@ -21,7 +21,7 @@ storyblokInit({
 
 export const metadata: Metadata = {
   title: 'Bästa Kompisar',
-  description: 'En fullservice reklam byrå',
+  description: 'En fullservicebyrå',
 }
 
 export default function RootLayout({

@@ -33,7 +33,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
         <div className="flex gap-5 mb-5 lg:mb-20 mt-16 flex-col items-center">
           {!loading ? (
             <div className="w-full h-[350px] lg:h-[600px]">
-              <Skeleton className='h-full'/>
+              <Skeleton className="h-full" />
             </div>
           ) : (
             <div className="w-full relative h-[300px] lg:h-[602px]">
@@ -73,7 +73,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
               </div>
               <span>{story?.content?.ingress}</span>
             </div>
-            <div className="w-full lg:w-[47.6%] mt-5 lg:mt-0 flex flex-col gap-10 font-light-sofia text-[18px] lg:text-[25px]">
+            <div className="w-full lg:w-[47.6%] mt-5 lg:mt-0 flex flex-col gap-10 font-light-sofia text-[18px] lg:text-[25px] in_link">
               {render(story.content.content)}
             </div>
           </div>
@@ -132,7 +132,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
                 {story.content.title_columns}
               </span>
             )}
-            {story.content?.text_under_gallery && (
+            {story.content.hide_content_under_gallery && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 font-light text-[18px] lg:text-[20px]">
                 <span>{render(story.content.text_under_gallery)}</span>
                 <span>

@@ -18,6 +18,8 @@ function CasesReelComponent({ props }: Props) {
   const [showPrevArrow, setShowPrevArrow] = useState<boolean>(false)
   const [showNextArrow, setShowNextArrow] = useState<boolean>(true)
 
+  console.log(props)
+
   const router = useParams()
 
   const handleMouseEnter = (uuid: string) => {
