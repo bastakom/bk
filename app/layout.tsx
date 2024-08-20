@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: 'En fullservice reklam byrå',
 }
 
+
+
 export default function RootLayout({
   children,
   params: { lang },
@@ -28,6 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <StoryblokProvider>
+
       <html lang={lang}>
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
