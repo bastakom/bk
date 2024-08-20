@@ -32,6 +32,7 @@
     "react-loading-skeleton": "^3.4.0",
     "react-share": "^5.1.0",
     "react-slick": "^0.30.2",
+    "resend": "^4.0.0",
     "slick-carousel": "^1.8.1",
     "storyblok-rich-text-react-renderer": "^2.9.2",
     "zustand": "^4.5.4"
