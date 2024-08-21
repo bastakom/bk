@@ -101,7 +101,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
               Array.isArray(story.content.gallery) &&
               story.content.gallery.length > 0 &&
               story.content.gallery.slice(0, 4).map((item: any) => (
-                <div className="h-[339px] relative w-full" key={item.filename}>
+                <div className="h-[377px] relative w-full" key={item.filename}>
                   {item.filename.endsWith('.mp4') ||
                   item.filename.endsWith('.mov') ? (
                     <video
@@ -161,7 +161,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
             Array.isArray(story.content.gallery) &&
             story.content.gallery.length > 4 &&
             story.content.gallery.slice(4, 8).map((item: any) => (
-              <div className="h-[339px] relative w-full" key={item.filename}>
+              <div className="h-[377px] relative w-full" key={item.filename}>
                 {item.filename.endsWith('.mp4') ||
                 item.filename.endsWith('.mov') ? (
                   <video
