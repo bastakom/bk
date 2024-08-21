@@ -31,7 +31,7 @@ const Tiles = ({ blok }) => {
 
             {index === 3 && (
               <div className="col-span-full flex flex-col gap-5 lg:-mb-5">
-                <h2 className="font-normal text-6xl text-[#25364F]">
+                <h2 className="font-normal text-[30px] lg:text-6xl text-[#25364F]">
                   {blok.tiles_title}
                 </h2>
                 <p className="text-black">{blok.tiles_text}</p>
