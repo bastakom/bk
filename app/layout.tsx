@@ -33,6 +33,7 @@ export default function RootLayout({
         <Script
           src={`https://cdn-cookieyes.com/client_data/6261c3fa-3f04-4b5b-967e-dc48fd9022a4/script.js`}
         />
+
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
             {children}
