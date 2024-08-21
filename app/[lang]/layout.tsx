@@ -45,14 +45,15 @@ export default function RootLayout({
             type="text/javascript"
             async
           ></script>
+          <script
+            id="CookieDeclaration"
+            src="https://consent.cookiebot.com/uc.js"
+            data-cbid="6261c3fa-3f04-4b5b-967e-dc48fd9022a4"
+            data-blockingmode="manual"
+            type="text/javascript"
+            async
+          ></script>
         </head>
-        {/* <Script
-          id="Cookiebot"
-          src="https://consent.cookiebot.com/6261c3fa-3f04-4b5b-967e-dc48fd9022a4/cd.js"
-          type="text/javascript"
-          async
-          strategy="beforeInteractive"
-        /> */}
 
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
