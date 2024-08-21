@@ -11,7 +11,7 @@ const Hero = ({ blok }) => {
   return (
     <>
       <div
-        className={`w-full flex justify-${blok.position} h-[60vh] lg:h-[92vh] items-center relative`}
+        className={`w-full flex justify-${blok.position} h-[378px] lg:h-[92vh] items-center relative`}
       >
         <div className="h-full absolute w-full bg-black z-10 opacity-30" />
         <video
@@ -28,7 +28,7 @@ const Hero = ({ blok }) => {
           playsInline
           loop
           muted={isMuted}
-          className="absolute lg:hidden w-full h-full top-0 object-cover hero-video"
+          className="absolute lg:hidden w-full h-[378px] top-0 object-cover hero-video"
         >
           <source src={blok.mobile_video.filename} />
         </video>
