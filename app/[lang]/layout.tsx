@@ -36,13 +36,23 @@ export default function RootLayout({
   return (
     <StoryblokProvider>
       <html lang={lang}>
-        <Script
+        <head>
+          <script
+            id="Cookiebot"
+            src="https://consent.cookiebot.com/uc.js"
+            data-cbid="6261c3fa-3f04-4b5b-967e-dc48fd9022a4"
+            data-blockingmode="manual"
+            type="text/javascript"
+            async
+          ></script>
+        </head>
+        {/* <Script
           id="Cookiebot"
           src="https://consent.cookiebot.com/6261c3fa-3f04-4b5b-967e-dc48fd9022a4/cd.js"
           type="text/javascript"
           async
           strategy="beforeInteractive"
-        />
+        /> */}
         {/* This one works consent
         <Script
           id="CookieDeclaration"
