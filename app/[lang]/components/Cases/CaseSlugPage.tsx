@@ -29,7 +29,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
 
   return (
     <>
-      <div className="relative dark:bg-[#121212] pb-20 container m-auto">
+      <div className="relative dark:bg-[#121212] pb-5 container m-auto">
         <div className="flex gap-5 mb-5 lg:mb-20 mt-16 flex-col items-center">
           {!loading ? (
             <div className="w-full h-[350px] lg:h-[600px]">

@@ -41,7 +41,7 @@ const TilesIcons = ({ tiles, header, content }: Props) => {
 
   return (
     <div
-      className="px-5 lg:px-20 pb-36 pt-14 w-full lg:w-[100%] m-auto"
+      className="px-5 lg:px-20 pb-36 pt-5 lg:pt-10 w-full lg:w-[100%] m-auto"
       id="process"
     >
       <div className="flex flex-col lg:w-2/3 w-full gap-10 mt-14">
