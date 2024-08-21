@@ -22,7 +22,7 @@ const Small = ({ title, content, image }: Props) => {
         <h2 className="px-0 lg:px-10 text-[20px] uppercase font-normal text-black">
           {params.lang === 'en' ? 'Our services' : 'Våra tjänster'}
         </h2>
-        <h1 className="text-[70px] xl:text-[100px] font-normal p-0 lg:p-10 leading-[70px] lg:leading-[100px] text-[#25364F]">
+        <h1 className="text-[65px] xl:text-[100px] font-normal p-0 lg:p-10 leading-[70px] lg:leading-[100px] text-[#25364F]">
           {render(title)}
         </h1>
         <span className="flex flex-col font-light-sofia text-[20px] gap-5 px-0 lg:px-10 max-w-[100%] lg:max-w-[90%] text-render">
