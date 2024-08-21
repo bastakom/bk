@@ -66,7 +66,7 @@ const MobileNavigation = ({ props }: any) => {
                 : null
             return (
               <Link
-                href={`https://${item.link.url}`}
+                href={`${item.link.url}`}
                 passHref={true}
                 target="_blank"
                 className="font-light flex text-[18px]"
