@@ -10,6 +10,8 @@ const Header = dynamic(() => import('./components/Header'), { ssr: false })
 import '../globals.css'
 import '../font.css'
 import LoadingLogo from './components/Loading/LoadingLogo'
+import Head from 'next/head'
+import Script from 'next/script'
 
 storyblokInit({
   accessToken: 'faVE0ToH7Y41wHZy0uSt3Qtt',
@@ -34,6 +36,9 @@ export default function RootLayout({
   return (
     <StoryblokProvider>
       <html lang={lang}>
+        <Script
+          src={`https://cdn-cookieyes.com/client_data/6261c3fa-3f04-4b5b-967e-dc48fd9022a4/script.js`}
+        />
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
             <Header locale={lang} />
