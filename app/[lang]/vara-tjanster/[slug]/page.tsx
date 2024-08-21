@@ -66,7 +66,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
             </div>
           )}
           {story.content.sub_title && (
-            <h2 className="text-[28px] lg:text-[30px]">
+            <h2 className="text-[28px] lg:text-[30px] leading-[35px]">
               {story.content.sub_title}
             </h2>
           )}
