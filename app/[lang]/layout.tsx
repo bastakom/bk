@@ -53,14 +53,6 @@ export default function RootLayout({
           async
           strategy="beforeInteractive"
         /> */}
-        {/* This one works consent
-        <Script
-          id="CookieDeclaration"
-          src="https://consent.cookiebot.com/6261c3fa-3f04-4b5b-967e-dc48fd9022a4/cd.js"
-          type="text/javascript"
-          async
-          strategy="beforeInteractive"
-        /> */}
 
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
