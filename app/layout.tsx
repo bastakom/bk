@@ -30,22 +30,6 @@ export default function RootLayout({
   return (
     <StoryblokProvider>
       <html lang={lang}>
-        {/* <Script
-          src="https://consent.cookiebot.com/uc.js"
-          id="Cookiebot"
-          data-cbid="6261c3fa-3f04-4b5b-967e-dc48fd9022a4"
-          data-blockingmode="auto"
-          type="text/javascript"
-          strategy="beforeInteractive"
-        /> */}
-
-        {/* <Script
-          src="https://consent.cookiebot.com/6261c3fa-3f04-4b5b-967e-dc48fd9022a4/cd.js"
-          id="CookieDeclaration"
-          type="text/javascript"
-          strategy="afterInteractive"
-          async
-        /> */}
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
             {children}
