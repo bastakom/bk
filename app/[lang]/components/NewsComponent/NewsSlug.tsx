@@ -32,7 +32,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
     return (
       <div className="py-10">
         <h1
-          className={`text-[40px] lg:text-[70px] w-full lg:max-w-[80%] m-auto text-center justify-center pb-2 lg:pb-10 flex leading-[60px] lg:leading-[85px] lg:mb-10 font-normal`}
+          className={`text-[40px] lg:text-[70px] w-full lg:max-w-[70%] m-auto text-center justify-center pb-2 lg:pb-0 flex leading-[60px] lg:leading-[85px] lg:mb-10 font-normal`}
         >
           {item.name}.
         </h1>
@@ -89,12 +89,12 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
               </LinkedinShareButton>
             </div>
           </div>
-          <div className="w-full h-[500px] lg:h-[700px] relative">
+          <div className="w-full h-[500px] lg:h-[500px] relative">
             <Image
               src={item.content?.image?.filename || ''}
               fill
               quality={100}
-              className={`object-cover`}
+              className={`object-contain`}
               alt={item.name}
             />
           </div>
