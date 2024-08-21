@@ -101,14 +101,14 @@ const Staplar = ({ props }: Props) => {
                     </h2>
 
                     <div className="font-primary max-w-[100%] lg:max-w-[60%] text-white reveal">
-                      <span className="leading-[22px] text-left mb-5">
+                      <span className="leading-[22px] text-left mb-5 text-center lg:text-left">
                         {render(item.content.content)}
                       </span>
                       <span>
                         <Link
                           href={`vara-tjanster/${item.slug}`}
                           onClick={() => isSetClicked(true)}
-                          className="text-left text-[#FF6062] text-[19px] lg:text-[16px] font-bold flex gap-2 items-center z-20"
+                          className="text-left text-[#FF6062] text-[19px] lg:text-[16px] font-bold flex gap-2 justify-center lg:justify-start items-center z-20"
                         >
                           {params.lang === 'en' ? 'Read more' : 'Läs mer'}
                           <span>

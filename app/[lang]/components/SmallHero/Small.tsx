@@ -18,7 +18,7 @@ const Small = ({ title, content, image }: Props) => {
   const params = useParams()
   return (
     <div className="flex flex-col lg:flex-row w-full gap-14 pt-10 pb-10">
-      <div className="w-full gap-5 lg:gap-0 lg:w-1/2 h-full flex flex-col justify-center">
+      <div className="w-full gap-10 lg:gap-0 lg:w-1/2 h-full flex flex-col justify-center">
         <h2 className="px-0 lg:px-10 text-[20px] uppercase font-normal text-black">
           {params.lang === 'en' ? 'Our services' : 'Våra tjänster'}
         </h2>
@@ -42,7 +42,7 @@ const Small = ({ title, content, image }: Props) => {
           <div className="flex gap-10">
             <Link
               href={`#tjanster`}
-              className="link-color flex gap-2 items-center"
+              className="link-color hidden lg:flex gap-2 items-center"
             >
               {params.lang === 'en' ? 'Our services' : 'Våra tjänster'}
               <span>
