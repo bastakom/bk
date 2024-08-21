@@ -67,7 +67,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
           <div className="flex container flex-col lg:flex-row mb-10 ml-0 lg:ml-[60px]">
             <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
               <div className="flex gap-2 flex-col">
-                <h2 className="text-[40px] lg:max-w-[80%] break-normal lg:text-[100px] leading-[50px] lg:leading-[100px]">
+                <h2 className="text-[65px] lg:max-w-[80%] break-normal lg:text-[100px] leading-[70px] lg:leading-[100px]">
                   {story.content.title}
                 </h2>
               </div>

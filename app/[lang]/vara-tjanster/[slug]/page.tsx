@@ -61,7 +61,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
         <div className="text-left lg:text-center flex flex-col gap-5 lg:gap-10 justify-center">
           <h1 className="text-[20px] uppercase text-black">{story.name}</h1>
           {story.content.title && (
-            <div className="text-[40px] lg:text-[100px] leading-[50px] text-[#25364f] lg:leading-[120px]">
+            <div className="text-[65px] lg:text-[100px] leading-[70px] text-[#25364f] lg:leading-[120px]">
               {render(story.content.title)}
             </div>
           )}

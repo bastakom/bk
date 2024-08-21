@@ -38,7 +38,7 @@ const Page = async () => {
           configData.about_marginleft
             ? 'w-full lg:w-[80%] m-auto my-10 lg:my-24 gap-10 lg:gap-20'
             : 'w-full items-start bg-[#F7F0EE] full-width-element px-4 lg:px-32 gap-10'
-        } pt-10 lg:pt-40 pb-5 lg:pb-24 mb-0 lg:mb-14 font-primary`}
+        } pt-24 lg:pt-40 pb-5 lg:pb-24 mb-0 lg:mb-14 font-primary`}
       >
         <div
           className={`w-full lg:w-1/2 h-full flex flex-col ${
@@ -58,8 +58,8 @@ const Page = async () => {
             <div
               className={`w-full max-w-full lg:max-w-[100%] ${
                 configData.about_marginleft
-                  ? 'text-[35px] lg:text-[70px] font-normal leading-[40px] lg:leading-[85px]'
-                  : 'text-[50px] lg:text-[100px] w-[55%] font-normal leading-[50px] lg:leading-[100px]'
+                  ? 'text-[50px] lg:text-[70px] font-normal leading-[50px] lg:leading-[85px]'
+                  : 'text-[65px] lg:text-[100px] w-[55%] font-normal leading-[70px] lg:leading-[100px]'
               }`}
             >
               {render(configData.about_title)}

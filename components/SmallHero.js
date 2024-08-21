@@ -31,8 +31,8 @@ const Smallhero = ({ blok }) => {
           <div
             className={`w-full max-w-full lg:max-w-[100%] ${
               blok.marginleft
-                ? 'text-[35px] lg:text-[70px] font-normal leading-[40px] lg:leading-[85px]'
-                : 'text-[50px] lg:text-[100px] w-[55%] font-normal leading-[50px] lg:leading-[100px]'
+                ? 'text-[50px] lg:text-[70px] font-normal leading-[65px] lg:leading-[85px]'
+                : 'text-[65px] lg:text-[100px] w-[55%] font-normal leading-[70px] lg:leading-[100px]'
             }`}
           >
             {render(blok.title)}
