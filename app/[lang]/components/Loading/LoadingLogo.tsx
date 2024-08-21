@@ -108,9 +108,9 @@ const LoadingLogo: FC = () => {
             initial={{ transform: 'translateY(-80px)' }}
             animate={{ transform: 'translateY(0px)' }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-[20px] font-light uppercase z-0"
+            className="text-[20px] font-light text-black uppercase z-0"
           >
-            {params.lang === 'en' ? 'Best Friends' : 'Bästa Kompisar'}
+            {params.lang === 'en' ? 'Bästa Kompisar' : 'Bästa Kompisar'}
           </motion.h2>
         </div>
       </motion.div>

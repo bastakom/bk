@@ -4,6 +4,7 @@ import Staplar from '../components/Tjanster/Staplar'
 import Link from 'next/link'
 import { IoMdArrowForward } from 'react-icons/io'
 import TilesIcons from '../components/TilesIcons/TilesIcons'
+import Button from '../components/Button/Button'
 
 const page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTjanster(params.lang)
@@ -37,6 +38,9 @@ const page = async ({ params }: { params: { lang: string } }) => {
             header={config.tile_header}
             content={config.tile_content}
           />
+          <div className="w-full justify-center flex -mt-5 pb-16">
+            <Button text="Nyfiken? Boka ett möte med oss!" href={'/kontakt'} />
+          </div>
         </div>
       </div>
     </div>

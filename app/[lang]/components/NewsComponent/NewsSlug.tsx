@@ -42,7 +42,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
         <div className="m-auto container">
           <motion.div whileHover="hover">
             <button
-              className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
+              className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-10 mt-10"
               onClick={handleNextClick}
             >
               {params.lang === 'en' ? 'Next' : 'Nästa'}

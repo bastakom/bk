@@ -297,6 +297,7 @@ a {
   font-size: 20px;
   line-height: 1.5rem;
   height: 4.5rem;
+  font-weight: light;
 }
 
 input[type='file'] {

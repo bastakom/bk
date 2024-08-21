@@ -117,7 +117,7 @@ const FooterComponent = ({ props }: Props) => {
             <span>© Reklambyrån Bästa Kompisar 2024</span>
           </span>
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-10 items-end">
-            <Link className="text-[16px] font-light" href="/">
+            <Link className="text-[16px] font-light" href="/cookies">
               Cookies
             </Link>
             <Link className="text-[16px] font-light" href="privacy-policy">

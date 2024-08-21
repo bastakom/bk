@@ -82,7 +82,7 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                     >
                       {item.name}
                     </h2>
-                    <span className="max-md:hidden max-w-[100%] lg:max-w-[80%] text-[20px] leading-[32px] line-clamp font-normal font-primary">
+                    <span className="max-md:hidden max-w-[100%] lg:max-w-[80%] text-[20px] leading-[32px] line-clamp font-light font-primary">
                       {render(item.content.content)}
                     </span>
                   </div>
