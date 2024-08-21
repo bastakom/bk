@@ -1,7 +1,9 @@
+import CookieConsent from '../components/CookieConsent/CookieConsent'
+
 const page = () => {
   return (
     <>
-      <div id="CookieDeclaration" />
+      <CookieConsent />
     </>
   )
 }
