@@ -15,7 +15,7 @@ const CookieConsent = () => {
       cookieBotWrapper.appendChild(script)
     }
   }, [])
-  return <div id="CookiebotDeclaration" />
+  return <div id="CookiebotDeclaration" className="container m-auto mt-28" />
 }
 
 export default CookieConsent
