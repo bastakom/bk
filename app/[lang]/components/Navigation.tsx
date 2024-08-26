@@ -6,8 +6,9 @@ import logowhite from '@/public/bk-white.png'
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
 import { usePathname, useRouter } from 'next/navigation'
-import MobileNavigation from './MobileNavigation'
 import useStore from '@/app/lib/store'
+import dynamic from 'next/dynamic'
+const MobileNavigation = dynamic(() => import('./MobileNavigation'), { ssr: false })
 
 interface Props {
   props?: any
