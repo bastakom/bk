@@ -3,6 +3,7 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { render } from 'storyblok-rich-text-react-renderer'
 import { IoMdArrowForward } from 'react-icons/io'
+import Image from 'next/image'
 
 const Form = ({ blok }) => {
   const [sent, setSent] = useState(false)
@@ -43,6 +44,7 @@ const Form = ({ blok }) => {
       setStatus('error')
     }
   }
+
   return (
     <div
       className="bg-[#F7F0EE] full-width-element no-padding-bottom"
@@ -59,6 +61,38 @@ const Form = ({ blok }) => {
           {render(blok.adress)}
         </span>
         {/* FORM */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 px-20 py-10">
+          {blok.salespeople.map((member) => {
+            return (
+              <div key={member.id} className="relative group">
+                <div className="relative max-h-[520px] xl:max-h-[800px]">
+                  <Image
+                    className="object-contain min-h-[360px] max-h-[360px] xl:max-h-[360px]"
+                    // style={{ objectPosition: '50% 50%' }}
+                    src={member.img.filename}
+                    width={350}
+                    height={380}
+                    alt={member.name}
+                  />
+                </div>
+                <h2 className="text-[24px] font-bold-sofia mt-2 text-black">
+                  {member.name}
+                </h2>
+                <span className="font-light-sofia text-[14px]">
+                  <span className="uppercase"> {member.title}</span> <br />
+                  {member.email}
+                  {member.number && (
+                    <span>
+                      <br />
+                      {member.number}
+                    </span>
+                  )}
+                </span>
+              </div>
+            )
+          })}
+        </div>
 
         {!sent ? (
           <form
