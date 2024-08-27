@@ -15,14 +15,24 @@ const KarriarForm = ({ blok }) => {
 
   const params = useParams()
 
-  const [fileName, setFileName] = useState('Välj fil')
+  // const [fileName, setFileName] = useState('Välj fil')
+  const [fileName, setFileName] = useState(
+    'Just nu fungerar det inte att ladda upp filer via fomuläret, vi ber er skicka CV / PM, övrigt till info@bastakompisar.se'
+  )
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]
+    console.log(file)
     if (file) {
-      setFileName(file.name)
+      // setFileName(file.name)
+      setFileName(
+        'Just nu fungerar det inte att ladda upp filer via fomuläret, vi ber er skicka CV / PM, övrigt till info@bastakompisar.se'
+      )
     } else {
-      setFileName('Välj fil')
+      // setFileName('Välj fil')
+      setFileName(
+        'Just nu fungerar det inte att ladda upp filer via fomuläret, vi ber er skicka CV / PM, övrigt till info@bastakompisar.se'
+      )
     }
   }
 
@@ -131,7 +141,13 @@ const KarriarForm = ({ blok }) => {
               <label htmlFor="file-upload" className="custom-file-upload">
                 {fileName}
               </label>
-              <input id="file-upload" type="file" onChange={handleFileChange} />
+              <input
+                disabled
+                className="hover:cursor-help"
+                id="file-upload"
+                type="file"
+                onChange={handleFileChange}
+              />
             </div>
 
             <div className="flex gap-5">
