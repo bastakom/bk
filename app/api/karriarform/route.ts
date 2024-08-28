@@ -15,14 +15,14 @@ export async function POST(req: Request) {
   `
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Notifikation: BK-Karriar <onboarding@resend.dev>',
-      to: ['philip@bastakompisar.se'],
+      from: `BK-Karriar: ${name} <onboarding@resend.dev>`,
+      to: ['info@bastakompisar.se'],
       subject: 'Notifikation från BK Karriar',
       html: messageBody,
       attachments: [
         {
-          path: 'https://pdfobject.com/pdf/sample.pdf',
-          filename: 'fungerar ej förtillfället',
+          content: file,
+          filename: 'CV/annat.pdf',
         },
       ],
     })

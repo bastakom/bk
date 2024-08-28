@@ -11,28 +11,25 @@ const KarriarForm = ({ blok }) => {
     email: '',
     message: '',
     praktik: '',
+    file: '', // New state for Base64 file data
   })
 
   const params = useParams()
 
-  // const [fileName, setFileName] = useState('Välj fil')
-  const [fileName, setFileName] = useState(
-    'Just nu fungerar det inte att ladda upp filer via fomuläret, vi ber er skicka CV / PM, övrigt till info@bastakompisar.se'
-  )
+  const [fileName, setFileName] = useState('Ladda upp din fil')
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]
-    console.log(file)
     if (file) {
-      // setFileName(file.name)
-      setFileName(
-        'Just nu fungerar det inte att ladda upp filer via fomuläret, vi ber er skicka CV / PM, övrigt till info@bastakompisar.se'
-      )
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const base64String = reader.result.split(',')[1] // Get Base64 part
+        setFormData({ ...formData, file: base64String })
+        setFileName(file.name)
+      }
+      reader.readAsDataURL(file)
     } else {
-      // setFileName('Välj fil')
-      setFileName(
-        'Just nu fungerar det inte att ladda upp filer via fomuläret, vi ber er skicka CV / PM, övrigt till info@bastakompisar.se'
-      )
+      setFileName('Ladda upp din fil')
     }
   }
 
@@ -64,18 +61,19 @@ const KarriarForm = ({ blok }) => {
       setStatus('error')
     }
   }
+
   return (
     <div
-      className=" full-width-element no-padding-bottom"
+      className="full-width-element no-padding-bottom"
       {...storyblokEditable(blok)}
     >
-      <div className="flex w-full justify-center items-center  py-10 gap-10 flex-col max-md:px-4">
+      <div className="flex w-full justify-center items-center py-10 gap-10 flex-col max-md:px-4">
         {!sent ? (
           <form
-            className={`w-full lg:max-w-[30%] m-auto flex flex-col gap-10`}
+            className="w-full lg:max-w-[30%] m-auto flex flex-col gap-10"
             onSubmit={handleButtonClick}
           >
-            <div className={`flex flex-col gap-5`}>
+            <div className="flex flex-col gap-5">
               <label>
                 {params.lang === 'en'
                   ? 'Hello Dear Friends, my name is…*'
@@ -90,7 +88,7 @@ const KarriarForm = ({ blok }) => {
                 onChange={handleChange}
               />
             </div>
-            <div className={`flex flex-col gap-5`}>
+            <div className="flex flex-col gap-5">
               <label>
                 {params.lang === 'en'
                   ? 'You can contact me at my email address…*'
@@ -104,7 +102,7 @@ const KarriarForm = ({ blok }) => {
                 value={formData.email}
               />
             </div>
-            <div className={`flex flex-col gap-5`}>
+            <div className="flex flex-col gap-5">
               <label>
                 {params.lang === 'en'
                   ? 'The area that I would like to work/practice in is…*'
@@ -112,14 +110,14 @@ const KarriarForm = ({ blok }) => {
               </label>
               <input
                 className="bg-transparent border border-black rounded-[22px] py-2 px-5"
-                type="praktik"
+                type="text"
                 onChange={handleChange}
                 name="praktik"
                 value={formData.praktik}
               />
             </div>
 
-            <div className="w-full  flex flex-col gap-4 ">
+            <div className="w-full flex flex-col gap-4">
               <label>
                 {params.lang === 'sv'
                   ? 'Och här är lite kort information om mig…*'
@@ -142,16 +140,16 @@ const KarriarForm = ({ blok }) => {
                 {fileName}
               </label>
               <input
-                disabled
                 className="hover:cursor-help"
                 id="file-upload"
                 type="file"
+                accept="application/pdf"
                 onChange={handleFileChange}
               />
             </div>
 
             <div className="flex gap-5">
-              <input type="checkbox" />
+              <input type="checkbox" required />
               <label className="flex items-start md:items-center gap-2">
                 {params.lang === 'en'
                   ? 'I agree that Bästa Kompisar use the specified personal data to contact me.*'
