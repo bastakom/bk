@@ -4,8 +4,6 @@ import './globals.css'
 import './font.css'
 import StoryblokProvider from '@/components/StoryblokProvider'
 import { ThemeProvider } from './[lang]/components/ThemeProvid/theme-provider'
-import Head from 'next/head'
-import Script from 'next/script'
 
 storyblokInit({
   accessToken: 'faVE0ToH7Y41wHZy0uSt3Qtt',

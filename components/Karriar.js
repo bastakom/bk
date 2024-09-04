@@ -11,7 +11,7 @@ const KarriarForm = ({ blok }) => {
     email: '',
     message: '',
     praktik: '',
-    file: '', // New state for Base64 file data
+    file: '',
   })
 
   const params = useParams()
@@ -23,7 +23,7 @@ const KarriarForm = ({ blok }) => {
     if (file) {
       const reader = new FileReader()
       reader.onloadend = () => {
-        const base64String = reader.result.split(',')[1] // Get Base64 part
+        const base64String = reader.result.split(',')[1]
         setFormData({ ...formData, file: base64String })
         setFileName(file.name)
       }
