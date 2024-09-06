@@ -37,7 +37,7 @@ const MobileNavigation = ({ props }: any) => {
             return (
               <Link
                 href={link}
-                onClick={() => setIsOpen(false)}
+                onTouchStart={() => setIsOpen(false)}
                 key={item._uid}
                 className="font-secondary text-[28px]"
               >
