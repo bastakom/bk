@@ -1,3 +1,5 @@
+'use client'
+
 import useStore from '@/app/lib/store'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -30,7 +32,7 @@ const MobileNavigation = ({ props }: any) => {
   return (
     <>
       <nav
-        className={`flex flex-col h-[100vh] top-0 z-10 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${
+        className={`flex flex-col h-[100vh] top-0 z-20 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
