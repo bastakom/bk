@@ -139,8 +139,8 @@ const OrgForm = ({ blok }) => {
           <div className="lg:h-[50vh] flex items-center justify-center">
             <div>
               {params.lang === 'en'
-                ? 'Thank you for your message, we will get back to you as soon as we can!'
-                : 'Tack för ditt meddelande, vi återkommer så fort vi kan!'}
+                ? 'Thank you for your message!'
+                : 'Tack för uppgifterna!'}
             </div>
           </div>
         )}
