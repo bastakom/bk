@@ -22,6 +22,7 @@ import Form from './Form'
 import KarriarForm from './Karriar'
 import Divide from './Divide'
 import Tilesicon from './Tilesicon'
+import OrgForm from './OrgForm'
 
 const components = {
   feature: Feature,
@@ -42,6 +43,7 @@ const components = {
   karriar: KarriarForm,
   divide: Divide,
   tiles_icon: Tilesicon,
+  organisation: OrgForm,
 }
 /** 2. Initialize it as usual */
 storyblokInit({

@@ -3,14 +3,16 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: Request) {
-  const { name, email, message, origanisation } = await req.json()
+  const { orgnr, email, foretagsnamn, faktureringsadress, referens } =
+    await req.json()
 
   const messageBody = `
     <div style="background-color: #f9f9f9; padding: 20px;">
-      <p>Meddelande från: ${name}</p>
-      <h3>Email: ${email}</h3>
-      <p>Origanisation: ${origanisation}</p>
-      <p>Meddelande: ${message}</p>
+      <p>Orgnr: ${orgnr}</p>
+      <p>Företagsnamn: ${foretagsnamn}</p>
+      <h3>Faktureringsepost: ${email}</h3>
+      <p>Faktureringsadress: ${faktureringsadress}</p>
+      <p>Referens: ${referens}</p>
     </div>
   `
   try {
