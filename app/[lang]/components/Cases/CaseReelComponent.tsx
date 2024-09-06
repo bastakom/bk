@@ -8,6 +8,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'
 import Slider from 'react-slick'
 import { useParams } from 'next/navigation'
 import Button from '../Button/Button'
+import useStore from '@/app/lib/store'
 
 interface Props {
   props: any
@@ -17,6 +18,7 @@ function CasesReelComponent({ props }: Props) {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const [showPrevArrow, setShowPrevArrow] = useState<boolean>(false)
   const [showNextArrow, setShowNextArrow] = useState<boolean>(true)
+  const open = useStore((state) => state.open)
   const router = useParams()
 
   const handleMouseEnter = (uuid: string) => {
@@ -98,7 +100,7 @@ function CasesReelComponent({ props }: Props) {
   }
 
   return (
-    <div className="hidden lg:flex flex-col gap-5 relative ">
+    <div className={`${open ? 'hidden' : 'flex'} flex-col gap-5 relative`}>
       <Slider
         key="1"
         {...settings}
@@ -141,7 +143,7 @@ function CasesReelComponent({ props }: Props) {
                 } absolute inset-0 bg-[#25364f]`}
               />
               <div
-                className={`flex p-5 h-full w-full items-start justify-end z-20 absolute flex-col`}
+                className={`flex p-5 h-full w-full items-start justify-end absolute flex-col`}
               >
                 <span
                   className={`transition-opacity duration-300 ${
@@ -173,7 +175,7 @@ function CasesReelComponent({ props }: Props) {
         })}
       </Slider>
       {props.length > 3 && (
-        <div className="flex justify-end z-20">
+        <div className="flex justify-end">
           <PrevArrow
             onClick={prevSlide}
             style={{ display: showPrevArrow ? 'block' : 'none' }}
