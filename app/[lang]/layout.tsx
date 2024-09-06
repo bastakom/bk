@@ -3,9 +3,10 @@ import { storyblokInit, apiPlugin } from '@storyblok/react/rsc'
 import StoryblokProvider from '../../components/StoryblokProvider'
 import { ThemeProvider } from './components/ThemeProvid/theme-provider'
 import dynamic from 'next/dynamic'
+import Header from './components/Header'
 
 const Footer = dynamic(() => import('./components/Footer'), { ssr: false })
-const Header = dynamic(() => import('./components/Header'), { ssr: false })
+// const Header = dynamic(() => import('./components/Header'), { ssr: false })
 
 import '../globals.css'
 import '../font.css'
@@ -57,7 +58,7 @@ export default function RootLayout({
 
           <ThemeProvider defaultTheme="light" attribute="class">
             <Header locale={lang} />
-            <LoadingLogo />
+            {/* <LoadingLogo /> */}
             <main className={`pb-10 px-3 md:px-10 relative`}>{children}</main>
             <Footer locale={lang} />
           </ThemeProvider>
