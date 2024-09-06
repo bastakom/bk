@@ -11,7 +11,7 @@ const Hero = ({ blok }) => {
   return (
     <>
       <div
-        className={`w-full flex justify-${blok.position} h-[378px] lg:h-[92vh] items-center relative`}
+        className={`w-full hidden lg:flex justify-${blok.position} h-[378px] lg:h-[92vh] items-center relative`}
       >
         <div className="h-full absolute w-full bg-black z-10 opacity-30" />
         <video
