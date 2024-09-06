@@ -14,7 +14,11 @@ export const fetchConfig = async (locale: string) => {
 
 const Header = async (locale: any) => {
   const { config } = await fetchConfig(locale.locale)
-  return <Navigation props={config.data} locale={locale} />
+  return (
+    <>
+      <Navigation props={config.data} locale={locale} />
+    </>
+  )
 }
 
 export default Header

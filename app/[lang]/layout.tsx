@@ -58,7 +58,7 @@ export default function RootLayout({
 
           <ThemeProvider defaultTheme="light" attribute="class">
             <Header locale={lang} />
-            {/* <LoadingLogo /> */}
+            <LoadingLogo />
             <main className={`pb-10 px-3 md:px-10 relative`}>{children}</main>
             <Footer locale={lang} />
           </ThemeProvider>

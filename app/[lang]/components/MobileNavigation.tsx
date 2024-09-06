@@ -46,7 +46,7 @@ const MobileNavigation = ({ props }: any) => {
                 href={link}
                 onClick={handleClick}
                 key={item._uid}
-                className="font-secondary text-[28px]"
+                className="font-secondary text-[28px] z-20"
               >
                 {item.name}
               </Link>
