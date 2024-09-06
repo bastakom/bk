@@ -66,7 +66,7 @@ const MobileNavigation = ({ props, locale }: Props) => {
         <span />
       </div>
       <nav
-        className={`flex flex-col h-[100vh] top-0 z-20 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${
+        className={`flex flex-col h-[100vh] top-0 z-50 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -76,14 +76,14 @@ const MobileNavigation = ({ props, locale }: Props) => {
               ? item.link.cached_url
               : `/${item.link.cached_url}`
             return (
-              <Link
+              <a
                 href={link}
                 onClick={handleClick}
                 key={item._uid}
-                className="font-secondary text-[28px] z-20"
+                className="font-secondary text-[28px] z-50"
               >
                 {item.name}
-              </Link>
+              </a>
             )
           })}
         </div>
