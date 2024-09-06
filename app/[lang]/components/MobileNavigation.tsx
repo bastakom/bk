@@ -2,6 +2,7 @@ import useStore from '@/app/lib/store'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { IoMdArrowForward } from 'react-icons/io'
+import { debounce } from 'lodash'
 
 const MobileNavigation = ({ props }: any) => {
   const open = useStore((state) => state.open)
@@ -22,6 +23,10 @@ const MobileNavigation = ({ props }: any) => {
     document.body.classList.remove('no-scroll')
   }
 
+  const handleClick = debounce(() => {
+    setIsOpen(false)
+  }, 300)
+
   return (
     <>
       <nav
@@ -37,7 +42,7 @@ const MobileNavigation = ({ props }: any) => {
             return (
               <Link
                 href={link}
-                onClick={() => setIsOpen(false)}
+                onClick={handleClick}
                 key={item._uid}
                 className="font-secondary text-[28px]"
               >
@@ -80,10 +85,16 @@ const MobileNavigation = ({ props }: any) => {
             )
           })}
           <div className=" bottom-24 right-4 flex flex-col text-left mt-10">
-            <Link className="text-[18px]" href={`tel:${props.story.content.tel}`}>
+            <Link
+              className="text-[18px]"
+              href={`tel:${props.story.content.tel}`}
+            >
               {props.story.content.tel}
             </Link>
-            <Link className="text-[14px]" href={`mailto:${props.story.content.mail}`}>
+            <Link
+              className="text-[14px]"
+              href={`mailto:${props.story.content.mail}`}
+            >
               {props.story.content.mail}
             </Link>
           </div>
