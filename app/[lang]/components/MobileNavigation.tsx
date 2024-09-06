@@ -76,14 +76,14 @@ const MobileNavigation = ({ props, locale }: Props) => {
               ? item.link.cached_url
               : `/${item.link.cached_url}`
             return (
-              <a
-                href={link}
+              <Link
+                href={`/${item.link.url}`}
                 onClick={handleClick}
                 key={item._uid}
                 className="font-secondary text-[28px] z-50"
               >
                 {item.name}
-              </a>
+              </Link>
             )
           })}
         </div>
