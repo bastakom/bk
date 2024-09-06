@@ -5,8 +5,7 @@ import logoblack from '@/public/bk-black.png'
 import logowhite from '@/public/bk-white.png'
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
-import { usePathname, useRouter } from 'next/navigation'
-import MobileNavigation from './MobileNavigation'
+// import { usePathname, useRouter } from 'next/navigation'
 import useStore from '@/app/lib/store'
 
 interface Props {
@@ -19,14 +18,14 @@ const Navigation = ({ props, locale }: Props) => {
   const setIsOpen = useStore((state) => state.setIsOpenMenu)
 
   const { theme } = useTheme()
-  const usePath = usePathname()
-  const router = useRouter()
+  // const usePath = usePathname()
+  // const router = useRouter()
 
-  const changeLanguage = (newLang: string) => {
-    const currentPath = usePath
-    const newPath = currentPath.replace(/^(\/[^/]+)(.*)$/, `/${newLang}$2`)
-    router.push(newPath, { scroll: false })
-  }
+  // const changeLanguage = (newLang: string) => {
+  //   const currentPath = usePath
+  //   const newPath = currentPath.replace(/^(\/[^/]+)(.*)$/, `/${newLang}$2`)
+  //   router.push(newPath, { scroll: false })
+  // }
 
   const handleMenuOpen = () => {
     setIsOpen(!open)
@@ -70,7 +69,6 @@ const Navigation = ({ props, locale }: Props) => {
           )
         })}
       </nav>
-      <MobileNavigation props={props} />
       <div className="w-1/3 hidden xl:flex justify-end gap-5">
         <div className="flex gap-2 items-center">
           {/* <button

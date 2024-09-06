@@ -12,6 +12,7 @@ import '../globals.css'
 import '../font.css'
 import LoadingLogo from './components/Loading/LoadingLogo'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import MobileHeader from './components/MobileHeader'
 
 storyblokInit({
   accessToken: 'faVE0ToH7Y41wHZy0uSt3Qtt',
@@ -58,6 +59,7 @@ export default function RootLayout({
 
           <ThemeProvider defaultTheme="light" attribute="class">
             <Header locale={lang} />
+            <MobileHeader locale={lang} />
             <LoadingLogo />
             <main className={`pb-10 px-3 md:px-10 relative`}>{children}</main>
             <Footer locale={lang} />

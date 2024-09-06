@@ -5,12 +5,22 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { IoMdArrowForward } from 'react-icons/io'
 import { debounce } from 'lodash'
+import logoblack from '@/public/bk-black.png'
+import logowhite from '@/public/bk-white.png'
+import Image from 'next/image'
+import { useTheme } from 'next-themes'
 
-const MobileNavigation = ({ props }: any) => {
+interface Props {
+  props: any
+  locale: any
+}
+
+const MobileNavigation = ({ props, locale }: Props) => {
   const open = useStore((state) => state.open)
   const setIsOpen = useStore((state) => state.setIsOpenMenu)
   const usePath = usePathname()
   const router = useRouter()
+  const { theme } = useTheme()
 
   const changeLanguage = (newLang: string) => {
     const currentPath = usePath
@@ -29,8 +39,32 @@ const MobileNavigation = ({ props }: any) => {
     setIsOpen(false)
   }, 300)
 
+  const handleMenuOpen = () => {
+    setIsOpen(!open)
+  }
+
   return (
-    <>
+    <div className="flex py-2 items-center justify-between fixed z-30 w-full px-5 lg:px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
+      <Link
+        href={`/${locale.locale}`}
+        className="flex gap-5 w-full lg:w-1/3 items-center"
+        onClick={() => setIsOpen(false)}
+      >
+        <Image
+          src={theme === 'dark' ? logowhite : logoblack}
+          width={50}
+          height={50}
+          alt="Bästa kompisar Reklambyrå"
+          className="my-2 z-20"
+        />
+      </Link>
+
+      <div
+        className={`menu-btn-6 mt-4 z-20 xl:hidden ${open ? 'active' : ''}`}
+        onClick={handleMenuOpen}
+      >
+        <span />
+      </div>
       <nav
         className={`flex flex-col h-[100vh] top-0 z-20 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${
           open ? 'translate-x-0' : 'translate-x-full'
@@ -119,7 +153,7 @@ const MobileNavigation = ({ props }: any) => {
           </button>
         </div> */}
       </nav>
-    </>
+    </div>
   )
 }
 
