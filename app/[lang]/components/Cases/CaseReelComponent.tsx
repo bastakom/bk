@@ -98,7 +98,7 @@ function CasesReelComponent({ props }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-5 relative">
+    <div className="hidden lg:flex flex-col gap-5 relative ">
       <Slider
         key="1"
         {...settings}
