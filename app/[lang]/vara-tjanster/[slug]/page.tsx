@@ -42,12 +42,18 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
 
   const filteredStories = cases.data.stories.filter((item: any) => {
     const categories = item.content.Kategori
+    const storyNameLower = story.name.toLowerCase()
+
     if (Array.isArray(categories)) {
-      return categories.includes(story.name)
+      return categories.some(
+        (category: string) => category.toLowerCase() === storyNameLower
+      )
     }
-    return categories.toString() === story.name
+
+    return categories.toString().toLowerCase() === storyNameLower
   })
 
+  console.log(story.name)
   return (
     <div
       className={`full-width-element pt-32 no-padding-bottom pb-20 px-1`}
