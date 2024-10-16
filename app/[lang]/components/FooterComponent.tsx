@@ -123,14 +123,14 @@ const FooterComponent = ({ props }: Props) => {
             <Link className="text-[16px] font-light" href="privacy-policy">
               {params.lang === 'en' ? 'Privacy Policy' : 'Integritetspolicy'}
             </Link>
-            <Link
+         {/*    <Link
               className="text-[16px] font-light-sofia"
               href="service-avtal-webbtjaenster"
             >
               {params.lang === 'en'
                 ? 'Service agreement web services'
                 : 'Serviceavtal webbtjänster'}
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
