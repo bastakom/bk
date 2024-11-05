@@ -9,6 +9,12 @@ const Tiles = ({ blok }) => {
       {...storyblokEditable(blok)}
       className="grid grid-cols-1 full-width-element no-padding-bottom lg:grid-cols-4 p-5 lg:p-14 gap-10 lg:gap-20 mt-10 py-20 lg:py-28 bg-[#F7DAD2] dark:bg-[#121212] text-[#25364F] dark:text-white"
     >
+        <div className="col-span-full flex flex-col gap-5 lg:-mb-5">
+                <h2 className="font-normal text-[30px] lg:text-6xl text-[#25364F]">
+                  {blok.tiles_title}
+                </h2>
+                <p className="text-black">{blok.tiles_text}</p>
+              </div>
       {blok.tile.map((item, index) => {
         const { ref, inView } = useInView({
           triggerOnce: true,
@@ -28,15 +34,6 @@ const Tiles = ({ blok }) => {
               </span>
               <p className="font-light text-black">{item.content}</p>
             </div>
-
-            {index === 3 && (
-              <div className="col-span-full flex flex-col gap-5 lg:-mb-5">
-                <h2 className="font-normal text-[30px] lg:text-6xl text-[#25364F]">
-                  {blok.tiles_title}
-                </h2>
-                <p className="text-black">{blok.tiles_text}</p>
-              </div>
-            )}
           </React.Fragment>
         )
       })}
