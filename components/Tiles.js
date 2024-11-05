@@ -4,6 +4,7 @@ import CountUp from 'react-countup'
 import { useInView } from 'react-intersection-observer'
 
 const Tiles = ({ blok }) => {
+  // Edit
   return (
     <div
       {...storyblokEditable(blok)}
