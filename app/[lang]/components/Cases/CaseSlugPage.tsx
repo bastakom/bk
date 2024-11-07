@@ -134,10 +134,10 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
             )}
             {story.content.hide_content_under_gallery && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 font-light text-[18px] lg:text-[20px]">
-                {/* <span>{render(story.content.text_under_gallery)}</span> */}
+                <span>{render(story.content.text_under_gallery)}</span>
                 <span>
-                 {/*  {story.content?.two_column_text_2 &&
-                    render(story.content.two_column_text_2)} */}
+                  {story.content?.two_column_text_2 &&
+                    render(story.content.two_column_text_2)}
                 </span>
               </div>
             )}
