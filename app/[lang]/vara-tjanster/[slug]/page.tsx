@@ -100,7 +100,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
           </div>
         </div>
       </div>
-      {story.content.text_block_repeater && (
+      {story.content.text_block_title  && (
         <div className="flex container flex-col lg:flex-row my-20 m-auto max-auto justify-center p-2 lg:p-0">
           <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
             <div className="flex gap-2 flex-col lg:-ml-5">
@@ -119,7 +119,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
           story.content.text_block_repeater.map((item: any) => {
             return (
               <div className="m-auto">
-                <h2 className="text-[35px]">{render(item.title)}</h2>
+                <span className="text-[35px]">{render(item.title)}</span>
                 <span>{render(item.content)}</span>
               </div>
             );
