@@ -29,12 +29,7 @@ const MobileNavigation = ({ props, locale }: Props) => {
     setIsOpen(false)
   }
 
-  if (open === true) {
-    document.body.classList.add('no-scroll')
-  } else {
-    document.body.classList.remove('no-scroll')
-  }
-
+ 
   const handleClick = debounce(() => {
     setIsOpen(false)
   }, 300)

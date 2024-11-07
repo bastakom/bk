@@ -1,65 +1,64 @@
-import { getStoryblokApi } from '@storyblok/react'
-import Image from 'next/image'
-import { render } from 'storyblok-rich-text-react-renderer'
-import Button from '../../components/Button/Button'
-import CasesReelComponent from '../../components/Cases/CaseReelComponent'
+import { getStoryblokApi } from "@storyblok/react";
+import Image from "next/image";
+import { render } from "storyblok-rich-text-react-renderer";
+import Button from "../../components/Button/Button";
+import CasesReelComponent from "../../components/Cases/CaseReelComponent";
 
 const fetchCases = async (locale: string) => {
   let sbParams = {
-    version: 'draft' as const,
-    starts_with: 'cases/',
+    version: "draft" as const,
+    starts_with: "cases/",
     language: locale,
-  }
+  };
 
-  const storyblokApi = getStoryblokApi()
+  const storyblokApi = getStoryblokApi();
   try {
     const response = await storyblokApi.get(`cdn/stories/`, sbParams, {
-      cache: 'no-store',
-    })
-    return response
+      cache: "no-store",
+    });
+    return response;
   } catch (error) {
-    console.error('Error fetching cases:')
-    return { data: { stories: [] } } // Return an empty array as a fallback
+    console.error("Error fetching cases:");
+    return { data: { stories: [] } }; // Return an empty array as a fallback
   }
-}
+};
 
 const getSlugData = async (slug: string) => {
-  let sbParams = { version: 'draft' as const }
+  let sbParams = { version: "draft" as const };
 
-  const storyblokApi = getStoryblokApi()
-  return await storyblokApi.get(`cdn/stories/vara-tjanster/${slug}`, sbParams)
-}
+  const storyblokApi = getStoryblokApi();
+  return await storyblokApi.get(`cdn/stories/vara-tjanster/${slug}`, sbParams);
+};
 
 const page = async ({ params }: { params: { slug: string; lang: string } }) => {
-  const pathname = params.slug
+  const pathname = params.slug;
 
-  const res = await getSlugData(pathname)
-  const cases = await fetchCases(params.lang)
+  const res = await getSlugData(pathname);
+  const cases = await fetchCases(params.lang);
 
   const {
     data: { story },
-  } = res
+  } = res;
 
   const filteredStories = cases.data.stories.filter((item: any) => {
-    const categories = item.content.Kategori
-    const storyNameLower = story.name.toLowerCase()
+    const categories = item.content.Kategori;
+    const storyNameLower = story.name.toLowerCase();
 
     if (Array.isArray(categories)) {
       return categories.some(
         (category: string) => category.toLowerCase() === storyNameLower
-      )
+      );
     }
 
-    return categories.toString().toLowerCase() === storyNameLower
-  })
+    return categories.toString().toLowerCase() === storyNameLower;
+  });
 
-  console.log(story.name)
   return (
     <div
       className={`full-width-element pt-32 no-padding-bottom pb-20 px-1`}
       style={{
         background: `${
-          story.content.background ? story.content.background : 'none'
+          story.content.background ? story.content.background : "none"
         }`,
       }}
     >
@@ -101,16 +100,42 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
           </div>
         </div>
       </div>
+      {story.content.text_block_repeater && (
+        <div className="flex container flex-col lg:flex-row my-20 m-auto max-auto justify-center p-2 lg:p-0">
+          <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
+            <div className="flex gap-2 flex-col lg:-ml-5">
+              <h2 className="text-[65px] lg:max-w-[80%] break-normal lg:text-[80px] leading-[70px] lg:leading-[100px]">
+                {story.content.text_block_title}
+              </h2>
+            </div>
+          </div>
+          <div className="w-full lg:w-[47.6%] mt-5 lg:mt-0 flex flex-col gap-10 font-light-sofia text-[18px] lg:text-[25px] in_link">
+            {render(story?.content?.text_block_content)}
+          </div>
+        </div>
+      )}
+      <div className="grid lg:grid-cols-2 mx-auto justify-start container gap-10 p-2 lg:p-0">
+        {story.content.text_block_repeater &&
+          story.content.text_block_repeater.map((item: any) => {
+            return (
+              <div className="m-auto">
+                <h2 className="text-[35px]">{render(item.title)}</h2>
+                <span>{render(item.content)}</span>
+              </div>
+            );
+          })}
+      </div>
+
       <div className="pl-2 px-1 lg:px-0 lg:pl-14 py-14">
         <h2 className="py-10 text-center uppercase text-[20px]">
-          {params.lang === 'en' ? 'Selection case' : 'Urval case'}
+          {params.lang === "en" ? "Selection case" : "Urval case"}
         </h2>
         {filteredStories && Array.isArray(filteredStories) && (
           <CasesReelComponent props={filteredStories} />
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;
