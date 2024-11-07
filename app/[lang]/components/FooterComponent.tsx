@@ -127,6 +127,7 @@ const FooterComponent = ({ props }: Props) => {
               className="text-[16px] font-light-sofia"
               href="allmaena-vilkor"
             >
+              {/* Terms */}
               {params.lang === 'en'
                 ? 'Terms and conditions'
                 : 'Allmänna villkor'}
