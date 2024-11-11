@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://bastakompisar.se/sv
+
+# Sitemaps
+Sitemap: https://bastakompisar.se/sv/sitemap.xml
