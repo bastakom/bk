@@ -38,7 +38,7 @@ export default function RootLayout({
     <StoryblokProvider>
       <html lang={lang}>
         <GoogleTagManager gtmId="GTM-N5M8HVH" />
-        <head>
+  {/*       <head>
           <script
             id="Cookiebot"
             src="https://consent.cookiebot.com/uc.js"
@@ -47,7 +47,7 @@ export default function RootLayout({
             type="text/javascript"
             async
           ></script>
-        </head>
+        </head> */}
 
         <body>
           <noscript
