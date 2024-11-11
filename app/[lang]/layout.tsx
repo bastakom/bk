@@ -1,44 +1,44 @@
-import type { Metadata } from 'next'
-import { storyblokInit, apiPlugin } from '@storyblok/react/rsc'
-import StoryblokProvider from '../../components/StoryblokProvider'
-import { ThemeProvider } from './components/ThemeProvid/theme-provider'
-import dynamic from 'next/dynamic'
+import type { Metadata } from "next";
+import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
+import StoryblokProvider from "../../components/StoryblokProvider";
+import { ThemeProvider } from "./components/ThemeProvid/theme-provider";
+import dynamic from "next/dynamic";
 // import Header from './components/Header'
 
-const Footer = dynamic(() => import('./components/Footer'), { ssr: false })
-const Header = dynamic(() => import('./components/Header'), { ssr: false })
+const Footer = dynamic(() => import("./components/Footer"), { ssr: false });
+const Header = dynamic(() => import("./components/Header"), { ssr: false });
 
-import '../globals.css'
-import '../font.css'
-import LoadingLogo from './components/Loading/LoadingLogo'
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
-import MobileHeader from './components/MobileHeader'
+import "../globals.css";
+import "../font.css";
+import LoadingLogo from "./components/Loading/LoadingLogo";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import MobileHeader from "./components/MobileHeader";
 
 storyblokInit({
-  accessToken: 'faVE0ToH7Y41wHZy0uSt3Qtt',
+  accessToken: "faVE0ToH7Y41wHZy0uSt3Qtt",
   use: [apiPlugin],
   apiOptions: {
-    region: 'eu',
+    region: "eu",
   },
-})
+});
 
 export const metadata: Metadata = {
-  title: 'Reklambyrån Bästa Kompisar – En fullservicebyrå',
-  description: 'En fullservicebyrå',
-}
+  title: "Reklambyrån Bästa Kompisar – En fullservicebyrå",
+  description: "En fullservicebyrå",
+};
 
 export default function RootLayout({
   children,
   params: { lang },
 }: Readonly<{
-  children: React.ReactNode
-  params: { lang: string }
+  children: React.ReactNode;
+  params: { lang: string };
 }>) {
   return (
     <StoryblokProvider>
       <html lang={lang}>
         <GoogleTagManager gtmId="GTM-N5M8HVH" />
-  {/*       <head>
+        <head>
           <script
             id="Cookiebot"
             src="https://consent.cookiebot.com/uc.js"
@@ -47,7 +47,12 @@ export default function RootLayout({
             type="text/javascript"
             async
           ></script>
-        </head> */}
+          <meta
+            name="google-site-verification"
+            content="MVGaWH59KC0hiSCCWnHPFU68sqy2reAmTntOeaK4n-I"
+          />
+          <GoogleAnalytics gaId="GTM-N5M8HVH" />
+        </head>
 
         <body>
           <noscript
@@ -65,8 +70,7 @@ export default function RootLayout({
             <Footer locale={lang} />
           </ThemeProvider>
         </body>
-        <GoogleAnalytics gaId="GTM-N5M8HVH" />
       </html>
     </StoryblokProvider>
-  )
+  );
 }

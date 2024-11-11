@@ -30,19 +30,11 @@ export default function RootLayout({
   return (
     <StoryblokProvider>
       <html lang={lang}>
-        <GoogleTagManager gtmId="GTM-N5M8HVH" />
-        <Head>
-          <meta
-            name="google-site-verification"
-            content="MVGaWH59KC0hiSCCWnHPFU68sqy2reAmTntOeaK4n-I"
-          />
-        </Head>
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
             {children}
           </ThemeProvider>
         </body>
-        <GoogleAnalytics gaId="GTM-N5M8HVH" />
       </html>
     </StoryblokProvider>
   );
