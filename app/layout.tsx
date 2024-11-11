@@ -5,6 +5,7 @@ import "./font.css";
 import StoryblokProvider from "@/components/StoryblokProvider";
 import { ThemeProvider } from "./[lang]/components/ThemeProvid/theme-provider";
 import Head from "next/head";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 storyblokInit({
   accessToken: "faVE0ToH7Y41wHZy0uSt3Qtt",
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <StoryblokProvider>
       <html lang={lang}>
+        <GoogleTagManager gtmId="GTM-N5M8HVH" />
         <Head>
           <meta
             name="google-site-verification"
@@ -40,6 +42,7 @@ export default function RootLayout({
             {children}
           </ThemeProvider>
         </body>
+        <GoogleAnalytics gaId="GTM-N5M8HVH" />
       </html>
     </StoryblokProvider>
   );
