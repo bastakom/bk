@@ -106,7 +106,7 @@ const KarriarForm = ({ blok }) => {
               <label>
                 {params.lang === 'en'
                   ? 'The area that I would like to work/practice in is…*'
-                  : 'Området som jag skulle vilja jobba/praktisera inom är…*'}
+                  : 'Roll/området jag söker inom…*'}
               </label>
               <input
                 className="bg-transparent border border-black rounded-[22px] py-2 px-5"
@@ -115,6 +115,27 @@ const KarriarForm = ({ blok }) => {
                 name="praktik"
                 value={formData.praktik}
               />
+            </div>
+            <div className="flex flex-col gap-5">
+              <label>
+                {params.lang === 'en'
+                  ? 'The area that I would like to work/practice in is…*'
+                  : 'Jag ansöker som..'}
+              </label>
+              <select
+                name="role" // This will map to formData.role
+                defaultValue=""
+                className="bg-transparent border border-black rounded-[22px] py-2 px-5"
+                onChange={handleChange} // Handle the change event to update the state
+              >
+                <option value="" disabled>
+                  {params.lang === 'en'
+                    ? 'I am applying as..'
+                    : 'Jag söker som..'}
+                </option>
+                <option value="Praktikant">Praktikant</option>
+                <option value="Jobbsökande">Jobbsökande</option>
+              </select>
             </div>
 
             <div className="w-full flex flex-col gap-4">
@@ -140,6 +161,7 @@ const KarriarForm = ({ blok }) => {
                 {fileName}
               </label>
               <input
+                required
                 className="hover:cursor-help"
                 id="file-upload"
                 type="file"

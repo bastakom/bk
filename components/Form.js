@@ -69,7 +69,6 @@ const Form = ({ blok }) => {
                 <div className="relative max-h-[520px] xl:max-h-[800px]">
                   <Image
                     className="object-contain min-h-[360px] max-h-[360px] xl:max-h-[360px]"
-                    // style={{ objectPosition: '50% 50%' }}
                     src={member.img.filename}
                     width={350}
                     height={380}
