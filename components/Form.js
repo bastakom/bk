@@ -93,11 +93,11 @@ const Form = ({ blok, settings }) => {
             )
           })}
         </div>
-        <div className="grid lg:grid-cols-[30%_70%] gap-10">
+        <div className="grid lg:grid-cols-[30%_70%] gap-10 px-20">
           <div className="text-4xl flex flex-col items-center lg:items-start gap-5">
             {render(settings.config.data.story.content.kontakt_text)}{' '}
             <Link href="/karriaer" className="link-color font-normal flex gap-2 items-center">
-              <span>Karrär</span>
+              <span>Karriär</span>
               <IoMdArrowForward fontSize={'1.6em'} color="#FF6062" />
             </Link>
           </div>
