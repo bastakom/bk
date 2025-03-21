@@ -103,13 +103,14 @@ const FooterComponent = ({ props }: Props) => {
             <div className="flex gap-5">
               {content.Logos.map((el: any, i: number) => {
                 const isLast = i === content.Logos.length - 1;
+                const isSecondLast = i === content.Logos.length - 2;
                 // is it last?
                 return (
                   <Image
                     key={i}
                     src={el.filename}
                     alt={el.filename}
-                    width={isLast ? 120 : 80}
+                    width={isLast ? 120 : isSecondLast ? 120 : 80}
                     className={`object-contain`}
                     height={50}
                   />
