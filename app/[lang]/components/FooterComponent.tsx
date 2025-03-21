@@ -70,14 +70,14 @@ const FooterComponent = ({ props }: Props) => {
                 item.icon === 'ig'
                   ? 'Instagram'
                   : item.icon === 'li'
-                  ? 'Linkedin'
-                  : item.icon === 'vi'
-                  ? 'Vimeo'
-                  : item.icon === 'fb'
-                  ? 'Facebook'
-                  : item.icon === 'yt'
-                  ? 'Youtube'
-                  : null
+                    ? 'Linkedin'
+                    : item.icon === 'vi'
+                      ? 'Vimeo'
+                      : item.icon === 'fb'
+                        ? 'Facebook'
+                        : item.icon === 'yt'
+                          ? 'Youtube'
+                          : null
               return (
                 <Link
                   href={`${item.link.url}`}
@@ -101,15 +101,16 @@ const FooterComponent = ({ props }: Props) => {
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-2 w-full justify-between text-[16px]">
           <span className="font-light-sofia uppercase lg:mt-0 mt-10 flex flex-col gap-10">
             <div className="flex gap-5">
-              {content.Logos.map((el: any) => {
+              {content.Logos.map((el: any, i: number) => {
+                const isLast = i === content.Logos.length - 1;
                 return (
                   <Image
+                    key={i}
                     src={el.filename}
                     alt={el.filename}
-                    width={80}
-                    className="object-contain"
+                    width={isLast ? 120 : 80}
+                    className={`object-contain`}
                     height={50}
-                    key={el.id}
                   />
                 )
               })}
