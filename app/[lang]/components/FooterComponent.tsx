@@ -100,7 +100,7 @@ const FooterComponent = ({ props }: Props) => {
       <div className="flex w-full items-center">
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-2 w-full justify-between text-[16px]">
           <span className="font-light-sofia uppercase lg:mt-0 mt-10 flex flex-col gap-10">
-            <div className="flex gap-5">
+            <div className="flex flex-wrap gap-5">
               {content.Logos.map((el: any, i: number) => {
                 const isLast = i === content.Logos.length - 1;
                 const isSecondLast = i === content.Logos.length - 2;
