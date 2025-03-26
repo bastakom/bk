@@ -1,62 +1,62 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { render } from 'storyblok-rich-text-react-renderer'
-import Image from 'next/image'
-import { GoPlus } from 'react-icons/go'
-import { FiMinus } from 'react-icons/fi'
+import { useState } from "react";
+import Link from "next/link";
+import { render } from "storyblok-rich-text-react-renderer";
+import Image from "next/image";
+import { GoPlus } from "react-icons/go";
+import { FiMinus } from "react-icons/fi";
 
 interface Props {
   props: {
-    sort_by_date: any
-    slug: any
-    full_slug: string
-    name: string
-    published_at: string
-    uuid: string
+    sort_by_date: any;
+    slug: any;
+    full_slug: string;
+    name: string;
+    published_at: string;
+    uuid: string;
 
     content: {
-      future_picture: any
-      image: any
-      kategori: string[]
-    }
-  }[]
+      future_picture: any;
+      image: any;
+      kategori: string[];
+    };
+  }[];
 
   kategories: {
-    name: string
-    uuid: string
+    name: string;
+    uuid: string;
     translated_slugs?: {
-      path: string
-      name: string | null
-      lang: string
-      published: string | null
-    }[]
-  }[]
+      path: string;
+      name: string | null;
+      lang: string;
+      published: string | null;
+    }[];
+  }[];
 
-  locale: string
+  locale: string;
 }
 
 const NewsComponent = ({ props, kategories, locale }: Props) => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [hoveredUuid, setHoveredUuid] = useState<string | null>(null)
-  const [openFilter, isOpenFilter] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [hoveredUuid, setHoveredUuid] = useState<string | null>(null);
+  const [openFilter, isOpenFilter] = useState(false);
 
   const handleOpenFilter = () => {
-    isOpenFilter(!openFilter)
-  }
+    isOpenFilter(!openFilter);
+  };
 
   const filteredPosts = selectedCategory
     ? props.filter((item) => item.content.kategori.includes(selectedCategory))
-    : props
+    : props;
 
   const handleMouseEnter = (uuid: string) => {
-    setHoveredUuid(uuid)
-  }
+    setHoveredUuid(uuid);
+  };
 
   const handleMouseLeave = () => {
-    setHoveredUuid(null)
-  }
+    setHoveredUuid(null);
+  };
 
   return (
     <div className="m-auto">
@@ -71,11 +71,14 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                 >
                   <div className="flex flex-col gap-5 lg:gap-10 px-0 lg:px-6 h-full justify-center">
                     <h1 className="font-normal font-primary text-[20px] text-black">
-                      {locale === 'en' ? 'LATEST NEWS' : 'SENASTE NYHET'}
+                      {locale === "en" ? "LATEST NEWS" : "SENASTE NYHET"}
                     </h1>
                     <h2
-                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] text-[#25364f] ${hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
-                        }`}
+                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] text-[#25364f] ${
+                        hoveredUuid === item.uuid
+                          ? "opacity-100"
+                          : "opacity-100"
+                      }`}
                     >
                       {item.name}
                     </h2>
@@ -97,7 +100,7 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                   </div>
                 </div>
               </Link>
-            )
+            );
           })}
         </div>
       </div>
@@ -108,38 +111,40 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
         Filter
         <span>
           {!openFilter ? (
-            <GoPlus fontSize={'1.5em'} color="#FF6062" />
+            <GoPlus fontSize={"1.5em"} color="#FF6062" />
           ) : (
-            <FiMinus fontSize={'1.5em'} color="#FF6062" />
+            <FiMinus fontSize={"1.5em"} color="#FF6062" />
           )}
         </span>
       </button>
       {openFilter && (
         <div className="flex flex-wrap gap-5 mb-6 justify-start border-b-2 border-t-2 p-5">
           <button
-            onClick={() => setSelectedCategory('')}
-            className={`uppercase ${selectedCategory === '' ? 'text-[#FF6063]' : ''
-              }`}
+            onClick={() => setSelectedCategory("")}
+            className={`uppercase ${
+              selectedCategory === "" ? "text-[#FF6063]" : ""
+            }`}
           >
-            {locale === 'en' ? 'All news' : 'Alla nyheter'}
+            {locale === "en" ? "All news" : "Alla nyheter"}
           </button>
           {kategories.map((item) => (
             <button
               key={item.uuid}
               onClick={() => setSelectedCategory(item.uuid)}
-              className={`uppercase ${selectedCategory === item.uuid ? 'text-[#FF6063]' : ''
-                }`}
+              className={`uppercase ${
+                selectedCategory === item.uuid ? "text-[#FF6063]" : ""
+              }`}
             >
-              {locale === 'en' && item.translated_slugs
-                ? item.translated_slugs.find((slug) => slug.lang === 'en')
-                  ?.name || item.name
+              {locale === "en" && item.translated_slugs
+                ? item.translated_slugs.find((slug) => slug.lang === "en")
+                    ?.name || item.name
                 : item.name}
             </button>
           ))}
         </div>
       )}
       <div className="grid h-full gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-3 lg:px-0">
-        {filteredPosts.slice(1, 100).map((item) => {
+        {filteredPosts.map((item) => {
           return (
             <Link
               href={`nyheter/${item.slug}`}
@@ -157,24 +162,25 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                 height={390}
                 width={500}
                 className="object-cover"
-                style={{ height: '521px', width: '100%' }}
+                style={{ height: "521px", width: "100%" }}
                 alt={item.name}
               />
 
               <div className="flex flex-col gap-2">
                 <h2
-                  className={`text-[30px] max-w-[80%] font-primary font-normal ${hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
-                    }`}
+                  className={`text-[30px] max-w-[80%] font-primary font-normal ${
+                    hoveredUuid === item.uuid ? "opacity-100" : "opacity-100"
+                  }`}
                 >
                   {item.name}
                 </h2>
               </div>
             </Link>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NewsComponent
+export default NewsComponent;
