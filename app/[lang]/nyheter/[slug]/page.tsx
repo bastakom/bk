@@ -1,6 +1,5 @@
 import NewsSlug from '@/app/[lang]/components/NewsComponent/NewsSlug'
 import { getStoryblokApi } from '@storyblok/react'
-import { useRouter } from 'next/navigation'
 
 const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const data = await getNewsSlug(params.slug, params.lang)

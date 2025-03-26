@@ -63,28 +63,29 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
             <span className="flex flex-col gap-2 w-full lg:max-w-[80%] font-primary text-[20px] font-light mb-5">
               {render(item.content.content)}
             </span>
-            <FacebookShareButton
-              url={`${window.location.toString()}`}
-              className="text-left flex gap-2 font-light"
-            >
-              Facebook
-              <span className="-rotate-45 font-light">
-                <IoMdArrowForward fontSize={'1.5em'} />
-              </span>
-            </FacebookShareButton>
-            <LinkedinShareButton
-              url={`${window.location.toString()}`}
-              className="text-left flex gap-2 font-light"
-            >
-              LinkedIn
-              <span className="-rotate-45 font-light">
-                <IoMdArrowForward fontSize={'1.5em'} />
-              </span>
-            </LinkedinShareButton>
             <div className="flex justify-start flex-col text-left text-[20px]">
               <span className="font-bold">
                 {params.lang === 'en' ? 'Share' : 'Dela'}
               </span>
+
+              <FacebookShareButton
+                url={`${window.location.toString()}`}
+                className="text-left flex gap-2 font-light"
+              >
+                Facebook
+                <span className="-rotate-45 font-light">
+                  <IoMdArrowForward fontSize={'1.5em'} />
+                </span>
+              </FacebookShareButton>
+              <LinkedinShareButton
+                url={`${window.location.toString()}`}
+                className="text-left flex gap-2 font-light"
+              >
+                LinkedIn
+                <span className="-rotate-45 font-light">
+                  <IoMdArrowForward fontSize={'1.5em'} />
+                </span>
+              </LinkedinShareButton>
             </div>
           </div>
           <div className="w-full h-[500px] lg:h-[500px] relative">
