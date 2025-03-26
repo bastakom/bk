@@ -3,13 +3,11 @@
 import { format } from 'date-fns'
 import Image from 'next/image'
 import { render } from 'storyblok-rich-text-react-renderer'
-import { usePathname, useRouter } from 'next/navigation'
-import Button from '../Button/Button'
-import { FacebookShareButton, LinkedinShareButton } from 'react-share'
+import { useRouter } from 'next/navigation'
 import { IoMdArrowForward } from 'react-icons/io'
 import { useParams } from 'next/navigation'
-import { FaArrowRight } from 'react-icons/fa'
 import { motion } from 'framer-motion'
+import { FacebookShareButton, LinkedinShareButton } from 'react-share'
 
 interface Props {
   props: any
@@ -59,7 +57,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
         </div>
         <div
           key={index}
-          className={`lg:grid flex flex-col-reverse lg:grid-cols-2 gap-10 m-auto container`}
+          className={`${!item.content.full_width && "lg:grid"} flex flex-col-reverse grid-cols-2 gap-10 m-auto container`}
         >
           <div>
             <span className="flex flex-col gap-2 w-full lg:max-w-[80%] font-primary text-[20px] font-light mb-5">
@@ -69,6 +67,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
               <span className="font-bold">
                 {params.lang === 'en' ? 'Share' : 'Dela'}
               </span>
+
               <FacebookShareButton
                 url={`${window.location.toString()}`}
                 className="text-left flex gap-2 font-light"
