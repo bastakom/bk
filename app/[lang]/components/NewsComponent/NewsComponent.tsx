@@ -6,8 +6,6 @@ import { render } from 'storyblok-rich-text-react-renderer'
 import Image from 'next/image'
 import { GoPlus } from 'react-icons/go'
 import { FiMinus } from 'react-icons/fi'
-import NameLoop from '../NameLoop/NameLoop'
-import { format } from 'date-fns'
 
 interface Props {
   props: {
@@ -76,9 +74,8 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                       {locale === 'en' ? 'LATEST NEWS' : 'SENASTE NYHET'}
                     </h1>
                     <h2
-                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] text-[#25364f] ${
-                        hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
-                      }`}
+                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] text-[#25364f] ${hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
+                        }`}
                     >
                       {item.name}
                     </h2>
@@ -89,7 +86,7 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                   <div className="relative h-[300px] lg:h-full w-full lg:w-[500px]">
                     <Image
                       src={
-                        item.content.future_picture.filename
+                        item.content?.future_picture?.filename
                           ? item.content.image.filename
                           : item?.content?.image?.filename
                       }
@@ -121,9 +118,8 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
         <div className="flex flex-wrap gap-5 mb-6 justify-start border-b-2 border-t-2 p-5">
           <button
             onClick={() => setSelectedCategory('')}
-            className={`uppercase ${
-              selectedCategory === '' ? 'text-[#FF6063]' : ''
-            }`}
+            className={`uppercase ${selectedCategory === '' ? 'text-[#FF6063]' : ''
+              }`}
           >
             {locale === 'en' ? 'All news' : 'Alla nyheter'}
           </button>
@@ -131,13 +127,12 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
             <button
               key={item.uuid}
               onClick={() => setSelectedCategory(item.uuid)}
-              className={`uppercase ${
-                selectedCategory === item.uuid ? 'text-[#FF6063]' : ''
-              }`}
+              className={`uppercase ${selectedCategory === item.uuid ? 'text-[#FF6063]' : ''
+                }`}
             >
               {locale === 'en' && item.translated_slugs
                 ? item.translated_slugs.find((slug) => slug.lang === 'en')
-                    ?.name || item.name
+                  ?.name || item.name
                 : item.name}
             </button>
           ))}
@@ -168,9 +163,8 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
 
               <div className="flex flex-col gap-2">
                 <h2
-                  className={`text-[30px] max-w-[80%] font-primary font-normal ${
-                    hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
-                  }`}
+                  className={`text-[30px] max-w-[80%] font-primary font-normal ${hoveredUuid === item.uuid ? 'opacity-100' : 'opacity-100'
+                    }`}
                 >
                   {item.name}
                 </h2>
