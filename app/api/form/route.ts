@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   `
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Notifikation: BK-Kontakt <onboarding@resend.dev>',
+      from: 'Notifikation BK-Kontakt <onboarding@resend.dev>',
       to: ['info@bastakompisar.se'],
       subject: 'Notifikation från BK kontakt',
       html: messageBody,
