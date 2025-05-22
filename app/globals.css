@@ -1,5 +1,5 @@
-@import 'slick-carousel/slick/slick.css';
-@import 'slick-carousel/slick/slick-theme.css';
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
 
 @tailwind base;
 @tailwind components;
@@ -14,7 +14,6 @@ html {
   overflow-x: hidden;
 }
 
-
 ::-webkit-scrollbar {
   display: none;
 }
@@ -24,7 +23,7 @@ html {
   --foreground: black;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --background: black;
   --foreground: white;
 }
@@ -42,45 +41,45 @@ html {
 }
 
 @font-face {
-  font-family: 'Sofia';
-  src: url('../public/fonts/Sofia-Pro-Regular.ttf') format('truetype');
+  font-family: "Sofia";
+  src: url("../public/fonts/Sofia-Pro-Regular.ttf") format("truetype");
   font-weight: 400;
 }
 
 @font-face {
-  font-family: 'Sofia';
-  src: url('../public/fonts/Sofia-Pro-Light.ttf') format('truetype');
+  font-family: "Sofia";
+  src: url("../public/fonts/Sofia-Pro-Light.ttf") format("truetype");
   font-weight: 300;
 }
 
 @font-face {
-  font-family: 'Sofia';
-  src: url('../public/fonts/Sofia-Pro-Bold.ttf') format('truetype');
+  font-family: "Sofia";
+  src: url("../public/fonts/Sofia-Pro-Bold.ttf") format("truetype");
   font-weight: 700;
 }
 
 html {
-  font-family: 'Sofia', sans-serif;
+  font-family: "Sofia", sans-serif;
 }
 
 h1 {
-  font-family: 'Sofia', sans-serif;
+  font-family: "Sofia", sans-serif;
 }
 
 .font-primary {
-  font-family: 'Sofia', sans-serif;
+  font-family: "Sofia", sans-serif;
 }
 
 .font-secondary {
-  font-family: 'Sofia', sans-serif;
+  font-family: "Sofia", sans-serif;
 }
 
 .font-light-sofia {
-  font-family: 'Sofia';
+  font-family: "Sofia";
   font-weight: 300;
 }
 .font-bold-sofia {
-  font-family: 'Sofia';
+  font-family: "Sofia";
   font-weight: 700;
 }
 
@@ -116,7 +115,7 @@ h1 {
 
 a {
   font-size: 18px;
-  font-family: 'Sofia', 'sans-serif';
+  font-family: "Sofia", "sans-serif";
   text-decoration: none;
   transition: 0.5s all ease-in-out;
 }
@@ -221,7 +220,7 @@ a {
 .menu-btn-6 span::before,
 .menu-btn-6 span::after {
   background: #25364f;
-  content: '';
+  content: "";
   position: absolute;
   width: 40px;
   height: 3px;
@@ -302,7 +301,7 @@ a {
   font-weight: light;
 }
 
-input[type='file'] {
+input[type="file"] {
   display: none;
 }
 
@@ -371,12 +370,18 @@ h2 {
   color: #25364f;
 }
 
-
 .in_link p a {
- font-size: 25px !important;
- text-decoration: underline;
+  font-size: 25px !important;
+  text-decoration: underline;
 }
 
 .text-render p {
   font-size: 20px;
 }
+
+.render-content ol {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
