@@ -89,9 +89,9 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
               />
             )}
           </div>
-          <div className="w-full relative h-[400px] lg:h-[600px]">
+          <div className="w-full relative h-[400px] lg:h-[500px]">
             {story.content.show_video ?
-              <video autoPlay loop muted className="w-full h-full object-cover">
+              <video autoPlay loop muted className="w-full h-full object-contain">
                 <source src={story?.content?.video?.filename} />
               </video> :
               <Image
