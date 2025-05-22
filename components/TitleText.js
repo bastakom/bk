@@ -5,9 +5,8 @@ const TitleText = ({ blok }) => {
   return (
     <div className="bg-[#F4E9E6] full-width-element flex justify-center no-padding-bottom">
       <div
-        className={`pt-16 lg:pt-20 pb-20 flex px-2 flex-col gap-5 lg:gap-10 items-${
-          blok.position
-        } ${blok.smallsize ? 'w-full lg:w-[60%]' : 'w-full'}`}
+        className={`pt-16 lg:pt-20 pb-20 flex px-2 flex-col gap-5 lg:gap-10 items-${blok.position
+          } ${blok.smallsize ? 'w-full lg:w-[60%]' : 'w-full'}`}
         {...storyblokEditable(blok)}
       >
         <h2
@@ -17,7 +16,7 @@ const TitleText = ({ blok }) => {
         </h2>
         {blok.content && (
           <span
-            className={`flex flex-col gap-5 text-[16px] lg:text-[20px] font-light service text-${blok.position}`}
+            className={`flex flex-col gap-5 text-[16px] lg:text-[20px] font-light render-content service text-${blok.position}`}
           >
             {render(blok.content)}
           </span>
