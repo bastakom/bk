@@ -57,9 +57,8 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
     <div
       className={`full-width-element pt-32 no-padding-bottom pb-20 px-1`}
       style={{
-        background: `${
-          story.content.background ? story.content.background : "none"
-        }`,
+        background: `${story.content.background ? story.content.background : "none"
+          }`,
       }}
     >
       <div className="container m-auto px-2 lg:px-0">
@@ -91,16 +90,21 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
             )}
           </div>
           <div className="w-full relative h-[400px] lg:h-[600px]">
-            <Image
-              src={story.content.image.filename}
-              fill
-              alt=""
-              className="object-cover"
-            />
+            {story.content.show_video ?
+              <video autoPlay loop muted className="w-full h-full object-cover">
+                <source src={story?.content?.video?.filename} />
+              </video> :
+              <Image
+                src={story.content.image.filename}
+                fill
+                alt=""
+                className="object-cover"
+              />
+            }
           </div>
         </div>
       </div>
-      {story.content.text_block_title  && (
+      {story.content.text_block_title && (
         <div className="flex container flex-col lg:flex-row my-20 m-auto max-auto justify-center p-2 lg:p-0">
           <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
             <div className="flex gap-2 flex-col lg:-ml-5">
