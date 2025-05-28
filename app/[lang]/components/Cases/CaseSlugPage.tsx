@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { IoMdArrowForward } from 'react-icons/io'
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useState } from 'react'
 
@@ -84,9 +84,8 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
             story.content.videos.length > 0 &&
             story.content.videos.slice(0, 1).map((item: any) => (
               <div
-                className={`object-cover relative ${
-                  story.content.sound ? 'w-full lg:w-2/3 m-auto' : 'w-full'
-                } `}
+                className={`object-cover relative ${story.content.sound ? 'w-full lg:w-2/3 m-auto' : 'w-full'
+                  } `}
                 key={item.filename}
               >
                 <video controls playsInline className="w-full">
@@ -103,10 +102,11 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
               story.content.gallery.slice(0, 4).map((item: any) => (
                 <div className="h-[377px] relative w-full" key={item.filename}>
                   {item.filename.endsWith('.mp4') ||
-                  item.filename.endsWith('.mov') ? (
+                    item.filename.endsWith('.mov') ? (
                     <video
                       autoPlay
                       muted
+                      controls
                       playsInline
                       loop
                       className="object-cover h-full w-full"
@@ -163,7 +163,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
             story.content.gallery.slice(4, 8).map((item: any) => (
               <div className="h-[377px] relative w-full" key={item.filename}>
                 {item.filename.endsWith('.mp4') ||
-                item.filename.endsWith('.mov') ? (
+                  item.filename.endsWith('.mov') ? (
                   <video
                     autoPlay
                     muted
