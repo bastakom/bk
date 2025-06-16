@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   `
   try {
     const { data, error } = await resend.emails.send({
-      from: `BK - ${role}: ${name} <onboarding@resend.dev>`,
+      from: `BK - ${role} ${name} <onboarding@resend.dev>`,
       to: ['info@bastakompisar.se'],
       subject: `Notifikation från BK Karriar - ${role}`,
       html: messageBody,
