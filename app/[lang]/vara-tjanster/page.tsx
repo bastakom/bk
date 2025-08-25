@@ -51,7 +51,7 @@ export default page
 
 const getTjanster = async (locale: string) => {
   let sbParams = {
-    version: 'draft' as const,
+    version: 'published' as const,
     starts_with: 'vara-tjanster/',
     language: locale,
   }

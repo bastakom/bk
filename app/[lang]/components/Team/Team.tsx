@@ -33,11 +33,11 @@ const Team = async () => {
               </div>
             )}
             <Image
-              className="object-cover max-h-[520px] xl:max-h-[800px]"
+              className="object-cover min-h-[520px] xl:max-h-[800px]"
               style={{ objectPosition: '50% 50%' }}
               src={member.content.image.filename}
               width={800}
-              height={480}
+              height={520}
               alt={member.name}
             />
           </div>
