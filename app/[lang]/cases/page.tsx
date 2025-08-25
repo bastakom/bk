@@ -18,7 +18,7 @@ export default Page
 
 async function fetchCases(locale: string) {
   let sbParams = {
-    version: 'draft' as const,
+    version: 'published' as const,
     starts_with: 'cases/',
     language: locale,
   }
