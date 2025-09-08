@@ -29,7 +29,7 @@ const MobileNavigation = ({ props, locale }: Props) => {
     setIsOpen(false)
   }
 
- 
+
   const handleClick = debounce(() => {
     setIsOpen(false)
   }, 300)
@@ -55,15 +55,14 @@ const MobileNavigation = ({ props, locale }: Props) => {
       </Link>
 
       <div
-        className={`menu-btn-6 mt-4 z-20 xl:hidden ${open ? 'active' : ''}`}
+        className={`menu-btn-6 mt-4 z-20  ${open ? 'active' : ''}`}
         onClick={handleMenuOpen}
       >
         <span />
       </div>
       <nav
-        className={`flex flex-col h-[100vh] top-0 z-50 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${
-          open ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`flex flex-col h-[100vh] top-0 z-50 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${open ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
         <div className="flex flex-col mt-5 px-5">
           {props.story.content.header_menu.map((item: any) => {
@@ -92,14 +91,14 @@ const MobileNavigation = ({ props, locale }: Props) => {
               item.icon === 'ig'
                 ? 'Instagram'
                 : item.icon === 'li'
-                ? 'Linkedin'
-                : item.icon === 'vi'
-                ? 'Vimeo'
-                : item.icon === 'fb'
-                ? 'Facebook'
-                : item.icon === 'yt'
-                ? 'Youtube'
-                : null
+                  ? 'Linkedin'
+                  : item.icon === 'vi'
+                    ? 'Vimeo'
+                    : item.icon === 'fb'
+                      ? 'Facebook'
+                      : item.icon === 'yt'
+                        ? 'Youtube'
+                        : null
             return (
               <Link
                 href={`${item.link.url}`}

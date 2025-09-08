@@ -15,7 +15,7 @@ export const fetchConfig = async (locale: string) => {
 const MobileHeader = async (locale: any) => {
   const { config } = await fetchConfig(locale.locale)
   return (
-    <div className="block lg:hidden">
+    <div className="block xl:hidden">
       <MobileNavigation props={config.data} locale={locale} />
     </div>
   )
