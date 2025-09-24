@@ -35,8 +35,8 @@ const Page = async () => {
     <div className="">
       <div
         className={`min-h-[100%] lg:min-h-[80vh] flex flex-col lg:flex-row ${configData.about_marginleft
-            ? 'w-full lg:w-[80%] m-auto my-10 lg:my-24 gap-10 lg:gap-20'
-            : 'w-full items-start bg-[#F7F0EE] full-width-element px-4 lg:px-32 gap-10'
+          ? 'w-full lg:w-[80%] m-auto my-10 lg:my-24 gap-10 lg:gap-20'
+          : 'w-full items-start bg-[#F7F0EE] full-width-element px-4 lg:px-32 gap-10'
           } pt-24 lg:pt-40 pb-5 lg:pb-24 mb-0 lg:mb-14 font-primary`}
       >
         <div
@@ -54,8 +54,8 @@ const Page = async () => {
             )}
             <div
               className={`w-full max-w-full lg:max-w-[100%] ${configData.about_marginleft
-                  ? 'text-[50px] lg:text-[70px] font-normal leading-[50px] lg:leading-[85px]'
-                  : 'text-[65px] lg:text-[100px] w-[55%] font-normal leading-[70px] lg:leading-[100px] text-[#25364F]'
+                ? 'text-[50px] lg:text-[70px] font-normal leading-[50px] lg:leading-[85px]'
+                : 'text-[65px] lg:text-[100px] w-[55%] font-normal leading-[70px] lg:leading-[100px] text-[#25364F]'
                 }`}
             >
               {render(configData.about_title)}
@@ -79,8 +79,8 @@ const Page = async () => {
             <Image
               src={configData.about_image.filename}
               className={`object-cover ${!configData.marginleft
-                  ? 'min-h-full max-h-[600px] w-full'
-                  : 'min-h-[100%] lg:min-h-[50vh] '
+                ? 'min-h-full max-h-[400px] w-full'
+                : 'min-h-[100%] lg:min-h-[50vh] '
                 }`}
               width={600}
               height={600}
