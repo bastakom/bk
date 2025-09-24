@@ -107,7 +107,7 @@ const Page = async () => {
       >
         {res.map((member: any) => (
           <div key={member.id} className="relative group">
-            <div className="relative min-h-[520px] max-h-[520px] xl:max-h-[800px]">
+            <div className="relative  max-h-[520px]">
               {member?.content?.content === '' ? null : (
                 <div
                   className="absolute top-0 h-full text-white w-full p-5 flex items-center bg-[#25364F] opacity-0 group-hover:opacity-90
