@@ -53,19 +53,17 @@ const Staplar = ({ props }: Props) => {
         )
 
         return (
-          <div
-            onClick={() => handleView(index)}
+          <Link
+            href={`vara-tjanster/${item.slug}`}
             id="tjanster"
-            className={`h-[600px] ${
-              openIndex === index ? 'w-full' : 'w-full lg:w-1/5'
-            } bg-gray-200 flex flex-col justify-center transition-all duration-300 hover:cursor-pointer relative`}
+            className={`h-[600px] ${openIndex === index ? 'w-full' : 'w-full lg:w-1/5'
+              } bg-gray-200 flex flex-col justify-center transition-all duration-300 hover:cursor-pointer relative`}
             key={index}
           >
             {item.content.image && (
               <Image
-                src={`${
-                  item.content.image ? item?.content?.image.filename : null
-                }`}
+                src={`${item.content.image ? item?.content?.image.filename : null
+                  }`}
                 fill
                 alt={item.name}
                 className="object-cover"
@@ -84,7 +82,7 @@ const Staplar = ({ props }: Props) => {
                       : item.name}
                   </span>
                   <span>
-                    <GoPlus fontSize={'1.4em'} color="#FF6062" />
+                    <IoMdArrowForward fontSize={'1.5em'} color="#FF6062" />
                   </span>
                 </h2>
               )}
@@ -101,7 +99,7 @@ const Staplar = ({ props }: Props) => {
                     </h2>
 
                     <div className="font-primary max-w-[100%] lg:max-w-[60%] text-white reveal">
-                      <span className="leading-[22px] text-left mb-5 text-center lg:text-left">
+                      <span className="leading-[22px] text-left mb-5 lg:text-left">
                         {render(item.content.content)}
                       </span>
                       <span>
@@ -127,7 +125,7 @@ const Staplar = ({ props }: Props) => {
                 </div>
               )}
             </div>
-          </div>
+          </Link>
         )
       })}
     </div>
