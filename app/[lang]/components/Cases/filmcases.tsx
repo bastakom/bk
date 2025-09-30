@@ -53,7 +53,7 @@ const FilmCases = ({ props, config, locale }: Props) => {
 
   return (
     <div className="w-full pt-14 m-auto full-width-element pb-14 no-padding-bottom px-4 lg:px-0">
-      <div className=" m-auto px-5">
+      <div className=" m-auto px-8">
         <div className="z-10 relative">
           <div className="flex m-auto">
             <div
