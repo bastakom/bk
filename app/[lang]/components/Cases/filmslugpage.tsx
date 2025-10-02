@@ -1,32 +1,51 @@
+"use client";
 
-'use client'
-
-import { render } from 'storyblok-rich-text-react-renderer'
-import Image from 'next/image'
-import { useParams, useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { IoMdArrowForward } from 'react-icons/io'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
-import { useState } from 'react'
+import { render } from "storyblok-rich-text-react-renderer";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { IoMdArrowForward } from "react-icons/io";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { useState } from "react";
 
 interface Props {
-  story: any
-  nextCaseSlug: string
+  story: any;
+  nextCaseSlug: string;
 }
 
+// Helper function to extract YouTube video ID from URL
+const getYouTubeVideoId = (url: string): string | null => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+};
+
+// Helper function to check if URL is a YouTube URL
+const isYouTubeUrl = (url: string): boolean => {
+  return url.includes("youtube.com") || url.includes("youtu.be");
+};
+
 const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
-  const [loading, isLoaded] = useState(false)
-  const router = useRouter()
-  const locale = useParams()
+  const [loading, isLoaded] = useState(false);
+  const router = useRouter();
+  const locale = useParams();
 
   const handleNextClick = () => {
-    router.push(`${nextCaseSlug}`)
-  }
+    router.push(`${nextCaseSlug}`);
+  };
 
   setTimeout(() => {
-    isLoaded(true)
-  }, 1000)
+    isLoaded(true);
+  }, 1000);
+
+  // Check if main image is YouTube
+  const mainImage = story?.content?.image;
+  const isMainImageYouTube =
+    mainImage?.is_external_url && isYouTubeUrl(mainImage?.filename);
+  const mainImageYouTubeId = isMainImageYouTube
+    ? getYouTubeVideoId(mainImage?.filename)
+    : null;
 
   return (
     <>
@@ -38,7 +57,14 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
             </div>
           ) : (
             <div className="w-full relative h-[300px] lg:h-[602px]">
-              {story?.content?.image?.filename.endsWith('.mp4') ? (
+              {isMainImageYouTube && mainImageYouTubeId ? (
+                <iframe
+                  src={`https://www.youtube.com/embed/${mainImageYouTubeId}?autoplay=1&mute=1&loop=1&playlist=${mainImageYouTubeId}&controls=0&showinfo=0&rel=0&modestbranding=1`}
+                  className="object-cover h-full w-full"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                />
+              ) : story?.content?.image?.filename.endsWith(".mp4") ? (
                 <video
                   autoPlay
                   muted
@@ -46,11 +72,11 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
                   loop
                   className="object-cover h-full w-full"
                 >
-                  <source src={story.content.image?.filename || ''} />
+                  <source src={story.content.image?.filename || ""} />
                 </video>
               ) : (
                 <Image
-                  src={story?.content?.image?.filename || ''}
+                  src={story?.content?.image?.filename || ""}
                   fill
                   alt="placeholder"
                   quality={100}
@@ -61,7 +87,7 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
           )}
           <div className="flex justify-start w-full gap-2 my-5 ml-0 lg:ml-[3.75rem]">
             <span className="font-light">
-              {locale.lang === 'en' ? 'Client: ' : 'Kund: '}
+              {locale.lang === "en" ? "Client: " : "Kund: "}
             </span>
             <h1 className="font-bold">{story?.name}</h1>
           </div>
@@ -83,47 +109,83 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
           {story.content &&
             Array.isArray(story.content.videos) &&
             story.content.videos.length > 0 &&
-            story.content.videos.slice(0, 1).map((item: any) => (
-              <div
-                className={`object-cover relative ${story.content.sound ? 'w-full lg:w-2/3 m-auto' : 'w-full'
+            story.content.videos.slice(0, 1).map((item: any) => {
+              const isVideoYouTube =
+                item?.is_external_url && isYouTubeUrl(item?.filename);
+              const videoYouTubeId = isVideoYouTube
+                ? getYouTubeVideoId(item?.filename)
+                : null;
+
+              return (
+                <div
+                  className={`object-cover relative ${
+                    story.content.sound ? "w-full lg:w-2/3 m-auto" : "w-full"
                   } `}
-                key={item.filename}
-              >
-                <video controls playsInline className="w-full">
-                  <source src={item?.filename} />
-                </video>
-              </div>
-            ))}
+                  key={item.filename}
+                >
+                  {isVideoYouTube && videoYouTubeId ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoYouTubeId}`}
+                      className="w-full aspect-video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <video controls playsInline className="w-full">
+                      <source src={item?.filename} />
+                    </video>
+                  )}
+                </div>
+              );
+            })}
         </div>
         {story.content && Array.isArray(story.content.gallery) && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-5 container m-auto">
             {story.content &&
               Array.isArray(story.content.gallery) &&
               story.content.gallery.length > 0 &&
-              story.content.gallery.slice(0, 4).map((item: any) => (
-                <div className="h-[377px] relative w-full" key={item.filename}>
-                  {item.filename.endsWith('.mp4') ||
-                    item.filename.endsWith('.mov') ? (
-                    <video
-                      autoPlay
-                      muted
-                      controls
-                      playsInline
-                      loop
-                      className="object-cover h-full w-full"
-                    >
-                      <source src={item?.filename || ''} />
-                    </video>
-                  ) : (
-                    <Image
-                      src={item?.filename || ''}
-                      fill
-                      alt=""
-                      className="object-cover"
-                    />
-                  )}
-                </div>
-              ))}
+              story.content.gallery.slice(0, 4).map((item: any) => {
+                const isGalleryItemYouTube =
+                  item?.is_external_url && isYouTubeUrl(item?.filename);
+                const galleryItemYouTubeId = isGalleryItemYouTube
+                  ? getYouTubeVideoId(item?.filename)
+                  : null;
+
+                return (
+                  <div
+                    className="h-[377px] relative w-full"
+                    key={item.filename}
+                  >
+                    {isGalleryItemYouTube && galleryItemYouTubeId ? (
+                      <iframe
+                        src={`https://www.youtube.com/embed/${galleryItemYouTubeId}?autoplay=1&mute=1&loop=1&playlist=${galleryItemYouTubeId}`}
+                        className="object-cover h-full w-full"
+                        allow="autoplay; encrypted-media"
+                        allowFullScreen
+                      />
+                    ) : item.filename.endsWith(".mp4") ||
+                      item.filename.endsWith(".mov") ? (
+                      <video
+                        autoPlay
+                        muted
+                        controls
+                        playsInline
+                        loop
+                        className="object-cover h-full w-full"
+                      >
+                        <source src={item?.filename || ""} />
+                      </video>
+                    ) : (
+                      <Image
+                        src={item?.filename || ""}
+                        fill
+                        alt=""
+                        className="object-cover"
+                      />
+                    )}
+                  </div>
+                );
+              })}
           </div>
         )}
         {!story.content.hide_content_under_gallery && (
@@ -145,7 +207,7 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
             {story.content.extrattitlecontent && (
               <div
                 className="max-w-full lg:max-w-[40%] mt-20 flex flex-col gap-14 pb-10 mb-14"
-                style={{ borderBottom: '1px solid #25364F' }}
+                style={{ borderBottom: "1px solid #25364F" }}
               >
                 <h3 className="text-[32px] lg:text-[50px] font-primary">
                   {story.content.extrattitlecontent}
@@ -161,29 +223,44 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
           {story.content &&
             Array.isArray(story.content.gallery) &&
             story.content.gallery.length > 4 &&
-            story.content.gallery.slice(4, 8).map((item: any) => (
-              <div className="h-[377px] relative w-full" key={item.filename}>
-                {item.filename.endsWith('.mp4') ||
-                  item.filename.endsWith('.mov') ? (
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="object-cover h-full w-full"
-                  >
-                    <source src={item?.filename || ''} />
-                  </video>
-                ) : (
-                  <Image
-                    src={item?.filename || ''}
-                    fill
-                    alt=""
-                    className="object-cover"
-                  />
-                )}
-              </div>
-            ))}
+            story.content.gallery.slice(4, 8).map((item: any) => {
+              const isGalleryItemYouTube =
+                item?.is_external_url && isYouTubeUrl(item?.filename);
+              const galleryItemYouTubeId = isGalleryItemYouTube
+                ? getYouTubeVideoId(item?.filename)
+                : null;
+
+              return (
+                <div className="h-[377px] relative w-full" key={item.filename}>
+                  {isGalleryItemYouTube && galleryItemYouTubeId ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${galleryItemYouTubeId}?autoplay=1&mute=1&loop=1&playlist=${galleryItemYouTubeId}`}
+                      className="object-cover h-full w-full"
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
+                    />
+                  ) : item.filename.endsWith(".mp4") ||
+                    item.filename.endsWith(".mov") ? (
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="object-cover h-full w-full"
+                    >
+                      <source src={item?.filename || ""} />
+                    </video>
+                  ) : (
+                    <Image
+                      src={item?.filename || ""}
+                      fill
+                      alt=""
+                      className="object-cover"
+                    />
+                  )}
+                </div>
+              );
+            })}
         </div>
 
         <div className="flex flex-col gap-2 text-[18px] lg:text-[20px] max-w-full lg:max-w-[40%] container font-light-sofia">
@@ -192,19 +269,36 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
         <div className="w-ful gap-5 container m-auto">
           {Array.isArray(story.content.gallery) &&
             story.content.videos.length === 2 &&
-            story.content.videos.slice(1, 2).map((item: any, index: number) => (
-              <div className="object-cover relative w-full" key={index}>
-                <video controls playsInline className="w-full">
-                  <source src={item.filename} />
-                </video>
-              </div>
-            ))}
+            story.content.videos.slice(1, 2).map((item: any, index: number) => {
+              const isVideoYouTube =
+                item?.is_external_url && isYouTubeUrl(item?.filename);
+              const videoYouTubeId = isVideoYouTube
+                ? getYouTubeVideoId(item?.filename)
+                : null;
+
+              return (
+                <div className="object-cover relative w-full" key={index}>
+                  {isVideoYouTube && videoYouTubeId ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoYouTubeId}`}
+                      className="w-full aspect-video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <video controls playsInline className="w-full">
+                      <source src={item.filename} />
+                    </video>
+                  )}
+                </div>
+              );
+            })}
         </div>
       </div>
       {story?.content?.footer_image?.filename && (
         <div className="w-full relative h-[602px] mb-5 container m-auto">
           <Image
-            src={story?.content?.footer_image?.filename || ''}
+            src={story?.content?.footer_image?.filename || ""}
             fill
             alt="placeholder"
             quality={100}
@@ -217,19 +311,19 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
           className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
           onClick={handleNextClick}
         >
-          {locale.lang === 'en' ? 'Next' : 'Nästa'}
+          {locale.lang === "en" ? "Next" : "Nästa"}
           <motion.span
             variants={{
               hover: { x: 5 },
             }}
-            transition={{ type: 'spring', stiffness: 300 }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
-            <IoMdArrowForward fontSize={'1.3em'} color="#FF6062" />
+            <IoMdArrowForward fontSize={"1.3em"} color="#FF6062" />
           </motion.span>
         </button>
       </motion.div>
     </>
-  )
-}
+  );
+};
 
-export default FilmSlugPage
+export default FilmSlugPage;
