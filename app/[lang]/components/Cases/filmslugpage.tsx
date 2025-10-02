@@ -306,22 +306,6 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
           />
         </div>
       )}
-      <motion.div whileHover="hover">
-        <button
-          className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
-          onClick={handleNextClick}
-        >
-          {locale.lang === "en" ? "Next" : "Nästa"}
-          <motion.span
-            variants={{
-              hover: { x: 5 },
-            }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <IoMdArrowForward fontSize={"1.3em"} color="#FF6062" />
-          </motion.span>
-        </button>
-      </motion.div>
     </>
   );
 };
