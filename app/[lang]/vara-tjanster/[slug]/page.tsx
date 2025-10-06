@@ -107,6 +107,12 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
               {story.content.sub_title}
             </h2>
           )}
+
+          {story.content.content && (
+            <span className="text-[20px] lg:text-[22px] font-normal leading-[32px] max-w-[800px] mx-auto">
+              {render(story.content.content)}
+            </span>
+          )}
         </div>
       </div>
 

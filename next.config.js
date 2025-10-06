@@ -13,6 +13,11 @@ const nextConfig = {
         hostname: 'bastakompisar.se',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.youtube.com',
+        port: '',
+      },
     ],
   },
 }
