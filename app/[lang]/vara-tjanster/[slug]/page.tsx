@@ -4,6 +4,7 @@ import { render } from "storyblok-rich-text-react-renderer";
 import Button from "../../components/Button/Button";
 import CasesReelComponent from "../../components/Cases/CaseReelComponent";
 import FilmCases from "../../components/Cases/filmcases";
+import ExpandableContent from "../../components/ExpandableContent/ExpandableContent";
 
 const fetchCases = async (locale: string) => {
   let sbParams = {
@@ -14,9 +15,13 @@ const fetchCases = async (locale: string) => {
 
   const storyblokApi = getStoryblokApi();
   try {
-    const response = await storyblokApi.get(`cdn/stories/`, sbParams, {
-      cache: "no-store",
-    });
+    const response = await storyblokApi.get(
+      `cdn/stories/`,
+      sbParams,
+      {
+        cache: "no-store",
+      }
+    );
     return response;
   } catch (error) {
     console.error("Error fetching cases:");
@@ -26,63 +31,85 @@ const fetchCases = async (locale: string) => {
 
 const getFilm = async () => {
   let sbParams = {
-    version: 'draft' as const,
-    starts_with: 'filmproduction/',
-  }
+    version: "draft" as const,
+    starts_with: "filmproduction/",
+  };
 
-  const storyblokApi = getStoryblokApi()
+  const storyblokApi = getStoryblokApi();
 
-  const res = await storyblokApi.get(`cdn/stories/`, sbParams, {
-    cache: 'no-store',
-  })
-  return res.data.stories
-}
+  const res = await storyblokApi.get(
+    `cdn/stories/`,
+    sbParams,
+    {
+      cache: "no-store",
+    }
+  );
+  return res.data.stories;
+};
 
 const fetchConfig = async (locale: string) => {
-  let sbParams = { version: 'draft' as const, language: locale }
+  let sbParams = {
+    version: "draft" as const,
+    language: locale,
+  };
 
-  const storyblokApi = getStoryblokApi()
-  const config = await storyblokApi.get(`cdn/stories/config`, sbParams, {
-    cache: 'no-store',
-  })
-  return config.data.story.content
-}
-
+  const storyblokApi = getStoryblokApi();
+  const config = await storyblokApi.get(
+    `cdn/stories/config`,
+    sbParams,
+    {
+      cache: "no-store",
+    }
+  );
+  return config.data.story.content;
+};
 
 const getSlugData = async (slug: string) => {
   let sbParams = { version: "draft" as const };
 
   const storyblokApi = getStoryblokApi();
-  return await storyblokApi.get(`cdn/stories/vara-tjanster/${slug}`, sbParams);
+  return await storyblokApi.get(
+    `cdn/stories/vara-tjanster/${slug}`,
+    sbParams
+  );
 };
 
-const page = async ({ params }: { params: { slug: string; lang: string } }) => {
+const page = async ({
+  params,
+}: {
+  params: { slug: string; lang: string };
+}) => {
   const pathname = params.slug;
-
 
   const res = await getSlugData(pathname);
   const cases = await fetchCases(params.lang);
-  const filmprod = await getFilm()
-  const config = await fetchConfig(params.lang)
+  const filmprod = await getFilm();
+  const config = await fetchConfig(params.lang);
 
   const {
     data: { story },
   } = res;
 
-  const filteredStories = cases.data.stories.filter((item: any) => {
-    const categories = item.content.Kategori;
-    const storyNameLower = story.name.toLowerCase();
+  const filteredStories = cases.data.stories.filter(
+    (item: any) => {
+      const categories = item.content.Kategori;
+      const storyNameLower = story.name.toLowerCase();
 
-    if (Array.isArray(categories)) {
-      return categories.some(
-        (category: string) => category.toLowerCase() === storyNameLower
+      if (Array.isArray(categories)) {
+        return categories.some(
+          (category: string) =>
+            category.toLowerCase() === storyNameLower
+        );
+      }
+
+      return (
+        categories.toString().toLowerCase() ===
+        storyNameLower
       );
     }
+  );
 
-    return categories.toString().toLowerCase() === storyNameLower;
-  });
-
-  return story.content.filmproductionsida ?
+  return story.content.filmproductionsida ? (
     <div className="">
       <div className="w-full relative h-[90vh]">
         <video
@@ -92,26 +119,27 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
           loop
           className="object-cover h-full w-full"
         >
-          <source src={story.content.video?.filename || ''} />
+          <source
+            src={story.content.video?.filename || ""}
+          />
         </video>
       </div>
       <div>
         <div className="py-14 text-center flex flex-col gap-5 lg:gap-10 justify-center">
           {story.content.title && (
-            <div className="text-[65px] mx-auto lg:text-[100px] max-w-[80%] xl:max-w-[70%] leading-[70px] text-[#25364f] lg:leading-[120px]">
+            <div className="text-[30px] lg:text-[65px] mx-auto lg:text-[100px] max-w-[80%] xl:max-w-[70%] leading-[70px] text-[#25364f] lg:leading-[120px]">
               {render(story.content.title)}
             </div>
           )}
           {story.content.sub_title && (
-            <h2 className="text-[28px] lg:text-[30px] leading-[35px]">
+            <h2 className="lg:text-[28px] lg:text-[30px] leading-[35px]">
               {story.content.sub_title}
             </h2>
           )}
-
           {story.content.content && (
-            <span className="text-[20px] lg:text-[22px] font-normal leading-[32px] max-w-[800px] mx-auto">
-              {render(story.content.content)}
-            </span>
+            <ExpandableContent
+              content={story.content.content}
+            />
           )}
         </div>
       </div>
@@ -122,17 +150,22 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
         locale={params.lang}
       />
     </div>
-    :
+  ) : (
     <div
       className={`full-width-element pt-32 no-padding-bottom pb-20 px-1`}
       style={{
-        background: `${story.content.background ? story.content.background : "none"
-          }`,
+        background: `${
+          story.content.background
+            ? story.content.background
+            : "none"
+        }`,
       }}
     >
       <div className="container m-auto px-2 lg:px-0">
         <div className="text-left lg:text-center flex flex-col gap-5 lg:gap-10 justify-center">
-          <h1 className="text-[20px] uppercase text-black">{story.name}</h1>
+          <h1 className="text-[20px] uppercase text-black">
+            {story.name}
+          </h1>
           {story.content.title && (
             <div className="text-[65px] lg:text-[100px] leading-[70px] text-[#25364f] lg:leading-[120px]">
               {render(story.content.title)}
@@ -159,17 +192,26 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
             )}
           </div>
           <div className="w-full relative h-[400px] lg:h-[500px]">
-            {story.content.show_video ?
-              <video controls autoPlay loop muted className="w-full h-full object-contain">
-                <source src={story?.content?.video?.filename} />
-              </video> :
+            {story.content.show_video ? (
+              <video
+                controls
+                autoPlay
+                loop
+                muted
+                className="w-full h-full object-contain"
+              >
+                <source
+                  src={story?.content?.video?.filename}
+                />
+              </video>
+            ) : (
               <Image
                 src={story.content.image.filename}
                 fill
                 alt=""
                 className="object-cover"
               />
-            }
+            )}
           </div>
         </div>
       </div>
@@ -189,25 +231,33 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
       )}
       <div className="grid lg:grid-cols-2 mx-auto justify-start container gap-10 p-2 lg:p-0">
         {story.content.text_block_repeater &&
-          story.content.text_block_repeater.map((item: any) => {
-            return (
-              <div className="m-auto">
-                <span className="text-[35px]">{render(item.title)}</span>
-                <span>{render(item.content)}</span>
-              </div>
-            );
-          })}
+          story.content.text_block_repeater.map(
+            (item: any) => {
+              return (
+                <div className="m-auto">
+                  <span className="text-[35px]">
+                    {render(item.title)}
+                  </span>
+                  <span>{render(item.content)}</span>
+                </div>
+              );
+            }
+          )}
       </div>
 
       <div className="pl-2 px-1 lg:px-0 lg:pl-14 py-14">
         <h2 className="py-10 text-center uppercase text-[20px]">
-          {params.lang === "en" ? "Selection case" : "Urval case"}
+          {params.lang === "en"
+            ? "Selection case"
+            : "Urval case"}
         </h2>
-        {filteredStories && Array.isArray(filteredStories) && (
-          <CasesReelComponent props={filteredStories} />
-        )}
+        {filteredStories &&
+          Array.isArray(filteredStories) && (
+            <CasesReelComponent props={filteredStories} />
+          )}
       </div>
     </div>
+  );
 };
 
 export default page;

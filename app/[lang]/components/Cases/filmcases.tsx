@@ -1,59 +1,60 @@
+"use client";
 
-'use client'
-
-import { useState } from 'react'
-import Link from 'next/link'
-import placeholder from '@/public/placeholder.png'
-import Image from 'next/image'
-import { useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
-import { render } from 'storyblok-rich-text-react-renderer'
+import { useState } from "react";
+import Link from "next/link";
+import placeholder from "@/public/placeholder.png";
+import Image from "next/image";
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { render } from "storyblok-rich-text-react-renderer";
 
 interface Props {
-  props: any
-  config: any
-  locale: string
+  props: any;
+  config: any;
+  locale: string;
 }
 
 const FilmCases = ({ props, config, locale }: Props) => {
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [data, setData] = useState<{ data: { stories: any[] } } | null>(null)
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
-  const container = useRef<HTMLInputElement>(null)
-
+  const [selectedCategory, setSelectedCategory] =
+    useState("");
+  const [data, setData] = useState<{
+    data: { stories: any[] };
+  } | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<
+    string | null
+  >(null);
+  const container = useRef<HTMLInputElement>(null);
 
   useGSAP(() => {
     async function fetchData() {
-      const casesData = props
-      setData(casesData)
+      const casesData = props;
+      setData(casesData);
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   useGSAP(() => {
     gsap.fromTo(
-      '.filtered-item',
+      ".filtered-item",
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }
-    )
-  }, [selectedCategory])
+    );
+  }, [selectedCategory]);
 
   const handleMouseEnter = (uuid: string) => {
-    setHoveredItem(uuid)
-  }
+    setHoveredItem(uuid);
+  };
 
   const handleMouseLeave = () => {
-    setHoveredItem(null)
-  }
+    setHoveredItem(null);
+  };
 
-
-  if (!data) return <div>Loading...</div>
-
+  if (!data) return <div>Loading...</div>;
 
   return (
     <div className="w-full pt-14 m-auto full-width-element pb-14 no-padding-bottom px-4 lg:px-0">
-      <div className=" m-auto px-8">
+      <div className=" m-auto lg:px-8">
         <div className="z-10 relative">
           <div className="flex m-auto">
             <div
@@ -66,23 +67,26 @@ const FilmCases = ({ props, config, locale }: Props) => {
                     key={item.uuid}
                     href={`/${item.full_slug}`}
                     className="w-full h-[400px] lg:h-[400px] relative"
-                    onMouseEnter={() => handleMouseEnter(item.uuid)}
+                    onMouseEnter={() =>
+                      handleMouseEnter(item.uuid)
+                    }
                     onMouseLeave={handleMouseLeave}
                   >
                     <div className="filtered-item h-full">
                       <div
-                        className={`transition-opacity duration-300 ${hoveredItem === item.uuid
-                          ? 'opacity-80'
-                          : 'opacity-0'
-                          } absolute inset-0 bg-[#25364f] z-10`}
+                        className={`transition-opacity duration-300 ${
+                          hoveredItem === item.uuid
+                            ? "opacity-80"
+                            : "opacity-0"
+                        } absolute inset-0 bg-[#25364f] z-10`}
                       />
 
                       {item?.content?.videoimage?.filename?.endsWith(
-                        '.mp4'
+                        ".mp4"
                       ) ||
-                        item?.content?.videoimage?.filename?.endsWith(
-                          '.mov'
-                        ) ? (
+                      item?.content?.videoimage?.filename?.endsWith(
+                        ".mov"
+                      ) ? (
                         <video
                           autoPlay
                           loop
@@ -97,11 +101,15 @@ const FilmCases = ({ props, config, locale }: Props) => {
                       ) : (
                         <Image
                           src={
-                            item.content.videoimage?.filename || placeholder
+                            item.content.videoimage
+                              ?.filename || placeholder
                           }
                           height={500}
                           width={500}
-                          style={{ width: '100%', height: '400px' }}
+                          style={{
+                            width: "100%",
+                            height: "400px",
+                          }}
                           alt="placeholder"
                           className="object-cover absolute h-full w-full"
                         />
@@ -112,36 +120,43 @@ const FilmCases = ({ props, config, locale }: Props) => {
                       className={`flex p-5 h-full w-full items-start justify-end z-20 absolute flex-col bottom-0`}
                     >
                       <span
-                        className={`transition-opacity duration-300 ${hoveredItem === item.uuid
-                          ? 'text-white opacity-100'
-                          : 'text-white opacity-100'
-                          } text-[28px] leading-10 font-bold font-primary`}
+                        className={`transition-opacity duration-300 ${
+                          hoveredItem === item.uuid
+                            ? "text-white opacity-100"
+                            : "text-white opacity-100"
+                        } text-[28px] leading-10 font-bold font-primary`}
                       >
                         {item.name}
                       </span>
-                      {locale === 'en'
+                      {locale === "en"
                         ? item.content.categoriesen && (
-                          <span className="text-[16px] font-light italic font-primary text-white">
-                            {item.content.categoriesen.join(', ')}
-                          </span>
-                        )
+                            <span className="text-[16px] font-light italic font-primary text-white">
+                              {item.content.categoriesen.join(
+                                ", "
+                              )}
+                            </span>
+                          )
                         : item.content.Kategori && (
-                          <span className="text-[16px] font-light italic font-primary text-white">
-                            {Array.isArray(item.content.Kategori)
-                              ? item.content.Kategori.join(' / ')
-                              : item.content.Kategori}
-                          </span>
-                        )}
+                            <span className="text-[16px] font-light italic font-primary text-white">
+                              {Array.isArray(
+                                item.content.Kategori
+                              )
+                                ? item.content.Kategori.join(
+                                    " / "
+                                  )
+                                : item.content.Kategori}
+                            </span>
+                          )}
                     </div>
                   </Link>
-                )
+                );
               })}
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FilmCases
+export default FilmCases;
