@@ -45,8 +45,31 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
     description = description.substring(0, maxLength) + "...";
   }
 
-  // Get the main image URL, fallback to a default if not available
-  const imageUrl = story.content.image?.filename || "https://bastakompisar.se/bk-black.png";
+  // Handle video vs image for Open Graph
+  let imageUrl = "https://bastakompisar.se/bk-black.png"; // default fallback
+
+  if (story.content.image?.filename) {
+    // Check if the hero content is a video
+    if (story.content.image.filename.endsWith(".mp4")) {
+      // For videos, try to use footer_image or gallery images as fallback
+      if (story.content.footer_image?.filename) {
+        imageUrl = story.content.footer_image.filename;
+      } else if (story.content.gallery && story.content.gallery.length > 0) {
+        // Find first non-video image in gallery
+        const firstImage = story.content.gallery.find(
+          (item: any) => !item.filename.endsWith(".mp4") && !item.filename.endsWith(".mov")
+        );
+        if (firstImage) {
+          imageUrl = firstImage.filename;
+        }
+      }
+      // If no alternative image found, keep the default logo
+    } else {
+      // It's an image, use it directly
+      imageUrl = story.content.image.filename;
+    }
+  }
+
   const siteUrl = "https://bastakompisar.se";
   const currentUrl = `${siteUrl}/${params.lang}/cases/${pathname}`;
 
