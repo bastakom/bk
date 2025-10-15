@@ -70,6 +70,16 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
     }
   }
 
+  // Ensure the image URL is absolute and uses HTTPS (LinkedIn requirement)
+  if (imageUrl && !imageUrl.startsWith("http")) {
+    imageUrl = `https://bastakompisar.se${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
+  }
+
+  // Convert HTTP to HTTPS if needed (LinkedIn requires HTTPS)
+  if (imageUrl && imageUrl.startsWith("http://")) {
+    imageUrl = imageUrl.replace("http://", "https://");
+  }
+
   const siteUrl = "https://bastakompisar.se";
   const currentUrl = `${siteUrl}/${params.lang}/cases/${pathname}`;
 
@@ -97,6 +107,16 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
       title: `${story.name} – Bästa Kompisar kundcase`,
       description,
       images: [imageUrl],
+    },
+    // LinkedIn-specific meta tags
+    other: {
+      "og:image": imageUrl,
+      "og:image:secure_url": imageUrl,
+      "og:image:width": "1200",
+      "og:image:height": "630",
+      "og:image:type": "image/jpeg",
+      "article:author": "Bästa Kompisar",
+      "article:publisher": "https://bastakompisar.se",
     },
   };
 }
