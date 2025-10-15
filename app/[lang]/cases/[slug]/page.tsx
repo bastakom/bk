@@ -45,11 +45,17 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
     description = description.substring(0, maxLength) + "...";
   }
 
-  // Handle video vs image for Open Graph - with comprehensive fallback logic
+  // Handle Open Graph image - prioritize Meta og_image
   let imageUrl = "https://bastakompisar.se/bk-black.png"; // default fallback
 
-  // Create a better default OG image URL that includes the case name
-  const defaultOGImage = `https://bastakompisar.se/api/og?title=${encodeURIComponent(story.name)}&type=case`;
+  // First priority: Use Storyblok Meta og_image if set
+  if (story.content.Meta?.og_image && story.content.Meta.og_image.trim() !== "") {
+    imageUrl = story.content.Meta.og_image;
+    console.log("Using Meta og_image:", imageUrl);
+  } else {
+    // Fallback logic if no Meta og_image is set
+    console.log("No Meta og_image found, using fallback logic");
+  }
 
   // Debug: Log the story content structure
   console.log("Story content structure:", {
