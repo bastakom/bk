@@ -58,10 +58,18 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
     hasFooterImage: !!story.content.footer_image?.filename,
     hasGallery: !!story.content.gallery,
     galleryLength: story.content.gallery?.length || 0,
+    hasMeta: !!story.content.Meta,
+    metaOgImage: story.content.Meta?.og_image || "not set",
   });
 
   // Try multiple sources for a valid image
   const potentialImages = [];
+
+  // 0. PRIORITY: Check Storyblok Meta og_image field first (SEO plugin)
+  if (story.content.Meta?.og_image && story.content.Meta.og_image.trim() !== "") {
+    console.log("Adding Meta og_image (priority):", story.content.Meta.og_image);
+    potentialImages.push(story.content.Meta.og_image);
+  }
 
   // 1. Add hero image if it's not a video
   if (story.content.image?.filename && !story.content.image.filename.endsWith(".mp4")) {
