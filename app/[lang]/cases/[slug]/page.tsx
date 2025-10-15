@@ -45,30 +45,69 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
     description = description.substring(0, maxLength) + "...";
   }
 
-  // Handle video vs image for Open Graph - with better fallback logic
+  // Handle video vs image for Open Graph - with comprehensive fallback logic
   let imageUrl = "https://bastakompisar.se/bk-black.png"; // default fallback
+
+  // Debug: Log the story content structure
+  console.log("Story content structure:", {
+    hasImage: !!story.content.image?.filename,
+    imageType: story.content.image?.filename?.split(".").pop(),
+    hasFooterImage: !!story.content.footer_image?.filename,
+    hasGallery: !!story.content.gallery,
+    galleryLength: story.content.gallery?.length || 0,
+  });
 
   // Try multiple sources for a valid image
   const potentialImages = [];
 
-  // Add hero image if it's not a video
+  // 1. Add hero image if it's not a video
   if (story.content.image?.filename && !story.content.image.filename.endsWith(".mp4")) {
+    console.log("Adding hero image:", story.content.image.filename);
     potentialImages.push(story.content.image.filename);
   }
 
-  // Add footer image
-  if (story.content.footer_image?.filename) {
+  // 2. Add footer image
+  if (story.content.footer_image?.filename && !story.content.footer_image.filename.endsWith(".mp4")) {
+    console.log("Adding footer image:", story.content.footer_image.filename);
     potentialImages.push(story.content.footer_image.filename);
   }
 
-  // Add first few gallery images (non-videos)
+  // 3. Add gallery images (non-videos)
   if (story.content.gallery && Array.isArray(story.content.gallery)) {
-    story.content.gallery.slice(0, 3).forEach((item: any) => {
+    console.log("Checking gallery with", story.content.gallery.length, "items");
+    story.content.gallery.forEach((item: any, index: number) => {
       if (item.filename && !item.filename.endsWith(".mp4") && !item.filename.endsWith(".mov")) {
+        console.log(`Adding gallery image ${index}:`, item.filename);
         potentialImages.push(item.filename);
+      } else {
+        console.log(`Skipping gallery item ${index} (video):`, item.filename);
       }
     });
   }
+
+  // 4. Check for video thumbnails or other image fields
+  if (story.content.videos && Array.isArray(story.content.videos)) {
+    story.content.videos.forEach((video: any) => {
+      if (video.thumbnail?.filename) {
+        console.log("Adding video thumbnail:", video.thumbnail.filename);
+        potentialImages.push(video.thumbnail.filename);
+      }
+    });
+  }
+
+  // 5. For MP4 videos, try to generate a preview URL (some CDNs support this)
+  if (story.content.image?.filename && story.content.image.filename.endsWith(".mp4")) {
+    // Try to get a video preview frame - some CDNs provide this
+    const videoUrl = story.content.image.filename;
+    if (videoUrl.includes("storyblok.com")) {
+      // Storyblok sometimes provides video thumbnails by changing extension
+      const possibleThumbnail = videoUrl.replace(".mp4", ".jpg");
+      console.log("Trying video thumbnail:", possibleThumbnail);
+      potentialImages.push(possibleThumbnail);
+    }
+  }
+
+  console.log("Total potential images found:", potentialImages.length, potentialImages);
 
   // Use first available image, ensure it's a full URL
   if (potentialImages.length > 0) {
@@ -85,9 +124,10 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
     }
 
     imageUrl = selectedImage;
+    console.log("Using selected image:", imageUrl);
+  } else {
+    console.log("No valid images found, using default logo:", imageUrl);
   }
-
-  console.log("Selected image URL for OG:", imageUrl); // Debug log
 
   const siteUrl = "https://bastakompisar.se";
   const currentUrl = `${siteUrl}/${params.lang}/cases/${pathname}`;
