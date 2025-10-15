@@ -42,9 +42,36 @@ export async function generateMetadata({
     description = description.substring(0, maxLength) + '...'
   }
 
+  // Get the main image URL, fallback to a default if not available
+  const imageUrl = story.content.image?.filename || 'https://bastakompisar.se/bk-black.png'
+  const siteUrl = 'https://bastakompisar.se'
+  const currentUrl = `${siteUrl}/${params.lang}/cases/${pathname}`
+
   return {
     title: `${story.name} – Bästa Kompisar kundcase`,
     description,
+    openGraph: {
+      title: `${story.name} – Bästa Kompisar kundcase`,
+      description,
+      url: currentUrl,
+      siteName: 'Bästa Kompisar',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${story.name} - ${story.content.title}`,
+        },
+      ],
+      locale: params.lang === 'sv' ? 'sv_SE' : 'en_US',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${story.name} – Bästa Kompisar kundcase`,
+      description,
+      images: [imageUrl],
+    },
   }
 }
 

@@ -25,6 +25,28 @@ storyblokInit({
 export const metadata: Metadata = {
   title: "Reklambyrån Bästa Kompisar – En fullservicebyrå",
   description: "En fullservicebyrå",
+  openGraph: {
+    title: "Reklambyrån Bästa Kompisar – En fullservicebyrå",
+    description: "En fullservicebyrå",
+    url: "https://bastakompisar.se",
+    siteName: "Bästa Kompisar",
+    images: [
+      {
+        url: "https://bastakompisar.se/bk-black.png",
+        width: 1200,
+        height: 630,
+        alt: "Bästa Kompisar logotype",
+      },
+    ],
+    locale: "sv_SE",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Reklambyrån Bästa Kompisar – En fullservicebyrå",
+    description: "En fullservicebyrå",
+    images: ["https://bastakompisar.se/bk-black.png"],
+  },
 };
 
 export default function RootLayout({
@@ -47,10 +69,7 @@ export default function RootLayout({
             type="text/javascript"
             async
           ></script>
-          <meta
-            name="google-site-verification"
-            content="MVGaWH59KC0hiSCCWnHPFU68sqy2reAmTntOeaK4n-I"
-          />
+          <meta name="google-site-verification" content="MVGaWH59KC0hiSCCWnHPFU68sqy2reAmTntOeaK4n-I" />
           <GoogleAnalytics gaId="GTM-N5M8HVH" />
         </head>
 
