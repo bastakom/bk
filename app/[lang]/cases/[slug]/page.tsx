@@ -45,40 +45,49 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
     description = description.substring(0, maxLength) + "...";
   }
 
-  // Handle video vs image for Open Graph
+  // Handle video vs image for Open Graph - with better fallback logic
   let imageUrl = "https://bastakompisar.se/bk-black.png"; // default fallback
 
-  if (story.content.image?.filename) {
-    // Check if the hero content is a video
-    if (story.content.image.filename.endsWith(".mp4")) {
-      // For videos, try to use footer_image or gallery images as fallback
-      if (story.content.footer_image?.filename) {
-        imageUrl = story.content.footer_image.filename;
-      } else if (story.content.gallery && story.content.gallery.length > 0) {
-        // Find first non-video image in gallery
-        const firstImage = story.content.gallery.find(
-          (item: any) => !item.filename.endsWith(".mp4") && !item.filename.endsWith(".mov")
-        );
-        if (firstImage) {
-          imageUrl = firstImage.filename;
-        }
+  // Try multiple sources for a valid image
+  const potentialImages = [];
+
+  // Add hero image if it's not a video
+  if (story.content.image?.filename && !story.content.image.filename.endsWith(".mp4")) {
+    potentialImages.push(story.content.image.filename);
+  }
+
+  // Add footer image
+  if (story.content.footer_image?.filename) {
+    potentialImages.push(story.content.footer_image.filename);
+  }
+
+  // Add first few gallery images (non-videos)
+  if (story.content.gallery && Array.isArray(story.content.gallery)) {
+    story.content.gallery.slice(0, 3).forEach((item: any) => {
+      if (item.filename && !item.filename.endsWith(".mp4") && !item.filename.endsWith(".mov")) {
+        potentialImages.push(item.filename);
       }
-      // If no alternative image found, keep the default logo
-    } else {
-      // It's an image, use it directly
-      imageUrl = story.content.image.filename;
+    });
+  }
+
+  // Use first available image, ensure it's a full URL
+  if (potentialImages.length > 0) {
+    let selectedImage = potentialImages[0];
+
+    // Ensure it's a full HTTPS URL
+    if (selectedImage.startsWith("//")) {
+      selectedImage = `https:${selectedImage}`;
+    } else if (selectedImage.startsWith("http://")) {
+      selectedImage = selectedImage.replace("http://", "https://");
+    } else if (!selectedImage.startsWith("http")) {
+      // If it's a relative path, it might be from your domain
+      selectedImage = `https://bastakompisar.se${selectedImage.startsWith("/") ? "" : "/"}${selectedImage}`;
     }
+
+    imageUrl = selectedImage;
   }
 
-  // Ensure the image URL is absolute and uses HTTPS (LinkedIn requirement)
-  if (imageUrl && !imageUrl.startsWith("http")) {
-    imageUrl = `https://bastakompisar.se${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
-  }
-
-  // Convert HTTP to HTTPS if needed (LinkedIn requires HTTPS)
-  if (imageUrl && imageUrl.startsWith("http://")) {
-    imageUrl = imageUrl.replace("http://", "https://");
-  }
+  console.log("Selected image URL for OG:", imageUrl); // Debug log
 
   const siteUrl = "https://bastakompisar.se";
   const currentUrl = `${siteUrl}/${params.lang}/cases/${pathname}`;
@@ -100,7 +109,7 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
         },
       ],
       locale: params.lang === "sv" ? "sv_SE" : "en_US",
-      type: "website",
+      type: "article",
     },
     twitter: {
       card: "summary_large_image",
@@ -114,9 +123,12 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
       "og:image:secure_url": imageUrl,
       "og:image:width": "1200",
       "og:image:height": "630",
-      "og:image:type": "image/jpeg",
+      "og:image:type": "image/png",
+      "og:type": "article",
       "article:author": "Bästa Kompisar",
       "article:publisher": "https://bastakompisar.se",
+      "article:published_time": new Date().toISOString(),
+      "og:site_name": "Bästa Kompisar",
     },
   };
 }
