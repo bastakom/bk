@@ -48,6 +48,9 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
   // Handle video vs image for Open Graph - with comprehensive fallback logic
   let imageUrl = "https://bastakompisar.se/bk-black.png"; // default fallback
 
+  // Create a better default OG image URL that includes the case name
+  const defaultOGImage = `https://bastakompisar.se/api/og?title=${encodeURIComponent(story.name)}&type=case`;
+
   // Debug: Log the story content structure
   console.log("Story content structure:", {
     hasImage: !!story.content.image?.filename,
@@ -123,7 +126,15 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
       selectedImage = `https://bastakompisar.se${selectedImage.startsWith("/") ? "" : "/"}${selectedImage}`;
     }
 
-    imageUrl = selectedImage;
+    // For LinkedIn compatibility, let's create a more reliable URL structure
+    // Some Storyblok URLs with /x/ might not work well with LinkedIn
+    if (selectedImage.includes("storyblok.com") && selectedImage.includes("/x/")) {
+      console.log("Storyblok /x/ URL detected, using logo fallback for LinkedIn compatibility");
+      imageUrl = "https://bastakompisar.se/bk-black.png";
+    } else {
+      imageUrl = selectedImage;
+    }
+
     console.log("Using selected image:", imageUrl);
   } else {
     console.log("No valid images found, using default logo:", imageUrl);
@@ -133,6 +144,7 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
   const currentUrl = `${siteUrl}/${params.lang}/cases/${pathname}`;
 
   return {
+    metadataBase: new URL(siteUrl),
     title: `${story.name} – Bästa Kompisar kundcase`,
     description,
     openGraph: {
@@ -157,18 +169,19 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
       description,
       images: [imageUrl],
     },
-    // LinkedIn-specific meta tags
+    // Additional meta tags for better social media compatibility
     other: {
       "og:image": imageUrl,
       "og:image:secure_url": imageUrl,
       "og:image:width": "1200",
       "og:image:height": "630",
-      "og:image:type": "image/png",
+      "og:image:type": imageUrl.endsWith(".png") ? "image/png" : "image/jpeg",
       "og:type": "article",
       "article:author": "Bästa Kompisar",
       "article:publisher": "https://bastakompisar.se",
-      "article:published_time": new Date().toISOString(),
       "og:site_name": "Bästa Kompisar",
+      // Force refresh
+      "og:updated_time": new Date().toISOString(),
     },
   };
 }
