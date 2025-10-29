@@ -14,18 +14,17 @@ interface Props {
   text?: string
   align?: string
   onClick?: any
+  arrowDown?: boolean
 }
 
-const Button = ({ TextEN, TextSV, href, margin, size, text, align }: Props) => {
+const Button = ({ arrowDown, TextEN, TextSV, href, margin, size, text, align }: Props) => {
   const params = useParams()
   return (
     <motion.div
       whileHover="hover"
-      className={`text-${
-        align ? align : 'center'
-      } text-[#FF6062] text-xl font-normal flex gap-2 ${
-        align === 'center' && 'justify-center'
-      } items-center ${margin}`}
+      className={`text-${align ? align : 'center'
+        } text-[#FF6062] text-xl font-normal flex gap-2 ${align === 'center' && 'justify-center'
+        } items-center ${margin}`}
     >
       <Link
         href={`${href}`}
@@ -40,7 +39,7 @@ const Button = ({ TextEN, TextSV, href, margin, size, text, align }: Props) => {
           }}
           transition={{ type: 'spring', stiffness: 300 }}
         >
-          <IoMdArrowForward fontSize={'1.3em'} color="#FF6062" />
+          <IoMdArrowForward className={`${arrowDown && "rotate-90"}`} fontSize={'1.3em'} color="#FF6062" />
         </motion.span>
       </Link>
     </motion.div>

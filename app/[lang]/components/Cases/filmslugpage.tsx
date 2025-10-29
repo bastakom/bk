@@ -118,18 +118,19 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
 
               return (
                 <div
-                  className={`object-cover relative ${
-                    story.content.sound ? "w-full lg:w-2/3 m-auto" : "w-full"
-                  } `}
+                  className={`object-cover relative ${story.content.sound ? "w-full lg:w-2/3 m-auto" : "w-full"
+                    } `}
                   key={item.filename}
                 >
                   {isVideoYouTube && videoYouTubeId ? (
-                    <iframe
-                      src={`https://www.youtube.com/embed/${videoYouTubeId}`}
-                      className="w-full aspect-video"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
+                    <div className="relative w-full pb-[56.25%]">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${videoYouTubeId}`}
+                        className="absolute top-0 left-0 w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
                   ) : (
                     <video controls playsInline className="w-full">
                       <source src={item?.filename} />

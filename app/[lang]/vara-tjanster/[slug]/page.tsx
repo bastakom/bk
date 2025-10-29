@@ -125,9 +125,10 @@ const page = async ({
         </video>
       </div>
       <div>
-        <div className="py-14 text-center flex flex-col gap-5 lg:gap-10 justify-center">
+
+        <div className="py-14 text-center flex flex-col gap-2 lg:gap-10 justify-center">
           {story.content.title && (
-            <div className="text-[30px] lg:text-[65px] mx-auto lg:text-[100px] max-w-[80%] xl:max-w-[70%] leading-[70px] text-[#25364f] lg:leading-[120px]">
+            <div className="text-[30px] lg:text-[65px] mx-auto lg:text-[100px] max-w-[80%] xl:max-w-[70%] leading-[50px] text-[#25364f] lg:leading-[75px]">
               {render(story.content.title)}
             </div>
           )}
@@ -136,29 +137,72 @@ const page = async ({
               {story.content.sub_title}
             </h2>
           )}
-          {story.content.content && (
-            <ExpandableContent
-              content={story.content.content}
-            />
-          )}
+        </div>
+
+        <div className="lg:py-14 text-center grid lg:grid-cols-2 gap-5 lg:gap-10 px-2 lg:max-w-[80%] mx-auto">
+          <div>
+            {story.content.single_content && (
+              <span style={{ textAlign: "left", fontSize: "20px" }}>{render(story.content.single_content)}</span>
+            )}
+            <div className="text-left mt-14 flex flex-col gap-2">
+              <Button
+                text={story.content.link_text}
+                href={`#readmore`}
+                arrowDown={true}
+              />
+              <Button
+                text={story.content.header_link_text}
+                href={`/${story?.content.header_link?.cached_url}`}
+              />
+            </div>
+
+          </div>
+          <div className="h-[350px] lg:h-[500px] w-full relative">
+            <Image src={story.content.film_case_image.filename} alt="" fill className="object-cover" />
+          </div>
         </div>
       </div>
+
+      <h2 className="text-center text-[20px]">URVAL FILM</h2>
 
       <FilmCases
         props={filmprod}
         config={config}
         locale={params.lang}
       />
+      <div className="full-width-element bg-[#F7DAD2] py-6 lg:py-20 px-6 lg:px-14" id="readmore">
+        <h3 className="container text-[#25364F] lg:max-w-[50%] lg:leading-[95px] text-[30px] lg:text-[80px]">{story.content.text_block_title}</h3>
+      </div>
+      <div className="grid lg:grid-cols-2 no-padding-bottom mx-auto justify-start w-full py-14 px-6 lg:px-14 gap-14 lg:gap-24 full-width-element bg-[#F7DAD2]">
+        {story.content.text_block_repeater &&
+          story.content.text_block_repeater.map(
+            (item: any) => {
+              return (
+                <div className="text-left">
+                  <span className="text-[35px] text-[#25364F]">
+                    {render(item.title)}
+                  </span>
+                  <span>{render(item.content)}</span>
+                </div>
+              );
+            }
+          )}
+      </div>
+      <div className="no-padding-bottom w-full full-width-element bg-[#F7DAD2] text-center py-10 lg:py-20 justify-center flex">
+        <Button
+          text={"Nyfiken? Boka ett möte med oss"}
+          href={`/kontakt`}
+        />
+      </div>
     </div>
   ) : (
     <div
       className={`full-width-element pt-32 no-padding-bottom pb-20 px-1`}
       style={{
-        background: `${
-          story.content.background
-            ? story.content.background
-            : "none"
-        }`,
+        background: `${story.content.background
+          ? story.content.background
+          : "none"
+          }`,
       }}
     >
       <div className="container m-auto px-2 lg:px-0">
