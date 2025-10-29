@@ -41,11 +41,8 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
 
   // Check if main image is YouTube
   const mainImage = story?.content?.image;
-  const isMainImageYouTube =
-    mainImage?.is_external_url && isYouTubeUrl(mainImage?.filename);
-  const mainImageYouTubeId = isMainImageYouTube
-    ? getYouTubeVideoId(mainImage?.filename)
-    : null;
+  const isMainImageYouTube = mainImage?.is_external_url && isYouTubeUrl(mainImage?.filename);
+  const mainImageYouTubeId = isMainImageYouTube ? getYouTubeVideoId(mainImage?.filename) : null;
 
   return (
     <>
@@ -56,22 +53,23 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
               <Skeleton className="h-full" />
             </div>
           ) : (
-            <div className="w-full relative h-[300px] lg:h-[602px]">
+            <div className="w-full relative h-[300px] lg:h-[602px] overflow-hidden">
               {isMainImageYouTube && mainImageYouTubeId ? (
                 <iframe
-                  src={`https://www.youtube.com/embed/${mainImageYouTubeId}?autoplay=1&mute=1&loop=1&playlist=${mainImageYouTubeId}&controls=0&showinfo=0&rel=0&modestbranding=1`}
-                  className="object-cover h-full w-full"
+                  src={`https://www.youtube.com/embed/${mainImageYouTubeId}?autoplay=1&mute=1&loop=1&playlist=${mainImageYouTubeId}&showinfo=0&rel=0&modestbranding=1&vq=hd1080`}
+                  className="absolute top-1/2 left-1/2 border-0"
+                  style={{
+                    width: "100vw",
+                    height: "56.25vw", // 16:9 aspect ratio
+                    minHeight: "100%",
+                    minWidth: "177.77vh", // 16:9 aspect ratio
+                    transform: "translate(-50%, -50%)",
+                  }}
                   allow="autoplay; encrypted-media"
                   allowFullScreen
                 />
               ) : story?.content?.image?.filename.endsWith(".mp4") ? (
-                <video
-                  autoPlay
-                  muted
-                  playsInline
-                  loop
-                  className="object-cover h-full w-full"
-                >
+                <video autoPlay muted playsInline loop className="object-cover h-full w-full">
                   <source src={story.content.image?.filename || ""} />
                 </video>
               ) : (
@@ -86,9 +84,7 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
             </div>
           )}
           <div className="flex justify-start w-full gap-2 my-5 ml-0 lg:ml-[3.75rem]">
-            <span className="font-light">
-              {locale.lang === "en" ? "Client: " : "Kund: "}
-            </span>
+            <span className="font-light">{locale.lang === "en" ? "Client: " : "Kund: "}</span>
             <h1 className="font-bold">{story?.name}</h1>
           </div>
           <div className="flex container flex-col lg:flex-row mb-10 ml-0 lg:ml-[60px]">
@@ -110,23 +106,19 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
             Array.isArray(story.content.videos) &&
             story.content.videos.length > 0 &&
             story.content.videos.slice(0, 1).map((item: any) => {
-              const isVideoYouTube =
-                item?.is_external_url && isYouTubeUrl(item?.filename);
-              const videoYouTubeId = isVideoYouTube
-                ? getYouTubeVideoId(item?.filename)
-                : null;
+              const isVideoYouTube = item?.is_external_url && isYouTubeUrl(item?.filename);
+              const videoYouTubeId = isVideoYouTube ? getYouTubeVideoId(item?.filename) : null;
 
               return (
                 <div
-                  className={`object-cover relative ${story.content.sound ? "w-full lg:w-2/3 m-auto" : "w-full"
-                    } `}
+                  className={`object-cover relative ${story.content.sound ? "w-full lg:w-2/3 m-auto" : "w-full"} `}
                   key={item.filename}
                 >
                   {isVideoYouTube && videoYouTubeId ? (
                     <div className="relative w-full pb-[56.25%]">
                       <iframe
-                        src={`https://www.youtube.com/embed/${videoYouTubeId}`}
-                        className="absolute top-0 left-0 w-full h-full"
+                        src={`https://www.youtube.com/embed/${videoYouTubeId}?vq=hd1080`}
+                        className="absolute top-0 left-0 w-full h-full border-0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                       />
@@ -146,43 +138,31 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
               Array.isArray(story.content.gallery) &&
               story.content.gallery.length > 0 &&
               story.content.gallery.slice(0, 4).map((item: any) => {
-                const isGalleryItemYouTube =
-                  item?.is_external_url && isYouTubeUrl(item?.filename);
-                const galleryItemYouTubeId = isGalleryItemYouTube
-                  ? getYouTubeVideoId(item?.filename)
-                  : null;
+                const isGalleryItemYouTube = item?.is_external_url && isYouTubeUrl(item?.filename);
+                const galleryItemYouTubeId = isGalleryItemYouTube ? getYouTubeVideoId(item?.filename) : null;
 
                 return (
-                  <div
-                    className="h-[377px] relative w-full"
-                    key={item.filename}
-                  >
+                  <div className="h-[377px] relative w-full overflow-hidden" key={item.filename}>
                     {isGalleryItemYouTube && galleryItemYouTubeId ? (
                       <iframe
-                        src={`https://www.youtube.com/embed/${galleryItemYouTubeId}?autoplay=1&mute=1&loop=1&playlist=${galleryItemYouTubeId}`}
-                        className="object-cover h-full w-full"
+                        src={`https://www.youtube.com/embed/${galleryItemYouTubeId}?autoplay=1&mute=1&loop=1&playlist=${galleryItemYouTubeId}&controls=1&vq=hd1080`}
+                        className="absolute top-1/2 left-1/2 border-0"
+                        style={{
+                          width: "100vw",
+                          height: "56.25vw",
+                          minHeight: "100%",
+                          minWidth: "177.77vh",
+                          transform: "translate(-50%, -50%)",
+                        }}
                         allow="autoplay; encrypted-media"
                         allowFullScreen
                       />
-                    ) : item.filename.endsWith(".mp4") ||
-                      item.filename.endsWith(".mov") ? (
-                      <video
-                        autoPlay
-                        muted
-                        controls
-                        playsInline
-                        loop
-                        className="object-cover h-full w-full"
-                      >
+                    ) : item.filename.endsWith(".mp4") || item.filename.endsWith(".mov") ? (
+                      <video autoPlay muted controls playsInline loop className="object-cover h-full w-full">
                         <source src={item?.filename || ""} />
                       </video>
                     ) : (
-                      <Image
-                        src={item?.filename || ""}
-                        fill
-                        alt=""
-                        className="object-cover"
-                      />
+                      <Image src={item?.filename || ""} fill alt="" className="object-cover" />
                     )}
                   </div>
                 );
@@ -192,17 +172,12 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
         {!story.content.hide_content_under_gallery && (
           <div className="flex flex-col gap-5 text-[20px] container m-auto my-10 font-light-sofia">
             {story?.content?.title_columns && (
-              <span className="text-[22px] font-normal">
-                {story.content.title_columns}
-              </span>
+              <span className="text-[22px] font-normal">{story.content.title_columns}</span>
             )}
             {story.content.hide_content_under_gallery && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 font-light text-[18px] lg:text-[20px]">
                 <span>{render(story?.content?.text_under_gallery)}</span>
-                <span>
-                  {story.content?.two_column_text_2 &&
-                    render(story?.content?.two_column_text_2)}
-                </span>
+                <span>{story.content?.two_column_text_2 && render(story?.content?.two_column_text_2)}</span>
               </div>
             )}
             {story.content.extrattitlecontent && (
@@ -210,12 +185,8 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
                 className="max-w-full lg:max-w-[40%] mt-20 flex flex-col gap-14 pb-10 mb-14"
                 style={{ borderBottom: "1px solid #25364F" }}
               >
-                <h3 className="text-[32px] lg:text-[50px] font-primary">
-                  {story.content.extrattitlecontent}
-                </h3>
-                <span className="text-[14px] font-normal font-primary">
-                  {story.content.extratitlecontentingress}
-                </span>
+                <h3 className="text-[32px] lg:text-[50px] font-primary">{story.content.extrattitlecontent}</h3>
+                <span className="text-[14px] font-normal font-primary">{story.content.extratitlecontentingress}</span>
               </div>
             )}
           </div>
@@ -225,39 +196,31 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
             Array.isArray(story.content.gallery) &&
             story.content.gallery.length > 4 &&
             story.content.gallery.slice(4, 8).map((item: any) => {
-              const isGalleryItemYouTube =
-                item?.is_external_url && isYouTubeUrl(item?.filename);
-              const galleryItemYouTubeId = isGalleryItemYouTube
-                ? getYouTubeVideoId(item?.filename)
-                : null;
+              const isGalleryItemYouTube = item?.is_external_url && isYouTubeUrl(item?.filename);
+              const galleryItemYouTubeId = isGalleryItemYouTube ? getYouTubeVideoId(item?.filename) : null;
 
               return (
-                <div className="h-[377px] relative w-full" key={item.filename}>
+                <div className="h-[377px] relative w-full overflow-hidden" key={item.filename}>
                   {isGalleryItemYouTube && galleryItemYouTubeId ? (
                     <iframe
-                      src={`https://www.youtube.com/embed/${galleryItemYouTubeId}?autoplay=1&mute=1&loop=1&playlist=${galleryItemYouTubeId}`}
-                      className="object-cover h-full w-full"
+                      src={`https://www.youtube.com/embed/${galleryItemYouTubeId}?autoplay=1&mute=1&loop=1&playlist=${galleryItemYouTubeId}&controls=1&vq=hd1080`}
+                      className="absolute top-1/2 left-1/2 border-0"
+                      style={{
+                        width: "100vw",
+                        height: "56.25vw",
+                        minHeight: "100%",
+                        minWidth: "177.77vh",
+                        transform: "translate(-50%, -50%)",
+                      }}
                       allow="autoplay; encrypted-media"
                       allowFullScreen
                     />
-                  ) : item.filename.endsWith(".mp4") ||
-                    item.filename.endsWith(".mov") ? (
-                    <video
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="object-cover h-full w-full"
-                    >
+                  ) : item.filename.endsWith(".mp4") || item.filename.endsWith(".mov") ? (
+                    <video autoPlay muted loop playsInline className="object-cover h-full w-full">
                       <source src={item?.filename || ""} />
                     </video>
                   ) : (
-                    <Image
-                      src={item?.filename || ""}
-                      fill
-                      alt=""
-                      className="object-cover"
-                    />
+                    <Image src={item?.filename || ""} fill alt="" className="object-cover" />
                   )}
                 </div>
               );
@@ -271,18 +234,15 @@ const FilmSlugPage = ({ story, nextCaseSlug }: Props) => {
           {Array.isArray(story.content.gallery) &&
             story.content.videos.length === 2 &&
             story.content.videos.slice(1, 2).map((item: any, index: number) => {
-              const isVideoYouTube =
-                item?.is_external_url && isYouTubeUrl(item?.filename);
-              const videoYouTubeId = isVideoYouTube
-                ? getYouTubeVideoId(item?.filename)
-                : null;
+              const isVideoYouTube = item?.is_external_url && isYouTubeUrl(item?.filename);
+              const videoYouTubeId = isVideoYouTube ? getYouTubeVideoId(item?.filename) : null;
 
               return (
                 <div className="object-cover relative w-full" key={index}>
                   {isVideoYouTube && videoYouTubeId ? (
                     <iframe
-                      src={`https://www.youtube.com/embed/${videoYouTubeId}`}
-                      className="w-full aspect-video"
+                      src={`https://www.youtube.com/embed/${videoYouTubeId}?vq=hd1080`}
+                      className="w-full aspect-video border-0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
