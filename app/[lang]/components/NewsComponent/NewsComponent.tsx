@@ -23,7 +23,7 @@ interface Props {
     };
   }[];
 
-  kategories: {
+  kategories?: {
     name: string;
     uuid: string;
     translated_slugs?: {
@@ -33,11 +33,13 @@ interface Props {
       published: string | null;
     }[];
   }[];
+  title?: string;
+  titleen?: string
 
   locale: string;
 }
 
-const NewsComponent = ({ props, kategories, locale }: Props) => {
+const NewsComponent = ({ props, kategories, locale, title, titleen }: Props) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [hoveredUuid, setHoveredUuid] = useState<string | null>(null);
   const [openFilter, isOpenFilter] = useState(false);
@@ -64,21 +66,20 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
         <div className=" flex container m-auto">
           {props.slice(0, 1).map((item: any, index: number) => {
             return (
-              <Link href={`nyheter/${item.slug}`} key={item.uuid}>
+              <Link href={`${item.full_slug}`} key={item.uuid}>
                 <div
                   className="grid grid-cols-1 lg:grid-cols-2 gap-5 h-full items-center justify-center py-10 lg:m-auto"
                   key={index}
                 >
                   <div className="flex flex-col gap-5 lg:gap-10 px-0 lg:px-6 h-full justify-center">
                     <h1 className="font-normal font-primary text-[20px] text-black">
-                      {locale === "en" ? "LATEST NEWS" : "SENASTE NYHET"}
+                      {locale === "en" ? titleen ? titleen : "LATEST NEWS" : title ? title : "SENASTE NYHET"}
                     </h1>
                     <h2
-                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] text-[#25364f] ${
-                        hoveredUuid === item.uuid
-                          ? "opacity-100"
-                          : "opacity-100"
-                      }`}
+                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] text-[#25364f] ${hoveredUuid === item.uuid
+                        ? "opacity-100"
+                        : "opacity-100"
+                        }`}
                     >
                       {item.name}
                     </h2>
@@ -86,58 +87,60 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
                       {render(item.content.content)}
                     </span>
                   </div>
-                  <div className="relative h-[300px] lg:h-full w-full lg:w-[500px]">
-                    <Image
-                      src={
-                        item.content?.future_picture?.filename
-                          ? item.content.image.filename
-                          : item?.content?.image?.filename
-                      }
-                      fill
-                      className="object-contain"
-                      alt={item.name}
-                    />
-                  </div>
+                  {item.content?.fiuture_picture?.filename &&
+                    <div className="relative h-[300px] lg:h-full w-full lg:w-[500px]">
+                      <Image
+                        src={
+                          item.content?.future_picture?.filename
+                            ? item.content?.image?.filename
+                            : item?.content?.image?.filename
+                        }
+                        fill
+                        className="object-contain"
+                        alt={item.name}
+                      />
+                    </div>
+                  }
                 </div>
               </Link>
             );
           })}
         </div>
       </div>
-      <button
-        className="text-right flex gap-2 items-center justify-end w-full mb-10 font-bold text-[22px]"
-        onClick={handleOpenFilter}
-      >
-        Filter
-        <span>
-          {!openFilter ? (
-            <GoPlus fontSize={"1.5em"} color="#FF6062" />
-          ) : (
-            <FiMinus fontSize={"1.5em"} color="#FF6062" />
-          )}
-        </span>
-      </button>
+      {filteredPosts.length > 3 &&
+        <button
+          className="text-right flex gap-2 items-center justify-end w-full mb-10 font-bold text-[22px]"
+          onClick={handleOpenFilter}
+        >
+          Filter
+          <span>
+            {!openFilter ? (
+              <GoPlus fontSize={"1.5em"} color="#FF6062" />
+            ) : (
+              <FiMinus fontSize={"1.5em"} color="#FF6062" />
+            )}
+          </span>
+        </button>
+      }
       {openFilter && (
         <div className="flex flex-wrap gap-5 mb-6 justify-start border-b-2 border-t-2 p-5">
           <button
             onClick={() => setSelectedCategory("")}
-            className={`uppercase ${
-              selectedCategory === "" ? "text-[#FF6063]" : ""
-            }`}
+            className={`uppercase ${selectedCategory === "" ? "text-[#FF6063]" : ""
+              }`}
           >
             {locale === "en" ? "All news" : "Alla nyheter"}
           </button>
-          {kategories.map((item) => (
+          {kategories && kategories.map((item) => (
             <button
               key={item.uuid}
               onClick={() => setSelectedCategory(item.uuid)}
-              className={`uppercase ${
-                selectedCategory === item.uuid ? "text-[#FF6063]" : ""
-              }`}
+              className={`uppercase ${selectedCategory === item.uuid ? "text-[#FF6063]" : ""
+                }`}
             >
               {locale === "en" && item.translated_slugs
                 ? item.translated_slugs.find((slug) => slug.lang === "en")
-                    ?.name || item.name
+                  ?.name || item.name
                 : item.name}
             </button>
           ))}
@@ -147,7 +150,7 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
         {filteredPosts.map((item) => {
           return (
             <Link
-              href={`nyheter/${item.slug}`}
+              href={`${item.full_slug}`}
               key={item.uuid}
               className="flex flex-col gap-5 mb-10"
               onMouseEnter={() => handleMouseEnter(item.uuid)}
@@ -155,8 +158,8 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
             >
               <Image
                 src={
-                  item.content.future_picture.filename
-                    ? item.content.future_picture.filename
+                  item.content?.future_picture?.filename
+                    ? item.content?.future_picture?.filename
                     : item?.content?.image?.filename
                 }
                 height={390}
@@ -168,9 +171,8 @@ const NewsComponent = ({ props, kategories, locale }: Props) => {
 
               <div className="flex flex-col gap-2">
                 <h2
-                  className={`text-[30px] max-w-[80%] font-primary font-normal ${
-                    hoveredUuid === item.uuid ? "opacity-100" : "opacity-100"
-                  }`}
+                  className={`text-[30px] max-w-[80%] font-primary font-normal ${hoveredUuid === item.uuid ? "opacity-100" : "opacity-100"
+                    }`}
                 >
                   {item.name}
                 </h2>
