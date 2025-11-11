@@ -23,10 +23,10 @@ html {
   --foreground: black;
 }
 
-[data-theme="dark"] {
-  --background: black;
-  --foreground: white;
-}
+/* [data-theme="dark"] { */
+/*   --background: black; */
+/*   --foreground: white; */
+/* } */
 
 .dark {
   background-color: #121212;
@@ -139,7 +139,9 @@ a {
 .slide-in {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s, opacity 0.5s linear;
+  transition:
+    visibility 0s,
+    opacity 0.5s linear;
 }
 
 /* LOOPING TEXT */
@@ -384,4 +386,3 @@ h2 {
   flex-direction: column;
   gap: 24px;
 }
-

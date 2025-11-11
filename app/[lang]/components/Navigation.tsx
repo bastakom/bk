@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useTheme } from 'next-themes'
 // import { usePathname, useRouter } from 'next/navigation'
 import useStore from '@/app/lib/store'
+import ThemeSwitch from './ThemeSwitch'
 
 interface Props {
   props?: any
@@ -86,7 +87,7 @@ const Navigation = ({ props, locale }: Props) => {
             EN
           </button> */}
         </div>
-        {/* <ThemeSwitch /> */}
+        <ThemeSwitch />
       </div>
     </div>
   )

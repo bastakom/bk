@@ -35,11 +35,23 @@ interface Props {
   }[];
   title?: string;
   titleen?: string
-
+  hero_title?: string
+  subtitle?: string
+  content?: any
+  filename?: any
   locale: string;
 }
 
-const NewsComponent = ({ props, kategories, locale, title, titleen }: Props) => {
+const NewsComponent = ({ props,
+  hero_title,
+  subtitle,
+  content,
+  filename,
+  kategories,
+  locale,
+  title,
+  titleen
+}: Props) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [hoveredUuid, setHoveredUuid] = useState<string | null>(null);
   const [openFilter, isOpenFilter] = useState(false);
@@ -62,49 +74,31 @@ const NewsComponent = ({ props, kategories, locale, title, titleen }: Props) => 
 
   return (
     <div className="m-auto">
-      <div className="full-width-element bg-[#F7F0EE] mb-14 pb-10 pt-20 lg:pt-32 px-4 lg:px-0">
-        <div className=" flex container m-auto">
-          {props.slice(0, 1).map((item: any, index: number) => {
-            return (
-              <Link href={`${item.full_slug}`} key={item.uuid}>
-                <div
-                  className="grid grid-cols-1 lg:grid-cols-2 gap-5 h-full items-center justify-center py-10 lg:m-auto"
-                  key={index}
-                >
-                  <div className="flex flex-col gap-5 lg:gap-10 px-0 lg:px-6 h-full justify-center">
-                    <h1 className="font-normal font-primary text-[20px] text-black">
-                      {locale === "en" ? titleen ? titleen : "LATEST NEWS" : title ? title : "SENASTE NYHET"}
-                    </h1>
-                    <h2
-                      className={`text-[50px] lg:text-[70px] w-full font-normal leading-[60px] lg:leading-[85px] text-[#25364f] ${hoveredUuid === item.uuid
-                        ? "opacity-100"
-                        : "opacity-100"
-                        }`}
-                    >
-                      {item.name}
-                    </h2>
-                    <span className="max-md:hidden max-w-[100%] lg:max-w-[80%] text-[20px] leading-[32px] line-clamp font-light font-primary">
-                      {render(item.content.content)}
-                    </span>
-                  </div>
-                  {item.content?.fiuture_picture?.filename &&
-                    <div className="relative h-[300px] lg:h-full w-full lg:w-[500px]">
-                      <Image
-                        src={
-                          item.content?.future_picture?.filename
-                            ? item.content?.image?.filename
-                            : item?.content?.image?.filename
-                        }
-                        fill
-                        className="object-contain"
-                        alt={item.name}
-                      />
-                    </div>
-                  }
-                </div>
-              </Link>
-            );
-          })}
+      <div className="full-width-element lex gap-14 bg-[#F7F0EE] mb-14 pb-10 pt-20 lg:pt-32 px-4 lg:px-0">
+        <div className="container mx-auto items-center grid lg:grid-cols-2 gap-4 gap-14">
+          <div>
+            {subtitle &&
+              <span className="text-[22px] uppercase">
+                {subtitle}
+              </span>
+            }
+            <h1 className="text-[65px]">{hero_title}</h1>
+            {content &&
+              <div className="lg:max-w-[80%] text-[18px] mt-2">
+                {render(content)}
+              </div>
+            }
+          </div>
+          {filename &&
+            <div className="relative h-[600px]">
+              <Image
+                src={filename}
+                fill
+                alt="Hero Image"
+                className="object-cover"
+              />
+            </div>
+          }
         </div>
       </div>
       {filteredPosts.length > 3 &&
@@ -156,18 +150,20 @@ const NewsComponent = ({ props, kategories, locale, title, titleen }: Props) => 
               onMouseEnter={() => handleMouseEnter(item.uuid)}
               onMouseLeave={handleMouseLeave}
             >
-              <Image
-                src={
-                  item.content?.future_picture?.filename
-                    ? item.content?.future_picture?.filename
-                    : item?.content?.image?.filename
-                }
-                height={390}
-                width={500}
-                className="object-cover"
-                style={{ height: "521px", width: "100%" }}
-                alt={item.name}
-              />
+              {item.content?.future_picture?.filename &&
+                <Image
+                  src={
+                    item.content?.future_picture?.filename
+                      ? item.content?.future_picture?.filename
+                      : item?.content?.image?.filename
+                  }
+                  height={390}
+                  width={500}
+                  className="object-cover"
+                  style={{ height: "521px", width: "100%" }}
+                  alt={item.name}
+                />
+              }
 
               <div className="flex flex-col gap-2">
                 <h2
