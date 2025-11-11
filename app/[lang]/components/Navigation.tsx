@@ -87,7 +87,7 @@ const Navigation = ({ props, locale }: Props) => {
             EN
           </button> */}
         </div>
-        <ThemeSwitch />
+        {/* <ThemeSwitch /> */}
       </div>
     </div>
   )
