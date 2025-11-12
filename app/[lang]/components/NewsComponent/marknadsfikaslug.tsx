@@ -69,12 +69,6 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
             {render(item.content.content)}
           </span>
 
-          {/* Spotify Embed */}
-          {item.content.embeded_spotify &&
-            <div className="mb-5 w-full lg:max-w-[80%]">
-              <div dangerouslySetInnerHTML={{ __html: `${item.content.embeded_spotify}` }} />
-            </div>
-          }
 
           <div className="flex justify-start flex-col text-left text-[20px]">
             <span className="font-bold">
@@ -101,13 +95,12 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
           </div>
         </div>
         <div className="w-full h-[500px] lg:h-[500px] relative">
-          <Image
-            src={item.content?.image?.filename || ''}
-            fill
-            quality={100}
-            className={`object-contain`}
-            alt={item.name}
-          />
+          {/* Spotify Embed */}
+          {item.content.embeded_spotify &&
+            <div className="mb-5 w-full lg:max-w-[80%]">
+              <div dangerouslySetInnerHTML={{ __html: `${item.content.embeded_spotify}` }} />
+            </div>
+          }
         </div>
       </div>
     </div>

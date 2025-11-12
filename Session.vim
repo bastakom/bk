@@ -13,13 +13,13 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +11 app/[lang]/nyheter/page.tsx
-badd +167 ~/dev/bk/app/[lang]/components/NewsComponent/NewsComponent.tsx
+badd +15 app/[lang]/marknadsfika/[slug]/page.tsx
+badd +0 ~/dev/bk/app/[lang]/components/NewsComponent/marknadsfikaslug.tsx
 argglobal
 %argdel
-edit app/[lang]/nyheter/page.tsx
+edit ~/dev/bk/app/[lang]/components/NewsComponent/marknadsfikaslug.tsx
 argglobal
-balt ~/dev/bk/app/[lang]/components/NewsComponent/NewsComponent.tsx
+balt app/[lang]/marknadsfika/[slug]/page.tsx
 setlocal foldmethod=manual
 setlocal foldexpr=0
 setlocal foldmarker={{{,}}}
@@ -30,12 +30,12 @@ setlocal foldnestmax=20
 setlocal foldenable
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 11 - ((10 * winheight(0) + 13) / 27)
+let s:l = 98 - ((23 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 11
-normal! 022|
+keepjumps 98
+normal! 011|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

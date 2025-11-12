@@ -40,6 +40,7 @@ interface Props {
   content?: any
   filename?: any
   locale: string;
+  nofilter?: boolean;
 }
 
 const NewsComponent = ({ props,
@@ -49,8 +50,7 @@ const NewsComponent = ({ props,
   filename,
   kategories,
   locale,
-  title,
-  titleen
+  nofilter,
 }: Props) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [hoveredUuid, setHoveredUuid] = useState<string | null>(null);
@@ -101,7 +101,7 @@ const NewsComponent = ({ props,
           }
         </div>
       </div>
-      {filteredPosts.length > 3 &&
+      {!nofilter && filteredPosts.length > 3 &&
         <button
           className="text-right flex gap-2 items-center justify-end w-full mb-10 font-bold text-[22px]"
           onClick={handleOpenFilter}

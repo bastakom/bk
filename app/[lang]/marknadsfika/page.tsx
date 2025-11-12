@@ -17,6 +17,7 @@ const Page = async ({ params }: { params: { lang: string } }) => {
       subtitle={settings.content.marknadsfika_subtitle}
       content={settings.content.marknadsfika_content}
       filename={settings.content.marknadsfika_image.filename}
+      nofilter={true}
     />
   )
 }
