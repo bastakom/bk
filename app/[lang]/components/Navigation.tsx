@@ -54,7 +54,7 @@ const Navigation = ({ props, locale }: Props) => {
       >
         <span />
       </div>
-      <nav className="hidden xl:flex gap-5 w-1/3 justify-center">
+      <nav className="hidden xl:flex gap-5 w-2/3 justify-start">
         {props.story.content.header_menu.map((item: any) => {
           const link = item.link.cached_url.startsWith('/')
             ? item.link.cached_url
@@ -70,25 +70,6 @@ const Navigation = ({ props, locale }: Props) => {
           )
         })}
       </nav>
-      <div className="w-1/3 hidden xl:flex justify-end gap-5">
-        <div className="flex gap-2 items-center">
-          {/* <button
-            onClick={() => changeLanguage('sv')}
-            className="font-secondary text-[16px]"
-          >
-            SV
-          </button>
-
-          <span>|</span>
-          <button
-            onClick={() => changeLanguage('en')}
-            className="font-secondary text-[16px]"
-          >
-            EN
-          </button> */}
-        </div>
-        {/* <ThemeSwitch /> */}
-      </div>
     </div>
   )
 }
