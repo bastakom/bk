@@ -28,7 +28,7 @@ async function fetchData(slug: string, locale: string) {
   }
 }
 
-const fetchConfig = async (locale: string) => {
+export const fetchConfig = async (locale: string) => {
   let sbParams = { version: 'draft' as const, language: locale }
 
   const storyblokApi = getStoryblokApi()
