@@ -2,6 +2,11 @@ import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
 import MarknadsSlug from '../../components/NewsComponent/marknadsfikaslug'
 
+const storyblokVersion: 'published' | 'draft' =
+ process.env.VERCEL_ENV === 'production'
+  ? 'published'
+  : 'draft'
+
 const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const data = await getNewsSlug(params.slug, params.lang)
   const slugsNews = await getAllNewsSlug(params.lang)
@@ -20,7 +25,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
 
 async function getNewsSlug(slug: string, locale: string) {
   let sbParams = {
-    version: 'published' as const,
+    version: storyblokVersion,
     language: locale,
   }
 
@@ -47,7 +52,7 @@ async function getNewsSlug(slug: string, locale: string) {
 
 async function getAllNewsSlug(locale: string) {
   let sbParams = {
-    version: 'published' as const,
+    version: storyblokVersion,
     starts_with: `marknadsfika/`,
     language: locale,
   }
