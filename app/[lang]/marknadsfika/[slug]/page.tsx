@@ -3,9 +3,9 @@ import { notFound } from 'next/navigation'
 import MarknadsSlug from '../../components/NewsComponent/marknadsfikaslug'
 
 const storyblokVersion: 'published' | 'draft' =
- process.env.VERCEL_ENV === 'production'
-  ? 'published'
-  : 'draft'
+ process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
+  ? 'draft'
+  : 'published'
 
 const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const data = await getNewsSlug(params.slug, params.lang)
