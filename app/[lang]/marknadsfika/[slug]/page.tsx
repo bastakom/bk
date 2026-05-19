@@ -19,7 +19,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
 
 async function getNewsSlug(slug: string, locale: string) {
   let sbParams = {
-    version: 'draft' as const,
+    version: 'published' as const,
     language: locale,
   }
 
@@ -32,7 +32,7 @@ async function getNewsSlug(slug: string, locale: string) {
 
 async function getAllNewsSlug(locale: string) {
   let sbParams = {
-    version: 'draft' as const,
+    version: 'published' as const,
     starts_with: `marknadsfika/`,
     language: locale,
   }
