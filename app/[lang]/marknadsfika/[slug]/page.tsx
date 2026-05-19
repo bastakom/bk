@@ -25,7 +25,7 @@ const storyblokVersion: 'published' | 'draft' =
 
 async function getNewsSlug(slug: string, locale: string) {
   let sbParams = {
-   version: "draft" as const,
+   version: storyblokVersion,
     language: locale,
   }
 
@@ -52,7 +52,7 @@ async function getNewsSlug(slug: string, locale: string) {
 
 async function getAllNewsSlug(locale: string) {
   let sbParams = {
-    version: "draft" as const,
+    version: storyblokVersion,
     starts_with: `marknadsfika/`,
     language: locale,
   }
