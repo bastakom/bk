@@ -1,10 +1,10 @@
 import { getStoryblokApi } from '@storyblok/react'
 import MarknadsSlug from '../../components/NewsComponent/marknadsfikaslug';
 
-const storyblokVersion =
+const storyblokVersion: 'published' | 'draft' =
   process.env.VERCEL_ENV === 'production'
-    ? ('published' as const)
-    : ('draft' as const)
+    ? 'published'
+    : 'draft'
 
 const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const data = await getNewsSlug(params.slug, params.lang)
