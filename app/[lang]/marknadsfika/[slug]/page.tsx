@@ -1,5 +1,6 @@
 import { getStoryblokApi } from '@storyblok/react'
-import MarknadsSlug from '../../components/NewsComponent/marknadsfikaslug';
+import { notFound } from 'next/navigation'
+import MarknadsSlug from '../../components/NewsComponent/marknadsfikaslug'
 
 const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const data = await getNewsSlug(params.slug, params.lang)
@@ -24,10 +25,24 @@ async function getNewsSlug(slug: string, locale: string) {
   }
 
   const storyblokApi = getStoryblokApi()
-  const res = await storyblokApi.get(`cdn/stories/marknadsfika/${slug}`, sbParams, {
-    cache: 'no-store',
-  })
-  return res.data.story
+
+  try {
+    const res = await storyblokApi.get(
+      `cdn/stories/marknadsfika/${slug}`,
+      sbParams,
+      {
+        cache: 'no-store',
+      }
+    )
+
+    if (!res?.data?.story) {
+      notFound()
+    }
+
+    return res.data.story
+  } catch {
+    notFound()
+  }
 }
 
 async function getAllNewsSlug(locale: string) {
@@ -41,6 +56,7 @@ async function getAllNewsSlug(locale: string) {
   const res = await storyblokApi.get(`cdn/stories/`, sbParams, {
     cache: 'no-store',
   })
+
   return res.data.stories
 }
 
