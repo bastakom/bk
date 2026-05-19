@@ -19,7 +19,10 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
 
 async function getNewsSlug(slug: string, locale: string) {
   let sbParams = {
-    version: 'draft' as const,
+    version: 
+      process.env.VERCEL_ENV === 'production'
+    ? 'published' 
+    : 'draft',
     language: locale,
   }
 
@@ -32,7 +35,10 @@ async function getNewsSlug(slug: string, locale: string) {
 
 async function getAllNewsSlug(locale: string) {
   let sbParams = {
-    version: 'draft' as const,
+    version: 
+      process.env.VERCEL_ENV === 'production'
+    ? 'published' 
+    : 'draft',
     starts_with: `marknadsfika/`,
     language: locale,
   }
