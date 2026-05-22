@@ -1,4 +1,5 @@
 import { getStoryblokApi } from "@storyblok/react";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import { render } from "storyblok-rich-text-react-renderer";
 import Button from "../../components/Button/Button";
@@ -6,72 +7,90 @@ import CasesReelComponent from "../../components/Cases/CaseReelComponent";
 import FilmCases from "../../components/Cases/filmcases";
 import ExpandableContent from "../../components/ExpandableContent/ExpandableContent";
 
+const storyblokVersion: "published" | "draft" =
+  process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === "true"
+    ? "draft"
+    : "published";
+
 const fetchCases = async (locale: string) => {
   let sbParams = {
-    version: "draft" as const,
+    version: storyblokVersion,
     starts_with: "cases/",
     language: locale,
   };
 
   const storyblokApi = getStoryblokApi();
+
   try {
-    const response = await storyblokApi.get(
-      `cdn/stories/`,
-      sbParams,
-      {
-        cache: "no-store",
-      }
-    );
+    const response = await storyblokApi.get(`cdn/stories/`, sbParams, {
+      cache: "no-store",
+    });
+
     return response;
-  } catch (error) {
-    console.error("Error fetching cases:");
+  } catch {
     return { data: { stories: [] } };
   }
 };
 
 const getFilm = async () => {
   let sbParams = {
-    version: "draft" as const,
+    version: storyblokVersion,
     starts_with: "filmproduction/",
   };
 
   const storyblokApi = getStoryblokApi();
 
-  const res = await storyblokApi.get(
-    `cdn/stories/`,
-    sbParams,
-    {
+  try {
+    const res = await storyblokApi.get(`cdn/stories/`, sbParams, {
       cache: "no-store",
-    }
-  );
-  return res.data.stories;
+    });
+
+    return res.data.stories;
+  } catch {
+    return [];
+  }
 };
 
 const fetchConfig = async (locale: string) => {
   let sbParams = {
-    version: "draft" as const,
+    version: storyblokVersion,
     language: locale,
   };
 
   const storyblokApi = getStoryblokApi();
-  const config = await storyblokApi.get(
-    `cdn/stories/config`,
-    sbParams,
-    {
-      cache: "no-store",
-    }
-  );
+
+  const config = await storyblokApi.get(`cdn/stories/config`, sbParams, {
+    cache: "no-store",
+  });
+
   return config.data.story.content;
 };
 
-const getSlugData = async (slug: string) => {
-  let sbParams = { version: "draft" as const };
+const getSlugData = async (slug: string, locale: string) => {
+  let sbParams = {
+    version: storyblokVersion,
+    language: locale,
+  };
 
   const storyblokApi = getStoryblokApi();
-  return await storyblokApi.get(
-    `cdn/stories/vara-tjanster/${slug}`,
-    sbParams
-  );
+
+  try {
+    const res = await storyblokApi.get(
+      `cdn/stories/vara-tjanster/${slug}`,
+      sbParams,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!res?.data?.story) {
+      notFound();
+    }
+
+    return res;
+  } catch {
+    notFound();
+  }
 };
 
 const page = async ({
@@ -81,7 +100,7 @@ const page = async ({
 }) => {
   const pathname = params.slug;
 
-  const res = await getSlugData(pathname);
+  const res = await getSlugData(pathname, params.lang);
   const cases = await fetchCases(params.lang);
   const filmprod = await getFilm();
   const config = await fetchConfig(params.lang);
@@ -90,24 +109,18 @@ const page = async ({
     data: { story },
   } = res;
 
-  const filteredStories = cases.data.stories.filter(
-    (item: any) => {
-      const categories = item.content.Kategori;
-      const storyNameLower = story.name.toLowerCase();
+  const filteredStories = cases.data.stories.filter((item: any) => {
+    const categories = item.content.Kategori;
+    const storyNameLower = story.name.toLowerCase();
 
-      if (Array.isArray(categories)) {
-        return categories.some(
-          (category: string) =>
-            category.toLowerCase() === storyNameLower
-        );
-      }
-
-      return (
-        categories.toString().toLowerCase() ===
-        storyNameLower
+    if (Array.isArray(categories)) {
+      return categories.some(
+        (category: string) => category.toLowerCase() === storyNameLower
       );
     }
-  );
+
+    return categories.toString().toLowerCase() === storyNameLower;
+  });
 
   return story.content.filmproductionsida ? (
     <div className="">
@@ -119,19 +132,18 @@ const page = async ({
           loop
           className="object-cover h-full w-full"
         >
-          <source
-            src={story.content.video?.filename || ""}
-          />
+          <source src={story.content.video?.filename || ""} />
         </video>
       </div>
-      <div>
 
+      <div>
         <div className="py-14 text-center flex flex-col gap-2 lg:gap-10 justify-center">
           {story.content.title && (
             <div className="text-[30px] lg:text-[65px] mx-auto lg:text-[100px] max-w-[80%] xl:max-w-[70%] leading-[50px] text-[#25364f] lg:leading-[75px]">
               {render(story.content.title)}
             </div>
           )}
+
           {story.content.sub_title && (
             <h2 className="lg:text-[28px] lg:text-[30px] leading-[35px]">
               {story.content.sub_title}
@@ -142,8 +154,11 @@ const page = async ({
         <div className="lg:py-14 text-center grid lg:grid-cols-2 gap-5 lg:gap-10 px-2 lg:max-w-[80%] mx-auto">
           <div>
             {story.content.single_content && (
-              <span style={{ textAlign: "left", fontSize: "20px" }}>{render(story.content.single_content)}</span>
+              <span style={{ textAlign: "left", fontSize: "20px" }}>
+                {render(story.content.single_content)}
+              </span>
             )}
+
             <div className="text-left mt-14 flex flex-col gap-2">
               <Button
                 text={story.content.link_text}
@@ -155,72 +170,74 @@ const page = async ({
                 href={`/${story?.content.header_link?.cached_url}`}
               />
             </div>
-
           </div>
+
           <div className="h-[350px] lg:h-[500px] w-full relative">
-            <Image src={story.content.film_case_image.filename} alt="" fill className="object-cover" />
+            <Image
+              src={story.content.film_case_image.filename}
+              alt=""
+              fill
+              className="object-cover"
+            />
           </div>
         </div>
       </div>
 
       <h2 className="text-center text-[20px]">URVAL FILM</h2>
 
-      <FilmCases
-        props={filmprod}
-        config={config}
-        locale={params.lang}
-      />
-      <div className="full-width-element bg-[#F7DAD2] py-6 lg:py-20 px-6 lg:px-14" id="readmore">
-        <h3 className="container text-[#25364F] lg:max-w-[50%] lg:leading-[95px] text-[30px] lg:text-[80px]">{story.content.text_block_title}</h3>
+      <FilmCases props={filmprod} config={config} locale={params.lang} />
+
+      <div
+        className="full-width-element bg-[#F7DAD2] py-6 lg:py-20 px-6 lg:px-14"
+        id="readmore"
+      >
+        <h3 className="container text-[#25364F] lg:max-w-[50%] lg:leading-[95px] text-[30px] lg:text-[80px]">
+          {story.content.text_block_title}
+        </h3>
       </div>
+
       <div className="grid lg:grid-cols-2 no-padding-bottom mx-auto justify-start w-full py-14 px-6 lg:px-14 gap-14 lg:gap-24 full-width-element bg-[#F7DAD2]">
         {story.content.text_block_repeater &&
-          story.content.text_block_repeater.map(
-            (item: any) => {
-              return (
-                <div className="text-left">
-                  <span className="text-[35px] text-[#25364F]">
-                    {render(item.title)}
-                  </span>
-                  <span>{render(item.content)}</span>
-                </div>
-              );
-            }
-          )}
+          story.content.text_block_repeater.map((item: any) => {
+            return (
+              <div className="text-left">
+                <span className="text-[35px] text-[#25364F]">
+                  {render(item.title)}
+                </span>
+                <span>{render(item.content)}</span>
+              </div>
+            );
+          })}
       </div>
+
       <div className="no-padding-bottom w-full full-width-element bg-[#F7DAD2] text-center py-10 lg:py-20 justify-center flex">
-        <Button
-          text={"Nyfiken? Boka ett möte med oss"}
-          href={`/kontakt`}
-        />
+        <Button text={"Nyfiken? Boka ett möte med oss"} href={`/kontakt`} />
       </div>
     </div>
   ) : (
     <div
       className={`full-width-element pt-32 no-padding-bottom pb-20 px-1`}
       style={{
-        background: `${story.content.background
-          ? story.content.background
-          : "none"
-          }`,
+        background: `${story.content.background ? story.content.background : "none"}`,
       }}
     >
       <div className="container m-auto px-2 lg:px-0">
         <div className="text-left lg:text-center flex flex-col gap-5 lg:gap-10 justify-center">
-          <h1 className="text-[20px] uppercase text-black">
-            {story.name}
-          </h1>
+          <h1 className="text-[20px] uppercase text-black">{story.name}</h1>
+
           {story.content.title && (
             <div className="text-[65px] lg:text-[100px] leading-[70px] text-[#25364f] lg:leading-[120px]">
               {render(story.content.title)}
             </div>
           )}
+
           {story.content.sub_title && (
             <h2 className="text-[28px] lg:text-[30px] leading-[35px]">
               {story.content.sub_title}
             </h2>
           )}
         </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 mt-5 lg:mt-24">
           <div className="lg:max-w-[80%] flex flex-col gap-5 my-8 lg:mb-0 lg:gap-14 ">
             {story.content.single_content && (
@@ -228,6 +245,7 @@ const page = async ({
                 {render(story.content.single_content)}
               </span>
             )}
+
             {story.content.link_text && (
               <Button
                 text={story.content.link_text}
@@ -235,6 +253,7 @@ const page = async ({
               />
             )}
           </div>
+
           <div className="w-full relative h-[400px] lg:h-[500px]">
             {story.content.show_video ? (
               <video
@@ -244,9 +263,7 @@ const page = async ({
                 muted
                 className="w-full h-full object-contain"
               >
-                <source
-                  src={story?.content?.video?.filename}
-                />
+                <source src={story?.content?.video?.filename} />
               </video>
             ) : (
               <Image
@@ -259,6 +276,7 @@ const page = async ({
           </div>
         </div>
       </div>
+
       {story.content.text_block_title && (
         <div className="flex container flex-col lg:flex-row my-20 m-auto max-auto justify-center p-2 lg:p-0">
           <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
@@ -268,37 +286,33 @@ const page = async ({
               </h2>
             </div>
           </div>
+
           <div className="w-full lg:w-[47.6%] mt-5 lg:mt-0 flex flex-col gap-10 font-light-sofia text-[18px] lg:text-[25px] in_link">
             {render(story?.content?.text_block_content)}
           </div>
         </div>
       )}
+
       <div className="grid lg:grid-cols-2 mx-auto justify-start container gap-10 p-2 lg:p-0">
         {story.content.text_block_repeater &&
-          story.content.text_block_repeater.map(
-            (item: any) => {
-              return (
-                <div className="m-auto">
-                  <span className="text-[35px]">
-                    {render(item.title)}
-                  </span>
-                  <span>{render(item.content)}</span>
-                </div>
-              );
-            }
-          )}
+          story.content.text_block_repeater.map((item: any) => {
+            return (
+              <div className="m-auto">
+                <span className="text-[35px]">{render(item.title)}</span>
+                <span>{render(item.content)}</span>
+              </div>
+            );
+          })}
       </div>
 
       <div className="pl-2 px-1 lg:px-0 lg:pl-14 py-14">
         <h2 className="py-10 text-center uppercase text-[20px]">
-          {params.lang === "en"
-            ? "Selection case"
-            : "Urval case"}
+          {params.lang === "en" ? "Selection case" : "Urval case"}
         </h2>
-        {filteredStories &&
-          Array.isArray(filteredStories) && (
-            <CasesReelComponent props={filteredStories} />
-          )}
+
+        {filteredStories && Array.isArray(filteredStories) && (
+          <CasesReelComponent props={filteredStories} />
+        )}
       </div>
     </div>
   );
