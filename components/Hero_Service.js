@@ -1,8 +1,10 @@
+'use client'
+
 import { storyblokEditable } from '@storyblok/react/rsc'
 import { useState } from 'react'
 import { GoMute, GoUnmute } from 'react-icons/go'
 
-const Hero = ({ blok }) => {
+const HeroService = ({ blok }) => {
   const [isMuted, isSetMuted] = useState(true)
   const handleMuted = () => {
     isSetMuted(!isMuted)
@@ -32,17 +34,12 @@ const Hero = ({ blok }) => {
         >
           <source src={blok.mobile_video.filename} />
         </video>
-        <div
-          className={`w-full text-white flex flex-col gap-5 items-${blok.position} z-10`}
-        >
-          <h2
-            className="text-xl uppercase font-light"
-            {...storyblokEditable(blok)}
-          >
+       <div className={`w-full max-w-[760px] px-6 lg:px-16 text-white flex flex-col gap-4 items-start z-20 relative`}>
+          <h2 className="text-sm lg:text-base uppercase font-bold tracking-wide text-white" {...storyblokEditable(blok)}>
             {blok?.tagline}
           </h2>
-          <h1 className="text-6xl font-bold" {...storyblokEditable(blok)}>
-            {blok?.headline}
+          <h1 className="text-4xl lg:text-7xl font-bold leading-tight text-white" {...storyblokEditable(blok)}>
+           {blok?.headline}
           </h1>
           <div className="aboslute bottom-0 right-0 w-full z-50 flex justify-end items-end h-[85vh] py-2 px-5">
             <button onClick={handleMuted} className="z-10">
@@ -59,4 +56,4 @@ const Hero = ({ blok }) => {
   )
 }
 
-export default Hero
+export default HeroService
