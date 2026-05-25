@@ -45,7 +45,7 @@ const components = {
   divide: Divide,
   tiles_icon: Tilesicon,
   organisation: OrgForm,
-  heroService: HeroService,
+  HeroService: HeroService,
 }
 /** 2. Initialize it as usual */
 storyblokInit({
