@@ -1,7 +1,6 @@
 'use client'
 
 import { storyblokEditable } from '@storyblok/react/rsc'
-import { useState } from 'react'
 
 const HeroService = ({ blok }) => {
 
@@ -15,7 +14,7 @@ return (
         autoPlay
         playsInline
         loop
-        muted={isMuted}
+        muted
         className="absolute hidden lg:block w-full h-full top-0 left-0 object-cover hero-video"
       >
         <source src={blok.Video.filename} />
@@ -25,7 +24,7 @@ return (
         autoPlay
         playsInline
         loop
-        muted={isMuted}
+        muted
         className="absolute lg:hidden w-full h-full top-0 left-0 object-cover hero-video"
       >
         <source src={blok.mobile_video.filename} />
