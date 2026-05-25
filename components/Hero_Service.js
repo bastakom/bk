@@ -45,25 +45,24 @@ return (
       </p>
     )}
 
-        <div className="flex gap-4 mt-4">
-          {blok?.primary_button_text && (
-            <a
-              href={blok?.primary_button_link?.cached_url}
-              className="bg-[#ff6b5f] hover:bg-[#ff5a4d] transition-colors px-6 py-4 text-white font-bold uppercase text-sm"
-            >
-              {blok.primary_button_text}
-            </a>
-          )}
+  <div className="flex flex-col sm:flex-row gap-4 mt-6">
+      {blok?.primary_button_text && (
+    <a
+      href={blok?.primary_button_link?.cached_url}
+      className="bg-[#ff6b5f] hover:bg-[#ff5a4d] transition-all duration-300 px-8 py-4 text-white font-bold uppercase text-sm tracking-wide">
+      {blok.primary_button_text}
+    </a>
+  )}
 
-          {blok?.secondary_button_text && (
-            <a
-              href={blok?.secondary_button_link?.cached_url}
-              className="border border-white px-6 py-4 text-white font-bold uppercase text-sm"
-            >
-              {blok.secondary_button_text}
-            </a>
-          )}
-        </div>
+  {blok?.secondary_button_text && (
+    <a
+      href={blok?.secondary_button_link?.cached_url}
+      className="border border-white hover:bg-white hover:text-black transition-all duration-300 px-8 py-4 text-white font-bold uppercase text-sm tracking-wide"
+    >
+      {blok.secondary_button_text}
+    </a>
+  )}
+</div>
 
       
       </div>
