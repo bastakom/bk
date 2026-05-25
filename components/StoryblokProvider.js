@@ -24,6 +24,8 @@ import Divide from './Divide'
 import Tilesicon from './Tilesicon'
 import OrgForm from './OrgForm'
 import HeroService from './Hero_Service'
+import ServiceGrid from './ServiceGrid'
+import ServiceTile from './ServiceTile'
 
 const components = {
   feature: Feature,
@@ -46,6 +48,8 @@ const components = {
   tiles_icon: Tilesicon,
   organisation: OrgForm,
   HeroService: HeroService,
+  service_grid: ServiceGrid,
+  service_tile: ServiceTile,
 }
 /** 2. Initialize it as usual */
 storyblokInit({
