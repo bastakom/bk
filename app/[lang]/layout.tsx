@@ -25,6 +25,9 @@ storyblokInit({
 export const metadata: Metadata = {
   title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
   description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
+  verification: {
+    google: "Rziu538lsra_w-ict7uWI5Onp3eUKXfIQ6MdDt4Y8Ao",
+  },
   openGraph: {
     title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
     description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
