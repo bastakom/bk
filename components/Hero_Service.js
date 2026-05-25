@@ -40,10 +40,10 @@ return (
         </h1>
 
         {blok?.body && (
-          <p className="text-base lg:text-xl leading-relaxed text-white max-w-[650px]">
-            {blok.body}
-          </p>
-        )}
+      <p className="text-[18px] lg:text-[24px] leading-[1.5] text-white max-w-[620px] drop-shadow-[0_0_10px_rgba(0,0,0,0.3)]">
+        {blok.body}
+      </p>
+    )}
 
         <div className="flex gap-4 mt-4">
           {blok?.primary_button_text && (
