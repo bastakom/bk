@@ -2,13 +2,9 @@
 
 import { storyblokEditable } from '@storyblok/react/rsc'
 import { useState } from 'react'
-import { GoMute, GoUnmute } from 'react-icons/go'
 
 const HeroService = ({ blok }) => {
-  const [isMuted, isSetMuted] = useState(true)
-  const handleMuted = () => {
-    isSetMuted(!isMuted)
-  }
+
 
 return (
   <>
@@ -76,16 +72,7 @@ return (
           )}
         </div>
 
-        <button
-          onClick={handleMuted}
-          className="absolute bottom-[-80px] right-0 z-30"
-        >
-          {isMuted ? (
-            <GoMute fontSize={'2rem'} color="#fff" />
-          ) : (
-            <GoUnmute fontSize={'2rem'} color="#fff" />
-          )}
-        </button>
+      
       </div>
     </div>
   </>
