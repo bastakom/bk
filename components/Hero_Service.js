@@ -35,7 +35,7 @@ return (
           {blok?.tagline}
         </h2>
 
-        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.05] text-white max-w-[620px] drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]" {...storyblokEditable(blok)}>
+        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.05] text-white max-w-[760px] drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]" {...storyblokEditable(blok)}>
           {blok?.headline}
         </h1>
 
