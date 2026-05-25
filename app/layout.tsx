@@ -14,8 +14,8 @@ storyblokInit({
 });
 
 export const metadata: Metadata = {
-  title: "Bästa kompisar malmö",
-  description: "En fullservice reklam byrå",
+  title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
+  description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
 };
 
 export default function RootLayout({
