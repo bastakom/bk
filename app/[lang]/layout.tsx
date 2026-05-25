@@ -23,11 +23,11 @@ storyblokInit({
 });
 
 export const metadata: Metadata = {
-  title: "Reklambyrån Bästa Kompisar – En fullservicebyrå",
-  description: "En fullservicebyrå",
+  title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
+  description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
   openGraph: {
-    title: "Reklambyrån Bästa Kompisar – En fullservicebyrå",
-    description: "En fullservicebyrå",
+    title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
+    description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
     url: "https://bastakompisar.se",
     siteName: "Bästa Kompisar",
     images: [
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Reklambyrån Bästa Kompisar – En fullservicebyrå",
-    description: "En fullservicebyrå",
+    title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
+    description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
     images: ["https://bastakompisar.se/bk-black.png"],
   },
 };
