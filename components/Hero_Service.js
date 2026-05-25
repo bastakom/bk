@@ -31,17 +31,11 @@ return (
       </video>
 
       <div className="w-full max-w-[760px] px-8 lg:px-20 text-white flex flex-col gap-5 items-start z-20 relative">
-        <h2
-          className="text-sm lg:text-base uppercase font-bold tracking-[0.2em] text-white"
-          {...storyblokEditable(blok)}
-        >
+        h2 className="text-sm lg:text-base uppercase font-bold tracking-[0.2em] text-white drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]" {...storyblokEditable(blok)}>
           {blok?.tagline}
         </h2>
 
-        <h1
-          className="text-4xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] text-white"
-          {...storyblokEditable(blok)}
-        >
+        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.05] text-white max-w-[620px] drop-shadow-[0_0_12px_rgba(0,0,0,0.35)]" {...storyblokEditable(blok)}>
           {blok?.headline}
         </h1>
 
