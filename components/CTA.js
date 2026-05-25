@@ -15,7 +15,7 @@ const CTA = ({ blok }) => {
       {...storyblokEditable(blok)}
     >
       {blok.title && (
-        <h2 className={`text-[45px] font-primary`}>{blok.title}</h2>
+        <h1 className={`text-[45px] font-primary`}>{blok.title}</h1>
       )}
 
       <div
