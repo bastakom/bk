@@ -14,7 +14,7 @@ const ServiceTile = ({ blok }) => {
   return (
     <a
       href={blok?.link?.cached_url || '#'}
-      className="relative min-h-[420px] p-10 flex flex-col justify-between overflow-hidden group"
+      className="relative min-h-[420px] p-10 flex flex-col justify-between overflow-hidden group border border-white/50"
       style={backgroundStyle}
       {...storyblokEditable(blok)}
     >
@@ -37,7 +37,7 @@ const ServiceTile = ({ blok }) => {
           <img
             src={blok.icon.filename}
             alt=""
-            className="w-10 h-10 mb-6 object-contain"
+            className="w-20 h-20 mb-8 object-contain"
           />
         )}
 
