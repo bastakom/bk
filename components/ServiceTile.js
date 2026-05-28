@@ -18,7 +18,9 @@ const ServiceTile = ({ blok }) => {
       style={backgroundStyle}
       {...storyblokEditable(blok)}
     >
-      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
+      {blok?.background_image?.filename && (
+        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
+      )}
 
       <div className="relative z-10">
         {blok?.tagline && (
