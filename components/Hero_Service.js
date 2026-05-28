@@ -10,24 +10,24 @@ return (
     <div className="w-full h-[600px] lg:h-[92vh] flex items-center relative overflow-hidden">
       <div className="h-full absolute w-full bg-black z-10 opacity-40" />
 
-      <video
-        autoPlay
-        playsInline
-        loop
-        muted
-        className="absolute hidden lg:block w-full h-full top-0 left-0 object-cover hero-video"
-      >
-        <source src={blok.Video.filename} />
-      </video>
+     <video
+      autoPlay
+      muted
+      playsInline
+      loop
+      preload="auto"
+      className="absolute hidden lg:block w-full h-full top-0 left-0 object-cover hero-video">
+        <source src={blok.Video.filename} type="video/mp4" /> 
+    </video>
 
       <video
         autoPlay
+        muted
         playsInline
         loop
-        muted
-        className="absolute lg:hidden w-full h-full top-0 left-0 object-cover hero-video"
-      >
-        <source src={blok.mobile_video.filename} />
+        preload="auto"
+        className="absolute lg:hidden w-full h-full top-0 left-0 object-cover hero-video">
+           <source src={blok.mobile_video.filename} type="video/mp4" />
       </video>
 
       <div className="w-full max-w-[910px] px-8 lg:px-20 text-white flex flex-col gap-5 items-start z-20 relative">
