@@ -13,7 +13,7 @@ const handleMuted = () => {
 
 return (
   <>
-    <div className="w-full h-[600px] lg:h-[92vh] flex items-center relative overflow-hidden">
+    <div className="w-full h-[600px] lg:h-[92vh] flex items-center relative overflow-hidden border border-white/50">
       <div className="h-full absolute w-full bg-black z-10 opacity-40" />
 
      <video
