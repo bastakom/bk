@@ -1,9 +1,15 @@
 'use client'
 
 import { storyblokEditable } from '@storyblok/react/rsc'
+import { useState } from 'react'
+import { GoMute, GoUnmute } from 'react-icons/go'
 
 const HeroService = ({ blok }) => {
+const [isMuted, isSetMuted] = useState(true)
 
+const handleMuted = () => {
+  isSetMuted(!isMuted)
+}
 
 return (
   <>
@@ -12,7 +18,7 @@ return (
 
      <video
       autoPlay
-      muted
+      muted={isMuted}
       playsInline
       loop
       preload="auto"
@@ -22,7 +28,7 @@ return (
 
       <video
         autoPlay
-        muted
+        muted={isMuted}
         playsInline
         loop
         preload="auto"
@@ -66,6 +72,25 @@ return (
 
       
       </div>
+    <button
+
+  onClick={handleMuted}
+
+  className="absolute bottom-6 right-6 z-30"
+
+>
+
+  {isMuted ? (
+
+    <GoMute fontSize={'2rem'} color="#fff" />
+
+  ) : (
+
+    <GoUnmute fontSize={'2rem'} color="#fff" />
+
+  )}
+
+</button>
     </div>
   </>
 )}
