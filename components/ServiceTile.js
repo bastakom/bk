@@ -23,17 +23,17 @@ const ServiceTile = ({ blok }) => {
       )}
 
       <div className="relative z-10">
-        <div className="h-12 mb-4 flex items-start">
+        <div className="h-16 mb-3 flex items-center">
           {blok?.icon?.filename ? (
             <img
               src={blok.icon.filename}
               alt=""
-              className="w-12 h-12 object-contain"
+              className="w-16 h-16 object-contain"
             />
           ) : (
             blok?.tagline && (
               <p
-                className={`uppercase text-sm tracking-[0.2em] ${
+                className={`uppercase text-base tracking-[0.2em] font-medium ${
                   blok?.text_color === 'black'
                     ? 'text-black'
                     : 'text-white'
