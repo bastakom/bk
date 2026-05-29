@@ -23,12 +23,12 @@ const ServiceTile = ({ blok }) => {
       )}
 
       <div className="relative z-10">
-        <div className="h-20 mb-8 flex items-start">
+        <div className="h-12 mb-4 flex items-start">
           {blok?.icon?.filename ? (
             <img
               src={blok.icon.filename}
               alt=""
-              className="w-16 h-16 object-contain"
+              className="w-10 h-10 object-contain"
             />
           ) : (
             blok?.tagline && (
