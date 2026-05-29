@@ -66,17 +66,19 @@ const ServiceTile = ({ blok }) => {
         </p>
       </div>
 
-      <div className="relative z-10 mt-10">
-        <span
-          className={`uppercase font-bold text-sm tracking-wide ${
-            blok?.text_color === 'black'
-              ? 'text-black'
-              : 'text-white'
-          }`}
-        >
-          Läs mer →
-        </span>
-      </div>
+      {blok?.link?.cached_url && (
+        <div className="relative z-10 mt-10">
+          <span
+            className={`uppercase font-bold text-sm tracking-wide ${
+              blok?.text_color === 'black'
+                ? 'text-black'
+                : 'text-white'
+            }`}
+          >
+            Läs mer →
+          </span>
+        </div>
+      )}
     </a>
   )
 }
