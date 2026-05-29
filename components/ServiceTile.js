@@ -23,25 +23,27 @@ const ServiceTile = ({ blok }) => {
       )}
 
       <div className="relative z-10">
-        {blok?.tagline && (
-          <p
-            className={`uppercase text-sm tracking-[0.2em] mb-6 ${
-              blok?.text_color === 'black'
-                ? 'text-black'
-                : 'text-white'
-            }`}
-          >
-            {blok.tagline}
-          </p>
-        )}
-
-        {blok?.icon?.filename && (
-          <img
-            src={blok.icon.filename}
-            alt=""
-            className="w-20 h-20 mb-8 object-contain"
-          />
-        )}
+        <div className="h-20 mb-8 flex items-start">
+          {blok?.icon?.filename ? (
+            <img
+              src={blok.icon.filename}
+              alt=""
+              className="w-16 h-16 object-contain"
+            />
+          ) : (
+            blok?.tagline && (
+              <p
+                className={`uppercase text-sm tracking-[0.2em] ${
+                  blok?.text_color === 'black'
+                    ? 'text-black'
+                    : 'text-white'
+                }`}
+              >
+                {blok.tagline}
+              </p>
+            )
+          )}
+        </div>
 
         <h3
           className={`text-4xl font-bold leading-tight mb-6 ${
