@@ -1,6 +1,11 @@
 import { getStoryblokApi } from '@storyblok/react'
 import CasePage from '../components/Cases/CasePage'
 
+const storyblokVersion: 'published' | 'draft' =
+  process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
+    ? 'draft'
+    : 'published'
+
 const Page = async ({ params }: { params: { lang: string } }) => {
   const props = await fetchCases(params.lang)
   const config = await fetchConfig(params.lang)
@@ -18,16 +23,18 @@ export default Page
 
 async function fetchCases(locale: string) {
   let sbParams = {
-    version: 'published' as const,
+    version: storyblokVersion,
     starts_with: 'cases/',
     language: locale,
   }
 
   const storyblokApi = getStoryblokApi()
+
   try {
     const response = await storyblokApi.get(`cdn/stories/`, sbParams, {
       cache: 'no-store',
     })
+
     return response
   } catch (error) {
     console.error('Error fetching cases:')
@@ -36,13 +43,18 @@ async function fetchCases(locale: string) {
 }
 
 const fetchConfig = async (locale: string) => {
-  let sbParams = { version: 'draft' as const, language: locale }
+  let sbParams = {
+    version: storyblokVersion,
+    language: locale,
+  }
 
   const storyblokApi = getStoryblokApi()
+
   try {
     const response = await storyblokApi.get(`cdn/stories/config`, sbParams, {
       cache: 'no-store',
     })
+
     return response
   } catch (error) {
     console.error('Error fetching config:')
