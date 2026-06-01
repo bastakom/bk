@@ -1,14 +1,20 @@
 import { notFound, redirect } from 'next/navigation'
 import { StoryblokStory, getStoryblokApi } from '@storyblok/react/rsc'
 
+const storyblokVersion: 'published' | 'draft' =
+  process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
+    ? 'draft'
+    : 'published'
+
 async function fetchData(slug: string, locale: string) {
   let sbParams = {
-    version: 'draft' as const,
+    version: storyblokVersion,
     resolve_relations: ['varacases.referens', 'varacases.categories'],
     language: locale,
   }
 
   const storyblokApi = getStoryblokApi()
+
   try {
     const data = await storyblokApi.get(`cdn/stories/${slug}`, sbParams, {
       cache: 'no-store',
@@ -29,12 +35,17 @@ async function fetchData(slug: string, locale: string) {
 }
 
 const fetchConfig = async (locale: string) => {
-  let sbParams = { version: 'draft' as const, language: locale }
+  let sbParams = {
+    version: storyblokVersion,
+    language: locale,
+  }
 
   const storyblokApi = getStoryblokApi()
+
   const config = await storyblokApi.get(`cdn/stories/config`, sbParams, {
     cache: 'no-store',
   })
+
   return { config }
 }
 
@@ -46,6 +57,7 @@ export default async function page({
   const pathname = params.slug
   const slugName = pathname === undefined ? `hem` : pathname
   const settings = await fetchConfig(params.lang)
+
   try {
     const { data } = await fetchData(slugName, params.lang)
 
