@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { storyblokEditable } from '@storyblok/react/rsc'
-import { ChevronDown } from 'lucide-react'
 
 const FAQItem = ({ blok }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -20,12 +19,13 @@ const FAQItem = ({ blok }) => {
           {blok.question}
         </h3>
 
-        <ChevronDown
-          size={24}
-          className={`transition-transform duration-300 flex-shrink-0 ${
+        <span
+          className={`text-3xl leading-none transition-transform duration-300 flex-shrink-0 ${
             isOpen ? 'rotate-180' : ''
           }`}
-        />
+        >
+          ↓
+        </span>
       </button>
 
       <div
