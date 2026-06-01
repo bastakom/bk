@@ -26,6 +26,8 @@ import OrgForm from './OrgForm'
 import HeroService from './Hero_Service'
 import ServiceGrid from './ServiceGrid'
 import ServiceTile from './ServiceTile'
+import FAQBlock from './FAQBlock'
+import FAQItem from './FAQItem'
 
 const components = {
   feature: Feature,
@@ -50,6 +52,8 @@ const components = {
   HeroService: HeroService,
   service_grid: ServiceGrid,
   service_tile: ServiceTile,
+  faq_block: FAQBlock,
+  faq_item: FAQItem,
 }
 /** 2. Initialize it as usual */
 storyblokInit({
