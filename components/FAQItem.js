@@ -21,7 +21,7 @@ const FAQItem = ({ blok }) => {
 
         <span
           className={`text-3xl leading-none transition-transform duration-300 flex-shrink-0 ${
-            isOpen ? 'rotate-180' : ''
+            isOpen ? 'rotate-90' : ''
           }`}
         >
           ➞
