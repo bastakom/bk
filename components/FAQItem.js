@@ -24,7 +24,7 @@ const FAQItem = ({ blok }) => {
             isOpen ? 'rotate-180' : ''
           }`}
         >
-          ↓
+          ➞
         </span>
       </button>
 
