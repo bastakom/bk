@@ -1,4 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<sitemap><loc>https://bastakompisar.se/sitemap-0.xml</loc></sitemap>
-</sitemapindex>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+
+<url>
+  <loc>https://bastakompisar.se/sv</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/vara-tjanster</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/omoss</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/nyheter</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/marknadsfika</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/faq</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/kontakt</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/gaim</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/hyd-drinks</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/jubla</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/davida</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/enkla-elbolaget</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/vara-tjanster/varumarke</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/vara-tjanster/film</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/vara-tjanster/ljud</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/vara-tjanster/sociala-medier</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/vara-tjanster/webb</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/karriaer</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/gripen-nail-care</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/defensify</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/frida</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/Kahrs</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/urtekram</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/helosan</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/maten-e-klar</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/viktvaektarna</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/tepe</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/panduro</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/cramer</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/bubs-godis</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/one-nordic</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/chainformation</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/ikea</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/sandvik</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/axis</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/efterklang</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://bastakompisar.se/sv/cases/aoptik</loc>
+  <lastmod>2026-06-02T11:49:02+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+
+</urlset>
