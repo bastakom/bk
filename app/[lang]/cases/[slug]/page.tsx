@@ -1,51 +1,91 @@
 import { getStoryblokApi, renderRichText } from "@storyblok/react";
+import { notFound } from "next/navigation";
 import CaseSlugPage from "../../components/Cases/CaseSlugPage";
 import { Metadata } from "next";
-import { render } from "storyblok-rich-text-react-renderer";
+
+const storyblokVersion: "published" | "draft" =
+  process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === "true"
+    ? "draft"
+    : "published";
 
 const getSlugData = async (slug: string, locale: string) => {
-  let sbParams = { version: "published" as const, language: locale };
+  let sbParams = {
+    version: storyblokVersion,
+    language: locale,
+  };
 
   const storyblokApi = getStoryblokApi();
-  return await storyblokApi.get(`cdn/stories/cases/${slug}`, sbParams);
+
+  return await storyblokApi.get(`cdn/stories/cases/${slug}`, sbParams, {
+    cache: "no-store",
+  });
 };
 
 const getAllSlugs = async (locale: string) => {
   let sbParams = {
-    version: "published" as const,
+    version: storyblokVersion,
     starts_with: "cases/",
     language: locale,
   };
 
   const storyblokApi = getStoryblokApi();
-  return await storyblokApi.get(`cdn/stories`, sbParams);
+
+  return await storyblokApi.get(`cdn/stories`, sbParams, {
+    cache: "no-store",
+  });
 };
-export async function generateMetadata({ params }: { params: { slug: string; lang: string } }): Promise<Metadata> {
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string; lang: string };
+}): Promise<Metadata> {
   const pathname = params.slug;
+
   let story;
+
   try {
     const result = await getSlugData(pathname, params.lang);
     story = result?.data?.story;
   } catch {
     story = undefined;
   }
+
   const maxLength = 150;
-  const isRichText = (val: any) => val && typeof val === "object" && (Array.isArray(val.content) || val.type);
+
+  const isRichText = (val: any) =>
+    val &&
+    typeof val === "object" &&
+    (Array.isArray(val.content) || val.type);
+
   const titleText =
-    story && story.content && isRichText(story.content.title) ? renderRichText(story.content.title) : "";
+    story && story.content && isRichText(story.content.title)
+      ? renderRichText(story.content.title)
+      : "";
+
   const contentText =
-    story && story.content && isRichText(story.content.content) ? renderRichText(story.content.content) : "";
-  let description = `${titleText} - ${contentText}`.replace(/<\/?[^>]+(>|$)/g, "");
+    story && story.content && isRichText(story.content.content)
+      ? renderRichText(story.content.content)
+      : "";
+
+  let description = `${titleText} - ${contentText}`.replace(
+    /<\/?[^>]+(>|$)/g,
+    ""
+  );
+
   if (!description || description.trim() === " - ") {
     description =
       story && story.content && story.content.ingress
         ? story.content.ingress
         : `${story?.name || "Case"} by Bästa Kompisar`;
   }
+
   if (description.length > maxLength) {
     description = description.substring(0, maxLength) + "...";
   }
+
   let imageUrl = "https://bastakompisar.se/bk-black.png";
+
   if (
     story &&
     story.content &&
@@ -55,8 +95,11 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
   ) {
     imageUrl = story.content.Meta.og_image;
   }
+
   const siteUrl = "https://bastakompisar.se";
   const currentUrl = `${siteUrl}/${params.lang}/cases/${pathname}`;
+  const cleanTitle = titleText.replace(/<\/?[^>]+(>|$)/g, "");
+
   return {
     metadataBase: new URL(siteUrl),
     title: `${story?.name || "Case"} – Bästa Kompisar kundcase`,
@@ -71,7 +114,7 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: `${story?.name || "Case"} - ${titleText.replace(/<\/?[^>]+(>|$)/g, "")}`,
+          alt: `${story?.name || "Case"} - ${cleanTitle}`,
         },
       ],
       locale: params.lang === "sv" ? "sv_SE" : "en_US",
@@ -98,26 +141,43 @@ export async function generateMetadata({ params }: { params: { slug: string; lan
   };
 }
 
-const page = async ({ params }: { params: { slug: string; lang: string } }) => {
+const page = async ({
+  params,
+}: {
+  params: { slug: string; lang: string };
+}) => {
   const pathname = params.slug;
 
-  const {
-    data: { story },
-  } = await getSlugData(pathname, params.lang);
+  let story;
 
-  const {
-    data: { stories: stores },
-  } = await getAllSlugs(params.lang);
+  try {
+    const result = await getSlugData(pathname, params.lang);
+    story = result?.data?.story;
+  } catch {
+    notFound();
+  }
+
+  if (!story) {
+    notFound();
+  }
+
+  let stores: any[] = [];
+
+  try {
+    const result = await getAllSlugs(params.lang);
+    stores = result?.data?.stories || [];
+  } catch {
+    stores = [];
+  }
 
   const slugs = stores.map((item: any) => item.slug);
   const currentIndex = slugs.indexOf(pathname);
-  const nextCaseSlug = slugs[(currentIndex + 1) % slugs.length];
+  const nextCaseSlug =
+    slugs.length > 0 && currentIndex !== -1
+      ? slugs[(currentIndex + 1) % slugs.length]
+      : "";
 
-  return (
-    <>
-      <CaseSlugPage story={story} nextCaseSlug={nextCaseSlug} />
-    </>
-  );
+  return <CaseSlugPage story={story} nextCaseSlug={nextCaseSlug} />;
 };
 
 export default page;
