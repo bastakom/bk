@@ -30,6 +30,7 @@ const Staplar = ({ props }: Props) => {
     } else {
       setIsOpen(false)
     }
+
     if (openIndex === index) {
       setOpenIndex(null)
     } else {
@@ -42,28 +43,38 @@ const Staplar = ({ props }: Props) => {
       }, 100)
     }
   }
+
   return (
-    <div
-      className="flex flex-col lg:flex-row w-full relative mt-10"
-      id="tjanster"
-    >
+    <div className="flex flex-col lg:flex-row">
       {props.map((item, index) => {
         const translatedName = item.translated_slugs.flatMap(
-          (item: any) => item.name
+          (translatedSlug: any) => translatedSlug.name
         )
+
+        const itemHref =
+          params.lang === 'sv' && item.slug === 'film'
+            ? '/sv/filmproduktion'
+            : `/${params.lang}/vara-tjanster/${item.slug}`
+
+        const displayName =
+          params.lang === 'sv' && item.slug === 'film'
+            ? 'Filmproduktion'
+            : translatedName && params.lang === 'en'
+              ? translatedName
+              : item.name
 
         return (
           <Link
-            href={`vara-tjanster/${item.slug}`}
+            href={itemHref}
             id="tjanster"
-            className={`h-[600px] ${openIndex === index ? 'w-full' : 'w-full lg:w-1/5'
-              } bg-gray-200 flex flex-col justify-center transition-all duration-300 hover:cursor-pointer relative`}
+            className={`h-[600px] ${
+              openIndex === index ? 'w-full' : 'w-full lg:w-1/5'
+            } bg-gray-200 flex flex-col justify-center transition-all duration-300 hover:cursor-pointer relative`}
             key={index}
           >
             {item.content.image && (
               <Image
-                src={`${item.content.image ? item?.content?.image.filename : null
-                  }`}
+                src={item.content.image.filename}
                 fill
                 alt={item.name}
                 className="object-cover"
@@ -72,17 +83,11 @@ const Staplar = ({ props }: Props) => {
             <div className="bg-black opacity-40 absolute top-0 h-full w-full" />
             <div className="z-10 h-full items-center flex flex-col lg:flex-row justify-center">
               {open && (
-                <h2
-                  className={`p-2 font-bold text-[22px] text-white transition-opacity text-center flex  gap-2 items-center`}
-                >
+                <h2 className="p-2 font-bold text-[22px] text-white transition-opacity text-center flex gap-2 items-center">
                   {click && <div className="spinner top-2" />}
+                  <span>{displayName}</span>
                   <span>
-                    {translatedName && params.lang === 'en'
-                      ? translatedName
-                      : item.name}
-                  </span>
-                  <span>
-                    <IoMdArrowForward fontSize={'1.5em'} color="#FF6062" />
+                    <IoMdArrowForward fontSize="1.5em" color="#FF6062" />
                   </span>
                 </h2>
               )}
@@ -90,12 +95,8 @@ const Staplar = ({ props }: Props) => {
               {openIndex === index && (
                 <div className="flex flex-col justify-center gap-2 items-center w-full p-2">
                   <div className="p-0 flex justify-center gap-14 w-full h-full flex-col lg:flex-row items-center">
-                    <h2 className={`font-bold text-xl text-white`}>
-                      <span>
-                        {translatedName && params.lang === 'en'
-                          ? translatedName
-                          : item.name}
-                      </span>
+                    <h2 className="font-bold text-xl text-white">
+                      <span>{displayName}</span>
                     </h2>
 
                     <div className="font-primary max-w-[100%] lg:max-w-[60%] text-white reveal">
@@ -104,13 +105,13 @@ const Staplar = ({ props }: Props) => {
                       </span>
                       <span>
                         <Link
-                          href={`vara-tjanster/${item.slug}`}
+                          href={itemHref}
                           onClick={() => isSetClicked(true)}
                           className="text-left text-[#FF6062] text-[19px] lg:text-[16px] font-bold flex gap-2 justify-center lg:justify-start items-center z-20"
                         >
                           {params.lang === 'en' ? 'Read more' : 'Läs mer'}
                           <span>
-                            <IoMdArrowForward fontSize={'1.5em'} />
+                            <IoMdArrowForward fontSize="1.5em" />
                           </span>
                         </Link>
                       </span>
@@ -118,7 +119,7 @@ const Staplar = ({ props }: Props) => {
 
                     <GoPlus
                       className="rotate-45"
-                      fontSize={'2.4em'}
+                      fontSize="2.4em"
                       color="#FF6062"
                     />
                   </div>
