@@ -1,9 +1,7 @@
-import {
-  getStoryblokApi,
-  StoryblokStory,
-} from "@storyblok/react/rsc";
+import { getStoryblokApi } from "@storyblok/react/rsc";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import CaseRenderer from "@/components/NewCase/CaseRenderer";
 
 const storyblokVersion: "published" | "draft" =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === "true"
@@ -11,36 +9,39 @@ const storyblokVersion: "published" | "draft" =
     : "published";
 
 const getSlugData = async (slug: string, locale: string) => {
-  const sbParams = {
-    version: storyblokVersion,
-    language: locale,
-  };
-
   const storyblokApi = getStoryblokApi();
 
-  return storyblokApi.get(`cdn/stories/case/${slug}`, sbParams, {
-    cache: "no-store",
-  });
+  return storyblokApi.get(
+    `cdn/stories/case/${slug}`,
+    {
+      version: storyblokVersion,
+      language: locale,
+    },
+    {
+      cache: "no-store",
+    }
+  );
 };
 
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string; lang: string };
+  params: {
+    slug: string;
+    lang: string;
+  };
 }): Promise<Metadata> {
-  const pathname = params.slug;
-
   let story;
 
   try {
-    const result = await getSlugData(pathname, params.lang);
+    const result = await getSlugData(params.slug, params.lang);
     story = result?.data?.story;
   } catch {
     story = undefined;
   }
 
   const siteUrl = "https://bastakompisar.se";
-  const currentUrl = `${siteUrl}/${params.lang}/case/${pathname}`;
+  const currentUrl = `${siteUrl}/${params.lang}/case/${params.slug}`;
 
   const title =
     story?.content?.title ||
@@ -88,7 +89,10 @@ export async function generateMetadata({
 const CasePage = async ({
   params,
 }: {
-  params: { slug: string; lang: string };
+  params: {
+    slug: string;
+    lang: string;
+  };
 }) => {
   let story;
 
@@ -105,7 +109,7 @@ const CasePage = async ({
 
   return (
     <main>
-      <StoryblokStory story={story} />
+      <CaseRenderer story={story} />
     </main>
   );
 };
