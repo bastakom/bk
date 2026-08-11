@@ -1,8 +1,7 @@
 'use client'
-/** 1. Tag it as a client component */
+
 import { storyblokInit, apiPlugin } from '@storyblok/react/rsc'
 
-/** Import your components */
 import Page from './Page'
 import Hero from './Hero'
 import Feature from './Feature'
@@ -14,7 +13,6 @@ import MenuLink from './MenuLink'
 import Cases from './Cases'
 import SmallHero from './SmallHero'
 import dynamic from 'next/dynamic'
-const TitleText = dynamic(() => import('./TitleText'), { ssr: false })
 import Tiles from './Tiles'
 import Team from './Team'
 import RichText from './RichText'
@@ -29,11 +27,20 @@ import ServiceTile from './ServiceTile'
 import FAQBlock from './FAQBlock'
 import FAQItem from './FAQItem'
 
+const TitleText = dynamic(() => import('./TitleText'), {
+  ssr: false,
+})
+
 const components = {
   feature: Feature,
   grid: Grid,
   Hero: Hero,
+
   page: Page,
+
+  // Nya modulära case-sidor använder samma body-rendering som Page.
+  case: Page,
+
   varacases: Cases,
   ctablock: CTA,
   config: Config,
@@ -55,7 +62,7 @@ const components = {
   faq_block: FAQBlock,
   faq_item: FAQItem,
 }
-/** 2. Initialize it as usual */
+
 storyblokInit({
   accessToken: 'faVE0ToH7Y41wHZy0uSt3Qtt',
   components,
