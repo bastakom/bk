@@ -1,5 +1,5 @@
 import { storyblokEditable } from "@storyblok/react/rsc";
-import SmallHero from "../SmallHero";
+import CaseHeroMedia from "./blocks/CaseHeroMedia";
 
 interface CaseRendererProps {
   story: any;
@@ -9,7 +9,7 @@ const caseBlocks: Record<
   string,
   React.ComponentType<{ blok: any }>
 > = {
-  smallhero: SmallHero,
+  case_hero_media: CaseHeroMedia,
 };
 
 const CaseRenderer = ({ story }: CaseRendererProps) => {
@@ -32,7 +32,7 @@ const CaseRenderer = ({ story }: CaseRendererProps) => {
 
         if (!Component) {
           console.warn(
-            `Case-blocket "${blok?.component}" är inte registrerat i CaseRenderer.`
+            `Case-blocket "${blok?.component}" är inte registrerat.`
           );
 
           return null;
