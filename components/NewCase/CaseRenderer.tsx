@@ -5,25 +5,34 @@ interface CaseRendererProps {
   story: any;
 }
 
-const caseBlocks: Record<string, React.ComponentType<{ blok: any }>> = {
+const caseBlocks: Record<
+  string,
+  React.ComponentType<{ blok: any }>
+> = {
   smallhero: SmallHero,
-
-  // Extra stöd om blockets tekniska namn använder stor bokstav.
-  Smallhero: SmallHero,
 };
 
 const CaseRenderer = ({ story }: CaseRendererProps) => {
   const content = story?.content;
-  const body = Array.isArray(content?.body) ? content.body : [];
+
+  const body = Array.isArray(content?.body)
+    ? content.body
+    : Array.isArray(content?.Body)
+      ? content.Body
+      : [];
 
   return (
     <div {...storyblokEditable(content)}>
       {body.map((blok: any) => {
-        const Component = caseBlocks[blok.component];
+        const componentName = String(
+          blok?.component || ""
+        ).toLowerCase();
+
+        const Component = caseBlocks[componentName];
 
         if (!Component) {
           console.warn(
-            `Case-blocket "${blok.component}" är inte registrerat i CaseRenderer.`
+            `Case-blocket "${blok?.component}" är inte registrerat i CaseRenderer.`
           );
 
           return null;
