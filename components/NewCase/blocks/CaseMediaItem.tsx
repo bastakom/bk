@@ -7,6 +7,8 @@ interface StoryblokAsset {
 }
 
 interface CaseMediaItemBlok {
+  [key: string]: any;
+
   _uid: string;
   component: string;
   media?: StoryblokAsset;
