@@ -1,15 +1,14 @@
 import { storyblokEditable } from "@storyblok/react/rsc";
 import CaseHeroMedia from "./blocks/CaseHeroMedia";
+import CaseMediaRow from "./blocks/CaseMediaRow";
 
 interface CaseRendererProps {
   story: any;
 }
 
-const caseBlocks: Record<
-  string,
-  React.ComponentType<{ blok: any }>
-> = {
+const caseBlocks: Record<string, React.ComponentType<{ blok: any }>> = {
   case_hero_media: CaseHeroMedia,
+  case_media_row: CaseMediaRow,
 };
 
 const CaseRenderer = ({ story }: CaseRendererProps) => {
@@ -24,17 +23,11 @@ const CaseRenderer = ({ story }: CaseRendererProps) => {
   return (
     <div {...storyblokEditable(content)}>
       {body.map((blok: any) => {
-        const componentName = String(
-          blok?.component || ""
-        ).toLowerCase();
-
+        const componentName = String(blok?.component || "").toLowerCase();
         const Component = caseBlocks[componentName];
 
         if (!Component) {
-          console.warn(
-            `Case-blocket "${blok?.component}" är inte registrerat.`
-          );
-
+          console.warn(`Case-blocket "${blok?.component}" är inte registrerat.`);
           return null;
         }
 
