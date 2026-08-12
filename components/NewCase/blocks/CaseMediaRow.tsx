@@ -17,12 +17,6 @@ interface CaseMediaRowProps {
   blok: CaseMediaRowBlok;
 }
 
-const widthClasses = {
-  full: "full-width-element",
-  content: "mx-auto w-full max-w-[1600px]",
-  narrow: "mx-auto w-full max-w-5xl",
-};
-
 const gapClasses = {
   none: "gap-0",
   small: "gap-2",
@@ -36,7 +30,14 @@ const CaseMediaRow = ({ blok }: CaseMediaRowProps) => {
   if (items.length === 0) return null;
 
   const aspectRatio = blok.aspect_ratio || "16/9";
-  const widthClass = widthClasses[blok.width || "content"];
+  const widthClass =
+    blok.width === "full"
+      ? "full-width-element"
+      : blok.width === "narrow"
+        ? "mx-auto w-full max-w-5xl"
+        : items.length === 1
+          ? "mx-auto w-full max-w-[1600px]"
+          : "mx-auto w-full max-w-[1400px]";
   const gapClass = gapClasses[blok.gap || "medium"];
 
   const desktopColumns =
