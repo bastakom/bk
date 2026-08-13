@@ -31,6 +31,13 @@ const horizontalPaddingClasses = {
   large: "px-10",
 };
 
+const marginBottomClasses = {
+  none: "mb-0",
+  small: "mb-2",
+  medium: "mb-5",
+  large: "mb-10",
+};
+
 const CaseMediaRow = ({ blok }: CaseMediaRowProps) => {
   const items = Array.isArray(blok.items) ? blok.items.slice(0, 3) : [];
 
@@ -49,6 +56,7 @@ const CaseMediaRow = ({ blok }: CaseMediaRowProps) => {
   const gapClass = gapClasses[gap];
   const horizontalPaddingClass =
     blok.width === "full" ? horizontalPaddingClasses[gap] : "";
+  const marginBottomClass = marginBottomClasses[gap];
 
   const desktopColumns =
     items.length === 1
@@ -69,7 +77,7 @@ const CaseMediaRow = ({ blok }: CaseMediaRowProps) => {
   return (
     <section
       {...storyblokEditable(blok)}
-      className={`${widthClass} ${horizontalPaddingClass}`}
+      className={`${widthClass} ${horizontalPaddingClass} ${marginBottomClass}`}
     >
       <div className={`grid ${mobileColumns} ${desktopColumns} ${gapClass}`}>
         {items.map((item) => (
