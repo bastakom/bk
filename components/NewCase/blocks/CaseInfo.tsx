@@ -50,7 +50,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
           </h1>
         )}
 
-        <div className="mt-10 flex flex-col justify-between gap-10 lg:col-start-1 lg:row-start-2 lg:mt-5">
+        <div className="mt-5 flex flex-col justify-between gap-10 lg:col-start-1 lg:row-start-2">
           {categories.length > 0 && (
             <ul className="text-[clamp(1rem,1.2vw,1.875rem)] font-light-sofia leading-tight text-[#545454]">
               {categories.map((category) => (
