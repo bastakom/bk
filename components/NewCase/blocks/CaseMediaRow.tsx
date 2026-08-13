@@ -24,21 +24,31 @@ const gapClasses = {
   large: "gap-10",
 };
 
+const horizontalPaddingClasses = {
+  none: "px-0",
+  small: "px-2",
+  medium: "px-5",
+  large: "px-10",
+};
+
 const CaseMediaRow = ({ blok }: CaseMediaRowProps) => {
   const items = Array.isArray(blok.items) ? blok.items.slice(0, 3) : [];
 
   if (items.length === 0) return null;
 
   const aspectRatio = blok.aspect_ratio || "16/9";
+  const gap = blok.gap || "medium";
   const widthClass =
     blok.width === "full"
-      ? "w-full"
+      ? "full-width-element"
       : blok.width === "narrow"
         ? "mx-auto w-full max-w-5xl"
         : items.length === 1
           ? "mx-auto w-full max-w-[1800px]"
           : "mx-auto w-full max-w-[1700px]";
-  const gapClass = gapClasses[blok.gap || "medium"];
+  const gapClass = gapClasses[gap];
+  const horizontalPaddingClass =
+    blok.width === "full" ? horizontalPaddingClasses[gap] : "";
 
   const desktopColumns =
     items.length === 1
@@ -57,7 +67,10 @@ const CaseMediaRow = ({ blok }: CaseMediaRowProps) => {
       : "grid-cols-1";
 
   return (
-    <section {...storyblokEditable(blok)} className={widthClass}>
+    <section
+      {...storyblokEditable(blok)}
+      className={`${widthClass} ${horizontalPaddingClass}`}
+    >
       <div className={`grid ${mobileColumns} ${desktopColumns} ${gapClass}`}>
         {items.map((item) => (
           <CaseMediaItem
