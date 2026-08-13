@@ -36,14 +36,14 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
     >
       <div className="grid grid-cols-1 gap-x-5 lg:grid-cols-3">
         {blok.client && (
-          <p className="text-base font-bold-sofia leading-tight text-black lg:col-start-1 lg:row-start-1 lg:text-xl">
+          <p className="text-base font-normal leading-tight text-black lg:col-start-1 lg:row-start-1 lg:text-xl">
             {blok.client}
           </p>
         )}
 
         {blok.title && (
           <h1
-            className="mt-5 max-w-[70ch] text-[clamp(2.5rem,11vw,3.125rem)] font-bold-sofia leading-[1.05] text-black lg:col-span-2 lg:col-start-2 lg:row-start-1 lg:mt-0 lg:text-6xl"
+            className="mt-5 max-w-[70ch] text-[clamp(2.5rem,11vw,3.125rem)] font-normal leading-[1.05] text-[#25364F] lg:col-span-2 lg:col-start-2 lg:row-start-1 lg:mt-0 lg:text-6xl"
           >
             {blok.title}
           </h1>
@@ -63,7 +63,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
               type="button"
               onClick={() => setIsOpen((open) => !open)}
               aria-expanded={isOpen}
-              className="hidden w-fit text-left text-base font-bold-sofia text-black lg:block lg:text-xl"
+              className="hidden w-fit text-left text-xl font-normal text-[#FF6062] lg:block"
             >
               <span
                 aria-hidden="true"
@@ -87,7 +87,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
             type="button"
             onClick={() => setIsOpen((open) => !open)}
             aria-expanded={isOpen}
-            className="mt-5 w-fit text-left text-base font-bold-sofia text-black lg:hidden"
+            className="mt-5 w-fit text-left text-xl font-normal text-[#FF6062] lg:hidden"
           >
             <span
               aria-hidden="true"
