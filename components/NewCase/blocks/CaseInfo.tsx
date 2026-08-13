@@ -34,16 +34,25 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
       {...storyblokEditable(blok)}
       className="full-width-element px-5 pb-5"
     >
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <div className="flex flex-col lg:col-span-1">
-          {blok.client && (
-            <p className="text-[clamp(1rem,1.2vw,1.875rem)] font-semibold leading-tight">
-              {blok.client}
-            </p>
-          )}
+      <div className="grid grid-cols-1 gap-x-5 lg:grid-cols-3">
+        {blok.client && (
+          <p className="text-[clamp(1rem,1.2vw,1.875rem)] font-semibold leading-tight lg:col-start-1 lg:row-start-1">
+            {blok.client}
+          </p>
+        )}
 
+        {blok.title && (
+          <h1
+            className="mt-5 text-[clamp(2rem,3vw,3.75rem)] font-semibold leading-[1.05] lg:col-span-2 lg:col-start-2 lg:row-start-1 lg:mt-0"
+            style={{ color: "#111" }}
+          >
+            {blok.title}
+          </h1>
+        )}
+
+        <div className="mt-10 flex flex-col justify-between gap-10 lg:col-start-1 lg:row-start-2 lg:mt-5">
           {categories.length > 0 && (
-            <ul className="mt-10 text-[clamp(1rem,1.2vw,1.875rem)] font-light-sofia leading-tight text-[#545454]">
+            <ul className="text-[clamp(1rem,1.2vw,1.875rem)] font-light-sofia leading-tight text-[#545454]">
               {categories.map((category) => (
                 <li key={category}>{category}</li>
               ))}
@@ -55,38 +64,43 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
               type="button"
               onClick={() => setIsOpen((open) => !open)}
               aria-expanded={isOpen}
-              className="mt-10 w-fit text-left text-[clamp(1rem,1.2vw,1.875rem)] font-semibold"
+              className="w-fit text-left text-[clamp(1rem,1.2vw,1.875rem)] font-semibold"
             >
-              <span aria-hidden="true">{isOpen ? "−" : "+"}</span>{" "}
+              <span
+                aria-hidden="true"
+                className="inline-block transition-transform duration-500 ease-in-out"
+              >
+                {isOpen ? "−" : "+"}
+              </span>{" "}
               {blok.toggle_label || "Vad har vi gjort"}
             </button>
           )}
         </div>
 
-        <div className="flex flex-col gap-5 lg:col-span-2">
-          {blok.title && (
-            <h1
-              className="text-[clamp(2rem,3vw,3.75rem)] font-semibold leading-[1.05]"
-              style={{ color: "#111" }}
-            >
-              {blok.title}
-            </h1>
-          )}
+        {blok.introduction && (
+          <div className="mt-5 max-w-[70ch] font-light-sofia text-[clamp(1rem,1.2vw,1.875rem)] leading-snug lg:col-span-2 lg:col-start-2 lg:row-start-2">
+            {render(blok.introduction)}
+          </div>
+        )}
 
-          {blok.introduction && (
-            <div className="max-w-[70ch] font-light-sofia text-[clamp(1rem,1.2vw,1.875rem)] leading-snug">
-              {render(blok.introduction)}
+        {details.length > 0 && (
+          <div
+            className={`grid lg:col-span-2 lg:col-start-2 lg:row-start-3 transition-[grid-template-rows,opacity] duration-500 ease-in-out ${
+              isOpen
+                ? "grid-rows-[1fr] opacity-100"
+                : "pointer-events-none grid-rows-[0fr] opacity-0"
+            }`}
+            aria-hidden={!isOpen}
+          >
+            <div className="overflow-hidden">
+              <div className="mt-5 flex flex-col gap-5">
+                {details.map((detail) => (
+                  <CaseInfoItem key={detail._uid} blok={detail} />
+                ))}
+              </div>
             </div>
-          )}
-
-          {isOpen && details.length > 0 && (
-            <div className="mt-5 flex flex-col gap-5">
-              {details.map((detail) => (
-                <CaseInfoItem key={detail._uid} blok={detail} />
-              ))}
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
