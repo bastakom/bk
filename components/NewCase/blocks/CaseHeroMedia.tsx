@@ -38,8 +38,12 @@ const CaseHeroMedia = ({ blok }: CaseHeroMediaProps) => {
           loop
           playsInline
           controls={Boolean(blok.show_controls)}
-          className="block h-full w-full object-contain"
-          style={{ objectPosition: position }}
+          className="block !h-full !w-full max-w-none !object-contain"
+          style={{
+            aspectRatio: "16 / 9",
+            objectFit: "contain",
+            objectPosition: position,
+          }}
         >
           <source src={url} />
         </video>
