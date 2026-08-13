@@ -32,7 +32,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
   return (
     <section
       {...storyblokEditable(blok)}
-      className="full-width-element px-5 pb-5"
+      className="full-width-element px-5 py-10"
     >
       <div className="grid grid-cols-1 gap-x-5 lg:grid-cols-3">
         {blok.client && (
