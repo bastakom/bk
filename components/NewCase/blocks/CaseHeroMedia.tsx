@@ -1,18 +1,18 @@
 import Image from "next/image";
 import { storyblokEditable } from "@storyblok/react/rsc";
 
+interface StoryblokAsset {
+  filename?: string;
+  alt?: string;
+}
+
 interface CaseHeroMediaProps {
   blok: {
+    [key: string]: any;
     _uid: string;
     component: string;
-    media?: {
-      filename?: string;
-      alt?: string;
-    };
-    mobile_media?: {
-      filename?: string;
-      alt?: string;
-    };
+    media?: StoryblokAsset;
+    mobile_media?: StoryblokAsset;
     alt_text?: string;
     show_controls?: boolean;
     object_position?: "center" | "top" | "bottom";
@@ -27,11 +27,9 @@ const CaseHeroMedia = ({ blok }: CaseHeroMediaProps) => {
   const mobileUrl = blok.mobile_media?.filename;
   const position = blok.object_position || "center";
 
-  if (!desktopUrl) {
-    return null;
-  }
+  if (!desktopUrl) return null;
 
-  const renderMedia = (url: string, mobile = false) => {
+  const renderMedia = (url: string, asset?: StoryblokAsset) => {
     if (isVideo(url)) {
       return (
         <video
@@ -39,7 +37,7 @@ const CaseHeroMedia = ({ blok }: CaseHeroMediaProps) => {
           muted
           loop
           playsInline
-          controls={blok.show_controls}
+          controls={Boolean(blok.show_controls)}
           className="h-full w-full object-cover"
           style={{ objectPosition: position }}
         >
@@ -51,7 +49,7 @@ const CaseHeroMedia = ({ blok }: CaseHeroMediaProps) => {
     return (
       <Image
         src={url}
-        alt={blok.alt_text || blok.media?.alt || ""}
+        alt={blok.alt_text || asset?.alt || ""}
         fill
         priority
         sizes="100vw"
@@ -64,11 +62,11 @@ const CaseHeroMedia = ({ blok }: CaseHeroMediaProps) => {
   return (
     <section
       {...storyblokEditable(blok)}
-      className="full-width-element relative h-[60vh] min-h-[420px] lg:h-[85vh]"
+      className="full-width-element relative aspect-video overflow-hidden"
     >
       {mobileUrl && (
         <div className="relative h-full w-full lg:hidden">
-          {renderMedia(mobileUrl, true)}
+          {renderMedia(mobileUrl, blok.mobile_media)}
         </div>
       )}
 
@@ -77,7 +75,7 @@ const CaseHeroMedia = ({ blok }: CaseHeroMediaProps) => {
           mobileUrl ? "hidden lg:block" : "block"
         }`}
       >
-        {renderMedia(desktopUrl)}
+        {renderMedia(desktopUrl, blok.media)}
       </div>
     </section>
   );
