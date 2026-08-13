@@ -15,9 +15,6 @@ interface CaseMediaItemBlok {
   mobile_media?: StoryblokAsset;
   alt_text?: string;
   autoplay?: boolean;
-  controls?: boolean;
-  loop?: boolean;
-  muted?: boolean;
   object_position?: "center" | "top" | "bottom";
   caption?: string;
 }
@@ -42,9 +39,9 @@ const CaseMediaItem = ({ blok, aspectRatio }: CaseMediaItemProps) => {
       return (
         <video
           autoPlay={Boolean(blok.autoplay)}
-          controls={Boolean(blok.controls)}
-          loop={Boolean(blok.loop)}
-          muted={Boolean(blok.autoplay || blok.muted)}
+          controls={!blok.autoplay}
+          loop={Boolean(blok.autoplay)}
+          muted={Boolean(blok.autoplay)}
           playsInline
           preload={blok.autoplay ? "auto" : "metadata"}
           className="h-full w-full object-cover"
