@@ -36,7 +36,7 @@ const CaseMediaRow = ({ blok }: CaseMediaRowProps) => {
       : blok.width === "narrow"
         ? "mx-auto w-full max-w-5xl"
         : items.length === 1
-          ? "mx-auto w-full max-w-[1600px]"
+          ? "mx-auto w-full lg:w-[85%]"
           : "mx-auto w-full max-w-[1400px]";
   const gapClass = gapClasses[blok.gap || "medium"];
 
