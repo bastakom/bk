@@ -18,7 +18,7 @@ const CaseInfoItem = ({ blok }: CaseInfoItemProps) => {
     <article {...storyblokEditable(blok)} className="flex flex-col gap-1">
       {blok.title && (
         <h2
-          className="text-2xl font-bold-sofia leading-tight text-black lg:text-[30px]"
+          className="text-2xl font-bold-sofia leading-tight text-[#25364F] lg:text-[30px]"
         >
           {blok.title}
         </h2>
