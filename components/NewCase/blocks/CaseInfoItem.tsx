@@ -15,7 +15,10 @@ interface CaseInfoItemProps {
 
 const CaseInfoItem = ({ blok }: CaseInfoItemProps) => {
   return (
-    <article {...storyblokEditable(blok)} className="flex flex-col gap-1">
+    <article
+      {...storyblokEditable(blok)}
+      className="flex max-w-[70ch] flex-col gap-1"
+    >
       {blok.title && (
         <h2
           className="text-[clamp(1.25rem,1.7vw,2.5rem)] font-semibold leading-tight"
