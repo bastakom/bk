@@ -38,7 +38,7 @@ const CaseHeroMedia = ({ blok }: CaseHeroMediaProps) => {
           loop
           playsInline
           controls={Boolean(blok.show_controls)}
-          className="h-full w-full object-cover"
+          className="block h-full w-full object-contain"
           style={{ objectPosition: position }}
         >
           <source src={url} />
@@ -53,7 +53,7 @@ const CaseHeroMedia = ({ blok }: CaseHeroMediaProps) => {
         fill
         priority
         sizes="100vw"
-        className="object-cover"
+        className="object-contain"
         style={{ objectPosition: position }}
       />
     );
@@ -62,7 +62,8 @@ const CaseHeroMedia = ({ blok }: CaseHeroMediaProps) => {
   return (
     <section
       {...storyblokEditable(blok)}
-      className="full-width-element relative aspect-video overflow-hidden"
+      className="relative left-1/2 w-screen max-w-none -translate-x-1/2 overflow-hidden"
+      style={{ aspectRatio: "16 / 9" }}
     >
       {mobileUrl && (
         <div className="relative h-full w-full lg:hidden">
