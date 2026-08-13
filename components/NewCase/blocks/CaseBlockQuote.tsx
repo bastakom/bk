@@ -22,13 +22,13 @@ const CaseBlockQuote = ({ blok }: CaseBlockQuoteProps) => {
     >
       <blockquote className="mx-auto flex w-full flex-col items-center gap-5 text-center lg:gap-10">
         {blok.primary_text && (
-          <p className="max-w-[20ch] whitespace-pre-line text-[clamp(2.5rem,5vw,4.6875rem)] font-bold-sofia leading-[1.08] text-[#25364F]">
+          <p className="max-w-[42ch] whitespace-pre-line text-[2rem] font-normal leading-[1.15] text-[#25364F] lg:text-[3.125rem]">
             {blok.primary_text}
           </p>
         )}
 
         {blok.secondary_text && (
-          <p className="max-w-[30ch] whitespace-pre-line text-[clamp(1.375rem,2.65vw,2.5rem)] font-normal leading-[1.2] text-[#25364F]">
+          <p className="max-w-[40ch] whitespace-pre-line text-base font-normal leading-[1.3] text-[#25364F] lg:text-xl">
             {blok.secondary_text}
           </p>
         )}
