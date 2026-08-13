@@ -3,6 +3,7 @@ import CaseHeroMedia from "./blocks/CaseHeroMedia";
 import CaseMediaRow from "./blocks/CaseMediaRow";
 import CaseMixedMediaRow from "./blocks/CaseMixedMediaRow";
 import CaseInfo from "./blocks/CaseInfo";
+import CaseBlockQuote from "./blocks/CaseBlockQuote";
 
 interface CaseRendererProps {
   story: any;
@@ -13,6 +14,7 @@ const caseBlocks: Record<string, React.ComponentType<{ blok: any }>> = {
   case_media_row: CaseMediaRow,
   case_mixed_media_row: CaseMixedMediaRow,
   case_info: CaseInfo,
+  case_block_quote: CaseBlockQuote,
 };
 
 const CaseRenderer = ({ story }: CaseRendererProps) => {
