@@ -43,7 +43,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
 
         {blok.title && (
           <h1
-            className="mt-5 max-w-[70ch] text-[clamp(2.5rem,11vw,3.125rem)] font-normal leading-[1.05] text-[#25364F] lg:col-span-2 lg:col-start-2 lg:row-start-1 lg:mt-0 lg:text-6xl"
+            className="mt-5 max-w-[24ch] text-[clamp(2.5rem,11vw,3.125rem)] font-normal leading-[1.05] text-[#25364F] lg:col-span-2 lg:col-start-2 lg:row-start-1 lg:mt-0 lg:text-6xl"
           >
             {blok.title}
           </h1>
