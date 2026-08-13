@@ -23,7 +23,7 @@ const CaseRenderer = ({ story }: CaseRendererProps) => {
       : [];
 
   return (
-    <div {...storyblokEditable(content)}>
+    <div {...storyblokEditable(content)} className="pt-[82px]">
       {body.map((blok: any) => {
         const componentName = String(blok?.component || "").toLowerCase();
         const Component = caseBlocks[componentName];
@@ -40,4 +40,3 @@ const CaseRenderer = ({ story }: CaseRendererProps) => {
 };
 
 export default CaseRenderer;
- 
