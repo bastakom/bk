@@ -36,15 +36,14 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
     >
       <div className="grid grid-cols-1 gap-x-5 lg:grid-cols-3">
         {blok.client && (
-          <p className="text-[clamp(1rem,1.2vw,1.875rem)] font-semibold leading-tight lg:col-start-1 lg:row-start-1">
+          <p className="text-base font-bold-sofia leading-tight text-black lg:col-start-1 lg:row-start-1 lg:text-xl">
             {blok.client}
           </p>
         )}
 
         {blok.title && (
           <h1
-            className="mt-5 max-w-[70ch] text-[clamp(2rem,3vw,3.75rem)] font-semibold leading-[1.05] lg:col-span-2 lg:col-start-2 lg:row-start-1 lg:mt-0"
-            style={{ color: "#111" }}
+            className="mt-5 max-w-[70ch] text-[clamp(2.5rem,11vw,3.125rem)] font-bold-sofia leading-[1.05] text-black lg:col-span-2 lg:col-start-2 lg:row-start-1 lg:mt-0 lg:text-6xl"
           >
             {blok.title}
           </h1>
@@ -52,7 +51,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
 
         <div className="mt-5 flex flex-col justify-between gap-10 lg:col-start-1 lg:row-start-2">
           {categories.length > 0 && (
-            <ul className="text-[clamp(1rem,1.2vw,1.875rem)] font-light-sofia leading-tight text-[#545454]">
+            <ul className="text-base font-light-sofia leading-tight text-[#545454] lg:text-xl">
               {categories.map((category) => (
                 <li key={category}>{category}</li>
               ))}
@@ -64,7 +63,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
               type="button"
               onClick={() => setIsOpen((open) => !open)}
               aria-expanded={isOpen}
-              className="hidden w-fit text-left text-[clamp(1rem,1.2vw,1.875rem)] font-semibold lg:block"
+              className="hidden w-fit text-left text-base font-bold-sofia text-black lg:block lg:text-xl"
             >
               <span
                 aria-hidden="true"
@@ -78,7 +77,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
         </div>
 
         {blok.introduction && (
-          <div className="mt-5 max-w-[70ch] font-light-sofia text-[clamp(1rem,1.2vw,1.875rem)] leading-snug lg:col-span-2 lg:col-start-2 lg:row-start-2">
+          <div className="mt-5 max-w-[70ch] text-base font-light-sofia leading-snug text-black lg:col-span-2 lg:col-start-2 lg:row-start-2 lg:text-xl">
             {render(blok.introduction)}
           </div>
         )}
@@ -88,7 +87,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
             type="button"
             onClick={() => setIsOpen((open) => !open)}
             aria-expanded={isOpen}
-            className="mt-5 w-fit text-left text-[clamp(1rem,1.2vw,1.875rem)] font-semibold lg:hidden"
+            className="mt-5 w-fit text-left text-base font-bold-sofia text-black lg:hidden"
           >
             <span
               aria-hidden="true"
@@ -110,7 +109,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
             aria-hidden={!isOpen}
           >
             <div className="overflow-hidden">
-              <div className="mt-5 flex max-w-[70ch] flex-col gap-5 font-light-sofia text-[clamp(1rem,1.2vw,1.875rem)]">
+              <div className="mt-5 flex max-w-[70ch] flex-col gap-5 text-base font-light-sofia text-black lg:text-xl">
                 {details.map((detail) => (
                   <CaseInfoItem key={detail._uid} blok={detail} />
                 ))}
