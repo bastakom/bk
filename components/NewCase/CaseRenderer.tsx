@@ -1,6 +1,7 @@
 import { storyblokEditable } from "@storyblok/react/rsc";
 import CaseHeroMedia from "./blocks/CaseHeroMedia";
 import CaseMediaRow from "./blocks/CaseMediaRow";
+import CaseMixedMediaRow from "./blocks/CaseMixedMediaRow";
 import CaseInfo from "./blocks/CaseInfo";
 
 interface CaseRendererProps {
@@ -10,6 +11,7 @@ interface CaseRendererProps {
 const caseBlocks: Record<string, React.ComponentType<{ blok: any }>> = {
   case_hero_media: CaseHeroMedia,
   case_media_row: CaseMediaRow,
+  case_mixed_media_row: CaseMixedMediaRow,
   case_info: CaseInfo,
 };
 
