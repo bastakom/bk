@@ -64,7 +64,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
               type="button"
               onClick={() => setIsOpen((open) => !open)}
               aria-expanded={isOpen}
-              className="w-fit text-left text-[clamp(1rem,1.2vw,1.875rem)] font-semibold"
+              className="hidden w-fit text-left text-[clamp(1rem,1.2vw,1.875rem)] font-semibold lg:block"
             >
               <span
                 aria-hidden="true"
@@ -81,6 +81,23 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
           <div className="mt-5 max-w-[70ch] font-light-sofia text-[clamp(1rem,1.2vw,1.875rem)] leading-snug lg:col-span-2 lg:col-start-2 lg:row-start-2">
             {render(blok.introduction)}
           </div>
+        )}
+
+        {details.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setIsOpen((open) => !open)}
+            aria-expanded={isOpen}
+            className="mt-5 w-fit text-left text-[clamp(1rem,1.2vw,1.875rem)] font-semibold lg:hidden"
+          >
+            <span
+              aria-hidden="true"
+              className="inline-block transition-transform duration-500 ease-in-out"
+            >
+              {isOpen ? "−" : "+"}
+            </span>{" "}
+            {blok.toggle_label || "Vad har vi gjort"}
+          </button>
         )}
 
         {details.length > 0 && (
