@@ -93,7 +93,7 @@ const CaseInfo = ({ blok }: CaseInfoProps) => {
             aria-hidden={!isOpen}
           >
             <div className="overflow-hidden">
-              <div className="mt-5 flex flex-col gap-5">
+              <div className="mt-5 flex max-w-[70ch] flex-col gap-5 font-light-sofia text-[clamp(1rem,1.2vw,1.875rem)]">
                 {details.map((detail) => (
                   <CaseInfoItem key={detail._uid} blok={detail} />
                 ))}
