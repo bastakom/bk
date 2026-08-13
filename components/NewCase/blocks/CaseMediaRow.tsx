@@ -32,12 +32,12 @@ const CaseMediaRow = ({ blok }: CaseMediaRowProps) => {
   const aspectRatio = blok.aspect_ratio || "16/9";
   const widthClass =
     blok.width === "full"
-      ? "full-width-element"
+      ? "w-full"
       : blok.width === "narrow"
         ? "mx-auto w-full max-w-5xl"
         : items.length === 1
-          ? "mx-auto w-full lg:w-[85%]"
-          : "mx-auto w-full max-w-[1400px]";
+          ? "mx-auto w-full max-w-[1800px]"
+          : "mx-auto w-full max-w-[1700px]";
   const gapClass = gapClasses[blok.gap || "medium"];
 
   const desktopColumns =
