@@ -10,6 +10,7 @@ interface CaseInfoProps {
     [key: string]: any;
     _uid: string;
     component: string;
+    _caseTags?: string[];
     client?: string;
     categories?: string;
     title?: string;
@@ -22,12 +23,15 @@ interface CaseInfoProps {
 const CaseInfo = ({ blok }: CaseInfoProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const details = Array.isArray(blok.details) ? blok.details : [];
-  const categories = blok.categories
+  const legacyCategories = blok.categories
     ? blok.categories
         .split("\n")
         .map((category) => category.trim())
         .filter(Boolean)
     : [];
+  const categories = Array.isArray(blok._caseTags) && blok._caseTags.length > 0
+    ? blok._caseTags
+    : legacyCategories;
 
   return (
     <section
