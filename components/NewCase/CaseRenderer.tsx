@@ -37,7 +37,17 @@ const CaseRenderer = ({ story }: CaseRendererProps) => {
           return null;
         }
 
-        return <Component blok={blok} key={blok._uid} />;
+        const blokWithCaseData =
+          componentName === "case_info"
+            ? {
+                ...blok,
+                _caseTags: Array.isArray(story?.tag_list)
+                  ? story.tag_list
+                  : [],
+              }
+            : blok;
+
+        return <Component blok={blokWithCaseData} key={blok._uid} />;
       })}
     </div>
   );
