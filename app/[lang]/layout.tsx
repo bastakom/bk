@@ -28,14 +28,27 @@ export async function generateMetadata({
 }: {
   params: { lang: string };
 }): Promise<Metadata> {
+  const metadata = buildPageMetadata({
+    lang: params.lang,
+    path: `/${params.lang}`,
+  });
+
   return {
-    ...buildPageMetadata({
-      lang: params.lang,
-      path: `/${params.lang}`,
-    }),
+    ...metadata,
     verification: {
       google: "Rziu538lsra_w-ict7uWI5Onp3eUKXfIQ6MdDt4Y8Ao",
     },
+    robots:
+      params.lang === "en"
+        ? {
+            index: false,
+            follow: false,
+            googleBot: {
+              index: false,
+              follow: false,
+            },
+          }
+        : metadata.robots,
   };
 }
 
