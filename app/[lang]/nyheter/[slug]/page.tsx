@@ -15,10 +15,15 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
     notFound()
   }
 
-  const slugs = slugsNews.map((item: any) => item.slug)
+  const slugs = slugsNews
+    .map((item: any) => item.slug)
+    .filter((slug: string | undefined) => Boolean(slug))
 
   const currentIndex = slugs.indexOf(params.slug)
-  const nextCaseSlug = slugs[(currentIndex + 1) % slugs.length]
+  const nextCaseSlug =
+    slugs.length > 1 && currentIndex >= 0
+      ? slugs[(currentIndex + 1) % slugs.length]
+      : ''
 
   return (
     <div className="mt-20">
@@ -28,7 +33,7 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
 }
 
 async function getNewsSlug(slug: string, locale: string) {
-  let sbParams = {
+  const sbParams = {
     version: storyblokVersion,
     starts_with: `nyheter/${slug}`,
     excluding_slugs: 'nyheter/kategori*',
@@ -42,14 +47,14 @@ async function getNewsSlug(slug: string, locale: string) {
       cache: 'no-store',
     })
 
-    return res.data.stories
+    return res?.data?.stories || []
   } catch {
     notFound()
   }
 }
 
 async function getAllNewsSlug(locale: string) {
-  let sbParams = {
+  const sbParams = {
     version: storyblokVersion,
     starts_with: `nyheter/`,
     excluding_slugs: 'nyheter/kategori*',
@@ -63,10 +68,11 @@ async function getAllNewsSlug(locale: string) {
       cache: 'no-store',
     })
 
-    return res.data.stories
+    return res?.data?.stories || []
   } catch {
     return []
   }
 }
 
 export default page
+
