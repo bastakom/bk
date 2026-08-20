@@ -6,6 +6,16 @@ const STORYBLOK_API_BASE = 'https://api.storyblok.com/v2/cdn/stories'
 
 export const revalidate = 3600
 
+const staticRoutes = [
+  '/sv',
+  '/sv/vara-tjanster',
+  '/sv/cases',
+  '/sv/omoss',
+  '/sv/nyheter',
+  '/sv/marknadsfika',
+  '/sv/filmproduktion',
+]
+
 const excludedFullSlugs = new Set([
   'config',
   'sv/marknadsfika/christina-elwing-skanetrafiken',
@@ -27,14 +37,23 @@ function normalizeFullSlug(fullSlug: string) {
   return fullSlug.replace(/^\/+/, '').replace(/\/+$/, '')
 }
 
-function isIndexableStory(story: any) {
+function storyPath(story: any) {
   const fullSlug = normalizeFullSlug(story.full_slug || '')
 
-  if (!fullSlug) return false
-  if (excludedFullSlugs.has(fullSlug)) return false
-  if (fullSlug.includes('/kategori/')) return false
-  if (fullSlug.startsWith('nyheter/kategori')) return false
-  if (!fullSlug.startsWith('sv') && !fullSlug.startsWith('en')) return false
+  if (fullSlug === 'home') return 'sv'
+  if (fullSlug.startsWith('home/')) return `sv/${fullSlug.replace(/^home\/?/, '')}`
+  if (fullSlug.startsWith('sv/') || fullSlug === 'sv') return fullSlug
+  if (fullSlug.startsWith('en/') || fullSlug === 'en') return fullSlug
+
+  return ''
+}
+
+function isIndexablePath(path: string) {
+  if (!path) return false
+  if (excludedFullSlugs.has(path)) return false
+  if (path.includes('/kategori/')) return false
+  if (path.startsWith('nyheter/kategori')) return false
+  if (!path.startsWith('sv') && !path.startsWith('en')) return false
 
   return true
 }
@@ -60,7 +79,10 @@ async function fetchStories(page: number) {
   })
 
   if (!response.ok) {
-    throw new Error(`Storyblok sitemap fetch failed: ${response.status}`)
+    return {
+      stories: [],
+      total: 0,
+    }
   }
 
   const total = Number(response.headers.get('total') || '0')
@@ -75,7 +97,7 @@ async function fetchStories(page: number) {
 async function fetchAllStories() {
   const firstPage = await fetchStories(1)
   const stories = [...firstPage.stories]
-  const totalPages = Math.ceil(firstPage.total / 100)
+  const totalPages = Math.max(1, Math.ceil(firstPage.total / 100))
 
   for (let page = 2; page <= totalPages; page += 1) {
     const nextPage = await fetchStories(page)
@@ -86,18 +108,29 @@ async function fetchAllStories() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const now = new Date()
+  const entries = new Map<string, MetadataRoute.Sitemap[number]>()
+
+  for (const route of staticRoutes) {
+    entries.set(`${SITE_URL}${route}`, {
+      url: `${SITE_URL}${route}`,
+      lastModified: now,
+    })
+  }
+
   const stories = await fetchAllStories()
 
-  return stories
-    .filter(isIndexableStory)
-    .map((story: any) => {
-      const fullSlug = normalizeFullSlug(story.full_slug)
+  for (const story of stories) {
+    const path = storyPath(story)
 
-      return {
-        url: `${SITE_URL}/${fullSlug}`,
-        lastModified: getLastModified(story),
-      }
+    if (!isIndexablePath(path)) continue
+
+    entries.set(`${SITE_URL}/${path}`, {
+      url: `${SITE_URL}/${path}`,
+      lastModified: getLastModified(story) || now,
     })
-    .sort((a, b) => a.url.localeCompare(b.url))
+  }
+
+  return [...entries.values()].sort((a, b) => a.url.localeCompare(b.url))
 }
 
