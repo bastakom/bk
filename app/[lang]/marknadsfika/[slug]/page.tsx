@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
 import MarknadsSlug from '../../components/NewsComponent/marknadsfikaslug'
+import Breadcrumbs from '../../components/Breadcrumbs'
 import { buildStoryblokSeoMetadata } from '../../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
@@ -57,9 +58,18 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
       : ''
 
   return (
-    <div className="mt-20">
-      <MarknadsSlug item={data} locale={params.lang} nextCaseSlug={nextCaseSlug} />
-    </div>
+    <>
+      <Breadcrumbs
+        items={[
+          { label: 'Start', href: `/${params.lang}` },
+          { label: 'Marknadsfika', href: `/${params.lang}/marknadsfika` },
+          { label: data.name },
+        ]}
+      />
+      <div className="mt-6">
+        <MarknadsSlug item={data} locale={params.lang} nextCaseSlug={nextCaseSlug} />
+      </div>
+    </>
   )
 }
 
