@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { getStoryblokApi } from '@storyblok/react'
 import Small from '../components/SmallHero/Small'
 import Staplar from '../components/Tjanster/Staplar'
@@ -5,6 +6,21 @@ import Link from 'next/link'
 import { IoMdArrowForward } from 'react-icons/io'
 import TilesIcons from '../components/TilesIcons/TilesIcons'
 import Button from '../components/Button/Button'
+import { buildPageMetadata } from '../../lib/seo'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: string }
+}): Promise<Metadata> {
+  return buildPageMetadata({
+    lang: params.lang,
+    path: `/${params.lang}/vara-tjanster`,
+    title: 'Tjänster - Bästa Kompisar',
+    description:
+      'Bästa Kompisar hjälper företag med varumärke, filmproduktion, ljud, sociala medier och webb.',
+  })
+}
 
 const page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTjanster(params.lang)
@@ -73,3 +89,4 @@ const fetchConfig = async (locale: string) => {
   })
   return config.data.story.content
 }
+
