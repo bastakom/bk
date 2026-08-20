@@ -62,7 +62,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
             <span className="font-light">
               {locale.lang === 'en' ? 'Client: ' : 'Kund: '}
             </span>
-            <h1 className="font-bold">{story.name}</h1>
+            <span className="font-bold">{story.name}</span>
           </div>
           <div className="flex container flex-col lg:flex-row mb-10 ml-0 lg:ml-[60px]">
             <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
@@ -84,8 +84,9 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
             story.content.videos.length > 0 &&
             story.content.videos.slice(0, 1).map((item: any) => (
               <div
-                className={`object-cover relative ${story.content.sound ? 'w-full lg:w-2/3 m-auto' : 'w-full'
-                  } `}
+                className={`object-cover relative ${
+                  story.content.sound ? 'w-full lg:w-2/3 m-auto' : 'w-full'
+                } `}
                 key={item.filename}
               >
                 <video controls playsInline className="w-full">
@@ -101,8 +102,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
               story.content.gallery.length > 0 &&
               story.content.gallery.slice(0, 4).map((item: any) => (
                 <div className="h-[377px] relative w-full" key={item.filename}>
-                  {item.filename.endsWith('.mp4') ||
-                    item.filename.endsWith('.mov') ? (
+                  {item.filename.endsWith('.mp4') || item.filename.endsWith('.mov') ? (
                     <video
                       autoPlay
                       muted
@@ -162,8 +162,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
             story.content.gallery.length > 4 &&
             story.content.gallery.slice(4, 8).map((item: any) => (
               <div className="h-[377px] relative w-full" key={item.filename}>
-                {item.filename.endsWith('.mp4') ||
-                  item.filename.endsWith('.mov') ? (
+                {item.filename.endsWith('.mp4') || item.filename.endsWith('.mov') ? (
                   <video
                     autoPlay
                     muted
