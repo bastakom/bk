@@ -49,6 +49,14 @@ const fetchConfig = async (locale: string) => {
   return { config }
 }
 
+function fallbackH1(slug: string, locale: string) {
+  if (slug === 'omoss') {
+    return locale === 'en' ? 'About Bästa Kompisar' : 'Om Bästa Kompisar'
+  }
+
+  return ''
+}
+
 export default async function page({
   params,
 }: {
@@ -57,6 +65,7 @@ export default async function page({
   const pathname = params.slug
   const slugName = pathname === undefined ? `hem` : pathname
   const settings = await fetchConfig(params.lang)
+  const hiddenH1 = fallbackH1(slugName, params.lang)
 
   try {
     const { data } = await fetchData(slugName, params.lang)
@@ -67,6 +76,11 @@ export default async function page({
 
     return (
       <div className="mt-10">
+        {hiddenH1 && (
+          <h1 className="sr-only">
+            {hiddenH1}
+          </h1>
+        )}
         <StoryblokStory story={data.data.story} settings={settings} />
       </div>
     )
