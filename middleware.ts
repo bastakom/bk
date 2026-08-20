@@ -1,42 +1,54 @@
 import { NextResponse } from 'next/server'
 
-let locales = ['sv', 'en']
+const locales = ['sv', 'en']
+const primaryHost = 'bastakompisar.se'
 
-// Get the preferred locale, similar to the above or using a library
-function getLocale(request: any) {
+function getLocale() {
   return 'sv'
 }
 
-export function middleware(request: any) {
-  // Check if there is any supported locale in the pathname
-  const { pathname } = request.nextUrl
+function shouldSkipPath(pathname: string) {
+  return (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api/') ||
+    pathname === '/favicon.ico' ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
+    pathname.startsWith('/img/')
+  )
+}
 
-  const pathnameHasLocale = locales.some(
+function hasLocale(pathname: string) {
+  return locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   )
+}
 
-  if (pathnameHasLocale) return
+export function middleware(request: any) {
+  const url = request.nextUrl.clone()
+  const { pathname } = url
+  const hostname = request.headers.get('host')?.split(':')[0]
 
-  if (
-    request.nextUrl.pathname.startsWith('/_next') ||
-    request.nextUrl.pathname.includes('/api/')
-  )
+  if (shouldSkipPath(pathname)) {
     return
+  }
 
-  // Redirect if there is no locale
-  const locale = getLocale(request)
-  request.nextUrl.pathname = `/${locale}${pathname}`
-  // e.g. incoming request is /products
-  // The new URL is now /en-US/products
-  return NextResponse.redirect(request.nextUrl)
+  if (hostname === `www.${primaryHost}`) {
+    url.hostname = primaryHost
+    url.protocol = 'https'
+    return NextResponse.redirect(url, 308)
+  }
+
+  if (!hasLocale(pathname)) {
+    const locale = getLocale()
+    url.pathname = pathname === '/' ? `/${locale}` : `/${locale}${pathname}`
+    return NextResponse.redirect(url, 308)
+  }
 }
 
 export const config = {
   matcher: [
-    // Skip all internal paths (_next)
     '/((?!api|_next/static|_next/image|img/|favicon.ico|robots.txt|sitemap.xml).*)',
-    // Optional: only run on root (/) URLmatcher: [
-
-    // '/'
   ],
 }
+
