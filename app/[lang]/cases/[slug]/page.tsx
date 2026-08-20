@@ -1,7 +1,8 @@
 import { getStoryblokApi, renderRichText } from "@storyblok/react";
 import { notFound } from "next/navigation";
 import CaseSlugPage from "../../components/Cases/CaseSlugPage";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { buildPageMetadata } from "../../../lib/seo";
 
 const storyblokVersion: "published" | "draft" =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === "true"
@@ -35,108 +36,78 @@ const getAllSlugs = async (locale: string) => {
   });
 };
 
+function stripHtml(value: string) {
+  return value.replace(/<\/?[^>]+(>|$)/g, "").replace(/\s+/g, " ").trim();
+}
+
+function isRichText(value: any) {
+  return (
+    value &&
+    typeof value === "object" &&
+    (Array.isArray(value.content) || value.type)
+  );
+}
+
+function truncate(value: string, maxLength = 150) {
+  return value.length > maxLength ? `${value.substring(0, maxLength)}...` : value;
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string; lang: string };
 }): Promise<Metadata> {
-  const pathname = params.slug;
-
   let story;
 
   try {
-    const result = await getSlugData(pathname, params.lang);
+    const result = await getSlugData(params.slug, params.lang);
     story = result?.data?.story;
   } catch {
     story = undefined;
   }
 
-  const maxLength = 150;
-
-  const isRichText = (val: any) =>
-    val &&
-    typeof val === "object" &&
-    (Array.isArray(val.content) || val.type);
-
   const titleText =
-    story && story.content && isRichText(story.content.title)
-      ? renderRichText(story.content.title)
+    story?.content && isRichText(story.content.title)
+      ? stripHtml(renderRichText(story.content.title))
       : "";
-
   const contentText =
-    story && story.content && isRichText(story.content.content)
-      ? renderRichText(story.content.content)
+    story?.content && isRichText(story.content.content)
+      ? stripHtml(renderRichText(story.content.content))
       : "";
-
-  let description = `${titleText} - ${contentText}`.replace(
-    /<\/?[^>]+(>|$)/g,
-    ""
-  );
-
-  if (!description || description.trim() === " - ") {
-    description =
-      story && story.content && story.content.ingress
-        ? story.content.ingress
-        : `${story?.name || "Case"} by Bästa Kompisar`;
-  }
-
-  if (description.length > maxLength) {
-    description = description.substring(0, maxLength) + "...";
-  }
-
-  let imageUrl = "https://bastakompisar.se/bk-black.png";
-
-  if (
-    story &&
-    story.content &&
-    story.content.Meta &&
-    story.content.Meta.og_image &&
-    story.content.Meta.og_image.trim() !== ""
-  ) {
-    imageUrl = story.content.Meta.og_image;
-  }
-
-  const siteUrl = "https://bastakompisar.se";
-  const currentUrl = `${siteUrl}/${params.lang}/cases/${pathname}`;
-  const cleanTitle = titleText.replace(/<\/?[^>]+(>|$)/g, "");
+  const description =
+    story?.content?.ingress ||
+    truncate(stripHtml(`${titleText} ${contentText}`)) ||
+    `${story?.name || "Case"} från Bästa Kompisar.`;
+  const image =
+    story?.content?.Meta?.og_image ||
+    story?.content?.image?.filename ||
+    story?.content?.preview_image?.filename ||
+    undefined;
+  const title = `${story?.name || "Case"} - Bästa Kompisar kundcase`;
 
   return {
-    metadataBase: new URL(siteUrl),
-    title: `${story?.name || "Case"} – Bästa Kompisar kundcase`,
-    description,
+    ...buildPageMetadata({
+      lang: params.lang,
+      path: `/${params.lang}/cases/${params.slug}`,
+      title,
+      description: truncate(description),
+      image,
+    }),
     openGraph: {
-      title: `${story?.name || "Case"} – Bästa Kompisar kundcase`,
-      description,
-      url: currentUrl,
-      siteName: "Bästa Kompisar",
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${story?.name || "Case"} - ${cleanTitle}`,
-        },
-      ],
-      locale: params.lang === "sv" ? "sv_SE" : "en_US",
+      ...buildPageMetadata({
+        lang: params.lang,
+        path: `/${params.lang}/cases/${params.slug}`,
+        title,
+        description: truncate(description),
+        image,
+      }).openGraph,
       type: "article",
     },
-    twitter: {
-      card: "summary_large_image",
-      title: `${story?.name || "Case"} – Bästa Kompisar kundcase`,
-      description,
-      images: [imageUrl],
-    },
     other: {
-      "og:image": imageUrl,
-      "og:image:secure_url": imageUrl,
-      "og:image:width": "1200",
-      "og:image:height": "630",
-      "og:image:type": imageUrl.endsWith(".png") ? "image/png" : "image/jpeg",
-      "og:type": "article",
       "article:author": "Bästa Kompisar",
       "article:publisher": "https://bastakompisar.se",
-      "og:site_name": "Bästa Kompisar",
-      "og:updated_time": new Date().toISOString(),
+      ...(story?.published_at ? { "article:published_time": story.published_at } : {}),
+      ...(story?.published_at ? { "og:updated_time": story.published_at } : {}),
     },
   };
 }
@@ -181,3 +152,4 @@ const page = async ({
 };
 
 export default page;
+
