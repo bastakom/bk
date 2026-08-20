@@ -13,6 +13,16 @@ interface Props {
   nextCaseSlug: string
 }
 
+function renderRichText(value: any) {
+  if (!value || typeof value !== 'object') return null
+
+  try {
+    return render(value)
+  } catch {
+    return null
+  }
+}
+
 const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
   const params = useParams()
   const router = useRouter()
@@ -25,7 +35,7 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
 
   const handleNextClick = () => {
     if (nextCaseSlug) {
-      router.push(`${nextCaseSlug}`)
+      router.push(`/${params.lang}/marknadsfika/${nextCaseSlug}`)
     }
   }
 
@@ -57,11 +67,11 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
         </div>
       )}
       <div
-        className={`${!content.full_width && "lg:grid"} flex flex-col-reverse grid-cols-2 gap-10 m-auto container`}
+        className={`${!content.full_width && 'lg:grid'} flex flex-col-reverse grid-cols-2 gap-10 m-auto container`}
       >
         <div>
           <span className="flex flex-col gap-2 w-full lg:max-w-[80%] font-primary text-[20px] font-light mb-5">
-            {content.content ? render(content.content) : null}
+            {renderRichText(content.content)}
           </span>
 
           <div className="flex justify-start flex-col text-left text-[20px]">
@@ -69,7 +79,7 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
               {params.lang === 'en' ? 'Share' : 'Dela'}
             </span>
             <FacebookShareButton
-              url={`${window.location.toString()}`}
+              url={typeof window !== 'undefined' ? window.location.toString() : ''}
               className="text-left flex gap-2 font-light"
             >
               Facebook
@@ -78,7 +88,7 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
               </span>
             </FacebookShareButton>
             <LinkedinShareButton
-              url={`${window.location.toString()}`}
+              url={typeof window !== 'undefined' ? window.location.toString() : ''}
               className="text-left flex gap-2 font-light"
             >
               LinkedIn
@@ -101,4 +111,3 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
 }
 
 export default MarknadsSlug
-
