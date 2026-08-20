@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { getStoryblokApi } from '@storyblok/react'
-import { buildPageMetadata } from '../../../lib/seo'
+import { buildStoryblokSeoMetadata } from '../../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
@@ -64,12 +64,13 @@ export async function generateMetadata({
     story?.content?.film_case_image?.filename ||
     undefined
 
-  return buildPageMetadata({
+  return buildStoryblokSeoMetadata({
+    content: story?.content,
+    fallbackTitle: title,
+    fallbackDescription: truncate(description),
+    fallbackImage: image,
     lang: params.lang,
     path: `/${params.lang}/vara-tjanster/${params.slug}`,
-    title,
-    description: truncate(description),
-    image,
   })
 }
 
@@ -80,4 +81,3 @@ export default function ServiceSlugLayout({
 }) {
   return children
 }
-
