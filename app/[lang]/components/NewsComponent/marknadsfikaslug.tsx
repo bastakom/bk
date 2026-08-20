@@ -1,5 +1,5 @@
 'use client'
-import Image from 'next/image'
+
 import { render } from 'storyblok-rich-text-react-renderer'
 import { useRouter } from 'next/navigation'
 import { IoMdArrowForward } from 'react-icons/io'
@@ -17,24 +17,17 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
   const params = useParams()
   const router = useRouter()
 
-  const handleNextClick = () => {
-    router.push(`${nextCaseSlug}`)
-  }
-
-  const getSpotifyEmbedUrl = (url: string) => {
-    if (!url) return null
-
-    const match = url.match(/spotify\.com\/(track|playlist|album|episode|show)\/([a-zA-Z0-9]+)/)
-
-    if (match) {
-      const [, type, id] = match
-      return `https://open.spotify.com/embed/${type}/${id}`
-    }
-
+  if (!item) {
     return null
   }
 
-  const spotifyEmbedUrl = item.content?.spotify_url ? getSpotifyEmbedUrl(item.content.spotify_url) : null
+  const content = item?.content || {}
+
+  const handleNextClick = () => {
+    if (nextCaseSlug) {
+      router.push(`${nextCaseSlug}`)
+    }
+  }
 
   return (
     <div className="py-10">
@@ -43,32 +36,33 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
       >
         {item.name}.
       </h1>
-      <div className="m-auto container">
-        <motion.div whileHover="hover">
-          <button
-            className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-10 mt-10"
-            onClick={handleNextClick}
-          >
-            {params.lang === 'en' ? 'Next' : 'Nästa'}
-            <motion.span
-              variants={{
-                hover: { x: 5 },
-              }}
-              transition={{ type: 'spring', stiffness: 300 }}
+      {nextCaseSlug && (
+        <div className="m-auto container">
+          <motion.div whileHover="hover">
+            <button
+              className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-10 mt-10"
+              onClick={handleNextClick}
             >
-              <IoMdArrowForward fontSize={'1.3em'} color="#FF6062" />
-            </motion.span>
-          </button>
-        </motion.div>
-      </div>
+              {params.lang === 'en' ? 'Next' : 'Nästa'}
+              <motion.span
+                variants={{
+                  hover: { x: 5 },
+                }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                <IoMdArrowForward fontSize={'1.3em'} color="#FF6062" />
+              </motion.span>
+            </button>
+          </motion.div>
+        </div>
+      )}
       <div
-        className={`${!item.content.full_width && "lg:grid"} flex flex-col-reverse grid-cols-2 gap-10 m-auto container`}
+        className={`${!content.full_width && "lg:grid"} flex flex-col-reverse grid-cols-2 gap-10 m-auto container`}
       >
         <div>
           <span className="flex flex-col gap-2 w-full lg:max-w-[80%] font-primary text-[20px] font-light mb-5">
-            {render(item.content.content)}
+            {content.content ? render(content.content) : null}
           </span>
-
 
           <div className="flex justify-start flex-col text-left text-[20px]">
             <span className="font-bold">
@@ -94,17 +88,17 @@ const MarknadsSlug = ({ item, nextCaseSlug }: Props) => {
             </LinkedinShareButton>
           </div>
         </div>
-        <div className="w-full h-[500px] lg:h-[500px] relative">
-          {/* Spotify Embed */}
-          {item.content.embeded_spotify &&
+        {content.embeded_spotify && (
+          <div className="w-full h-[500px] lg:h-[500px] relative">
             <div className="mb-5 w-full lg:max-w-[80%]">
-              <div dangerouslySetInnerHTML={{ __html: `${item.content.embeded_spotify}` }} />
+              <div dangerouslySetInnerHTML={{ __html: `${content.embeded_spotify}` }} />
             </div>
-          }
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )
 }
 
 export default MarknadsSlug
+
