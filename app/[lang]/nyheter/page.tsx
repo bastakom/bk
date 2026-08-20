@@ -1,5 +1,21 @@
+import type { Metadata } from 'next'
 import { getStoryblokApi } from '@storyblok/react'
 import NewsComponent from '../components/NewsComponent/NewsComponent'
+import { buildPageMetadata } from '../../lib/seo'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: string }
+}): Promise<Metadata> {
+  return buildPageMetadata({
+    lang: params.lang,
+    path: `/${params.lang}/nyheter`,
+    title: 'Nyheter - Bästa Kompisar',
+    description:
+      'Nyheter, kunduppdrag och insikter från Bästa Kompisar i Malmö.',
+  })
+}
 
 const Page = async ({ params }: { params: { lang: string } }) => {
   const resCat = await getCategories(params.lang)
@@ -8,7 +24,6 @@ const Page = async ({ params }: { params: { lang: string } }) => {
   const {
     data: { stories },
   } = res
-  console.log(settings)
 
   return (
     <NewsComponent
@@ -62,3 +77,4 @@ const fetchConfig = async (locale: string) => {
 
 
 export default Page
+
