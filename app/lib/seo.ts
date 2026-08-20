@@ -10,6 +10,33 @@ const defaultImage = `${siteUrl}/bk-black.png`;
 
 type SupportedLang = "sv" | "en";
 
+type StoryblokAsset = {
+  filename?: string;
+};
+
+type StoryblokSeoFields = {
+  title?: string;
+  meta_title?: string;
+  seo_title?: string;
+  description?: string;
+  meta_description?: string;
+  seo_description?: string;
+  og_title?: string;
+  og_description?: string;
+  og_image?: string | StoryblokAsset;
+  social_image?: string | StoryblokAsset;
+  canonical_url?: string;
+  index?: boolean;
+  noindex?: boolean;
+};
+
+type StoryblokContentWithSeo = {
+  Meta?: StoryblokSeoFields;
+  meta?: StoryblokSeoFields;
+  seo?: StoryblokSeoFields;
+  SEO?: StoryblokSeoFields;
+};
+
 function supportedLang(lang?: string): SupportedLang {
   return lang === "en" ? "en" : "sv";
 }
@@ -35,6 +62,70 @@ export function canonicalUrl(path = "/"): string {
 function languageAlternates(lang: string | undefined, path: string) {
   return {
     [hreflangForLang(lang)]: canonicalUrl(path),
+  };
+}
+
+function cleanText(value?: string) {
+  return typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
+}
+
+function assetUrl(value?: string | StoryblokAsset) {
+  if (typeof value === "string") return value || undefined;
+  return value?.filename || undefined;
+}
+
+export function getStoryblokSeoFields(content?: StoryblokContentWithSeo) {
+  return content?.seo || content?.SEO || content?.Meta || content?.meta || {};
+}
+
+export function buildStoryblokSeoMetadata({
+  content,
+  fallbackTitle,
+  fallbackDescription,
+  fallbackImage,
+  path,
+  lang,
+}: {
+  content?: StoryblokContentWithSeo;
+  fallbackTitle: string;
+  fallbackDescription: string;
+  fallbackImage?: string;
+  path: string;
+  lang: string;
+}): Metadata {
+  const seo = getStoryblokSeoFields(content);
+  const title = cleanText(seo.title || seo.meta_title || seo.seo_title) || fallbackTitle;
+  const description =
+    cleanText(seo.description || seo.meta_description || seo.seo_description) ||
+    fallbackDescription;
+  const image =
+    assetUrl(seo.og_image) ||
+    assetUrl(seo.social_image) ||
+    fallbackImage ||
+    defaultImage;
+  const canonicalPath = seo.canonical_url?.startsWith(siteUrl)
+    ? seo.canonical_url.replace(siteUrl, "")
+    : path;
+
+  return {
+    ...buildPageMetadata({
+      title,
+      description,
+      image,
+      path: canonicalPath,
+      lang,
+    }),
+    robots:
+      seo.noindex || seo.index === false
+        ? {
+            index: false,
+            follow: false,
+            googleBot: {
+              index: false,
+              follow: false,
+            },
+          }
+        : undefined,
   };
 }
 
