@@ -96,7 +96,7 @@ async function fetchStories(page: number) {
 
 async function fetchAllStories() {
   const firstPage = await fetchStories(1)
-  const stories = [...firstPage.stories]
+  const stories = firstPage.stories.slice()
   const totalPages = Math.max(1, Math.ceil(firstPage.total / 100))
 
   for (let page = 2; page <= totalPages; page += 1) {
@@ -131,6 +131,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   }
 
-  return [...entries.values()].sort((a, b) => a.url.localeCompare(b.url))
+  return Array.from(entries.values()).sort((a, b) => a.url.localeCompare(b.url))
 }
 
