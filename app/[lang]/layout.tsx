@@ -3,6 +3,7 @@ import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
 import StoryblokProvider from "../../components/StoryblokProvider";
 import { ThemeProvider } from "./components/ThemeProvid/theme-provider";
 import dynamic from "next/dynamic";
+import { buildPageMetadata } from "../lib/seo";
 // import Header from './components/Header'
 
 const Footer = dynamic(() => import("./components/Footer"), { ssr: false });
@@ -22,35 +23,21 @@ storyblokInit({
   },
 });
 
-export const metadata: Metadata = {
-  title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
-  description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
-  verification: {
-    google: "Rziu538lsra_w-ict7uWI5Onp3eUKXfIQ6MdDt4Y8Ao",
-  },
-  openGraph: {
-    title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
-    description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
-    url: "https://bastakompisar.se",
-    siteName: "Bästa Kompisar",
-    images: [
-      {
-        url: "https://bastakompisar.se/bk-black.png",
-        width: 1200,
-        height: 630,
-        alt: "Bästa Kompisar logotype",
-      },
-    ],
-    locale: "sv_SE",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
-    description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
-    images: ["https://bastakompisar.se/bk-black.png"],
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: string };
+}): Promise<Metadata> {
+  return {
+    ...buildPageMetadata({
+      lang: params.lang,
+      path: `/${params.lang}`,
+    }),
+    verification: {
+      google: "Rziu538lsra_w-ict7uWI5Onp3eUKXfIQ6MdDt4Y8Ao",
+    },
+  };
+}
 
 export default function RootLayout({
   children,
@@ -96,3 +83,4 @@ export default function RootLayout({
     </StoryblokProvider>
   );
 }
+
