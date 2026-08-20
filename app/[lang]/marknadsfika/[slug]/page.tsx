@@ -7,14 +7,23 @@ const storyblokVersion: 'published' | 'draft' =
     ? 'draft'
     : 'published'
 
- const page = async ({ params }: { params: { slug: string; lang: string } }) => {
+const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const data = await getNewsSlug(params.slug, params.lang)
   const slugsNews = await getAllNewsSlug(params.lang)
 
-  const slugs = slugsNews.map((item: any) => item.slug)
+  if (!data) {
+    notFound()
+  }
+
+  const slugs = slugsNews
+    .map((item: any) => item.slug)
+    .filter((slug: string | undefined) => Boolean(slug))
 
   const currentIndex = slugs.indexOf(params.slug)
-  const nextCaseSlug = slugs[(currentIndex + 1) % slugs.length]
+  const nextCaseSlug =
+    slugs.length > 1 && currentIndex >= 0
+      ? slugs[(currentIndex + 1) % slugs.length]
+      : ''
 
   return (
     <div className="mt-20">
@@ -24,8 +33,8 @@ const storyblokVersion: 'published' | 'draft' =
 }
 
 async function getNewsSlug(slug: string, locale: string) {
-  let sbParams = {
-   version: storyblokVersion,
+  const sbParams = {
+    version: storyblokVersion,
     language: locale,
   }
 
@@ -51,18 +60,24 @@ async function getNewsSlug(slug: string, locale: string) {
 }
 
 async function getAllNewsSlug(locale: string) {
-  let sbParams = {
+  const sbParams = {
     version: storyblokVersion,
     starts_with: `marknadsfika/`,
     language: locale,
   }
 
   const storyblokApi = getStoryblokApi()
-  const res = await storyblokApi.get(`cdn/stories/`, sbParams, {
-    cache: 'no-store',
-  })
 
-  return res.data.stories
+  try {
+    const res = await storyblokApi.get(`cdn/stories/`, sbParams, {
+      cache: 'no-store',
+    })
+
+    return res?.data?.stories || []
+  } catch {
+    return []
+  }
 }
 
 export default page
+
