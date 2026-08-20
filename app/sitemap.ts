@@ -16,21 +16,52 @@ const staticRoutes = [
   '/sv/filmproduktion',
 ]
 
-const excludedFullSlugs = new Set([
+const pageSlugMap: Record<string, string> = {
+  faq: 'sv/faq',
+  filmproduktion: 'sv/filmproduktion',
+  kontakt: 'sv/kontakt',
+  omoss: 'sv/omoss',
+  'vara-tjanster': 'sv/vara-tjanster',
+}
+
+const serviceSlugMap: Record<string, string> = {
+  film: 'sv/vara-tjanster/film',
+  ljud: 'sv/vara-tjanster/ljud',
+  'sociala-medier': 'sv/vara-tjanster/sociala-medier',
+  varumarke: 'sv/vara-tjanster/varumarke',
+  webb: 'sv/vara-tjanster/webb',
+}
+
+const excludedStorySlugs = new Set([
+  'allmaena-vilkor',
   'config',
-  'sv/marknadsfika/christina-elwing-skanetrafiken',
-  'sv/marknadsfika/henrik-jarl-smeg',
-  'sv/marknadsfika/jenny-holmstedt-homemaid',
-  'sv/marknadsfika/jenny-maltesson-granngarden',
-  'sv/marknadsfika/lars-aberg-tidigare-cmo-axis',
-  'sv/marknadsfika/mariette-lindsjoe-kjell-och-company',
-  'sv/marknadsfika/nilla-hedlund-eldan-recycling',
-  'sv/marknadsfika/patrik-rudenschoeld-assa-abloy',
-  'sv/marknadsfika/peter-fuele-axis',
-  'sv/marknadsfika/robin-jacobsson-bygghemma',
-  'sv/marknadsfika/rutger-hagstad-mff',
-  'sv/nyheter/frontpac-i-ny-foerpackning',
-  'sv/vara-tjanster/cases',
+  'privacy-policy',
+  'service-avtal-webbtjaenster',
+  'nyheter/kategori/baestakompisar',
+  'nyheter/kategori/branding',
+  'nyheter/kategori/design',
+  'nyheter/kategori/digital',
+  'nyheter/kategori/film',
+  'nyheter/kategori/grafisk-identitet',
+  'nyheter/kategori/kampanjer',
+  'nyheter/kategori/kommunikation',
+  'nyheter/kategori/some',
+  'nyheter/kategori/sound',
+  'nyheter/kategori/strategi',
+  'nyheter/kategori/tryck',
+  'nyheter/kategori/webb',
+  'marknadsfika/christina-elwing-skanetrafiken',
+  'marknadsfika/henrik-jarl-smeg',
+  'marknadsfika/jenny-holmstedt-homemaid',
+  'marknadsfika/jenny-maltesson-granngarden',
+  'marknadsfika/lars-aberg-tidigare-cmo-axis',
+  'marknadsfika/mariette-lindsjoe-kjell-och-company',
+  'marknadsfika/nilla-hedlund-eldan-recycling',
+  'marknadsfika/patrik-rudenschoeld-assa-abloy',
+  'marknadsfika/peter-fuele-axis',
+  'marknadsfika/robin-jacobsson-bygghemma',
+  'marknadsfika/rutger-hagstad-mff',
+  'nyheter/frontpac-i-ny-foerpackning',
 ])
 
 function normalizeFullSlug(fullSlug: string) {
@@ -40,22 +71,21 @@ function normalizeFullSlug(fullSlug: string) {
 function storyPath(story: any) {
   const fullSlug = normalizeFullSlug(story.full_slug || '')
 
+  if (!fullSlug || excludedStorySlugs.has(fullSlug)) return ''
   if (fullSlug === 'home') return 'sv'
   if (fullSlug.startsWith('home/')) return `sv/${fullSlug.replace(/^home\/?/, '')}`
   if (fullSlug.startsWith('sv/') || fullSlug === 'sv') return fullSlug
   if (fullSlug.startsWith('en/') || fullSlug === 'en') return fullSlug
+  if (fullSlug.startsWith('cases/')) return `sv/${fullSlug}`
+  if (fullSlug.startsWith('nyheter/')) return `sv/${fullSlug}`
+  if (fullSlug.startsWith('marknadsfika/')) return `sv/${fullSlug}`
+  if (fullSlug.startsWith('filmproduction/')) {
+    return `sv/filmproduction/${fullSlug.replace(/^filmproduction\//, '')}`
+  }
+  if (pageSlugMap[fullSlug]) return pageSlugMap[fullSlug]
+  if (serviceSlugMap[fullSlug]) return serviceSlugMap[fullSlug]
 
   return ''
-}
-
-function isIndexablePath(path: string) {
-  if (!path) return false
-  if (excludedFullSlugs.has(path)) return false
-  if (path.includes('/kategori/')) return false
-  if (path.startsWith('nyheter/kategori')) return false
-  if (!path.startsWith('sv') && !path.startsWith('en')) return false
-
-  return true
 }
 
 function getLastModified(story: any) {
@@ -123,7 +153,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const story of stories) {
     const path = storyPath(story)
 
-    if (!isIndexablePath(path)) continue
+    if (!path) continue
 
     entries.set(`${SITE_URL}/${path}`, {
       url: `${SITE_URL}/${path}`,
