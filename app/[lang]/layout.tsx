@@ -1,27 +1,11 @@
+import Footer from "./components/footer/footer";
+import Header from "./components/header/header";
+import "./globals.css";
+import CookieConsent from "./components/cookie-consent/cookie-consent";
+import { getStoryblokApi, StoryblokStory } from "@storyblok/react/rsc";
+import StoryblokProvider from "@/components/StoryblokProvider";
+import { buildPageMetadata, htmlLangForLang } from "../lib/seo";
 import type { Metadata } from "next";
-import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
-import StoryblokProvider from "../../components/StoryblokProvider";
-import { ThemeProvider } from "./components/ThemeProvid/theme-provider";
-import dynamic from "next/dynamic";
-import { buildPageMetadata } from "../lib/seo";
-// import Header from './components/Header'
-
-const Footer = dynamic(() => import("./components/Footer"), { ssr: false });
-const Header = dynamic(() => import("./components/Header"), { ssr: false });
-
-import "../globals.css";
-import "../font.css";
-import LoadingLogo from "./components/Loading/LoadingLogo";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
-import MobileHeader from "./components/MobileHeader";
-
-storyblokInit({
-  accessToken: "faVE0ToH7Y41wHZy0uSt3Qtt",
-  use: [apiPlugin],
-  apiOptions: {
-    region: "eu",
-  },
-});
 
 export async function generateMetadata({
   params,
@@ -36,7 +20,7 @@ export async function generateMetadata({
   return {
     ...metadata,
     verification: {
-      google: "Rziu538lsra_w-ict7uWI5Onp3eUKXfIQ6MdDt4Y8Ao",
+      google: "RziuXeHdEqY29yQxfVmswdEAUEO-x0nvYb2ZVgOpH74",
     },
     robots:
       params.lang === "en"
@@ -52,48 +36,32 @@ export async function generateMetadata({
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params: { lang },
-}: Readonly<{
+}: {
   children: React.ReactNode;
   params: { lang: string };
-}>) {
+}) {
+  let { data } = await fetchData(lang);
+
   return (
     <StoryblokProvider>
-      <html lang={lang}>
-        <GoogleTagManager gtmId="GTM-N5M8HVH" />
-        <head>
-          <script
-            id="Cookiebot"
-            src="https://consent.cookiebot.com/uc.js"
-            data-cbid="6261c3fa-3f04-4b5b-967e-dc48fd9022a4"
-            data-blockingmode="manual"
-            type="text/javascript"
-            async
-          ></script>
-          <meta name="google-site-verification" content="MVGaWH59KC0hiSCCWnHPFU68sqy2reAmTntOeaK4n-I" />
-          <GoogleAnalytics gaId="GTM-N5M8HVH" />
-        </head>
-
+      <html lang={htmlLangForLang(lang)}>
         <body>
-          <noscript
-            dangerouslySetInnerHTML={{
-              __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N5M8HVH"
-              height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
-            }}
-          />
-
-          <ThemeProvider defaultTheme="light" attribute="class">
-            <Header locale={lang} />
-            <MobileHeader locale={lang} />
-            <LoadingLogo />
-            <main className={`pb-10 px-3 md:px-10 relative`}>{children}</main>
-            <Footer locale={lang} />
-          </ThemeProvider>
+          <Header story={data.story} />
+          <main>{children}</main>
+          <Footer lang={lang} />
+          <CookieConsent lang={lang} />
         </body>
       </html>
     </StoryblokProvider>
   );
 }
 
+async function fetchData(lang: string) {
+  let sbParams = { version: "published", language: lang } as const;
+
+  const storyblokApi = getStoryblokApi();
+  return storyblokApi.get(`cdn/stories/config`, sbParams);
+}
