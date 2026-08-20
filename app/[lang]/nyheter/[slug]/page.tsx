@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import NewsSlug from '@/app/[lang]/components/NewsComponent/NewsSlug'
 import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
-import { buildPageMetadata } from '../../../lib/seo'
+import { buildStoryblokSeoMetadata } from '../../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
@@ -14,8 +14,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string; lang: string }
 }): Promise<Metadata> {
-  const data = await getNewsSlug(params.slug, params.lang)
-  const story = data?.[0]
+  const story = await getNewsStory(params.slug, params.lang, false)
   const title = story?.name
     ? `${story.name} - Bästa Kompisar`
     : 'Nyhet - Bästa Kompisar'
@@ -24,22 +23,26 @@ export async function generateMetadata({
     story?.content?.excerpt ||
     story?.content?.description ||
     'Nyhet från Bästa Kompisar i Malmö.'
-  const image = story?.content?.image?.filename || undefined
+  const image =
+    story?.content?.image?.filename ||
+    story?.content?.future_picture?.filename ||
+    undefined
 
-  return buildPageMetadata({
+  return buildStoryblokSeoMetadata({
+    content: story?.content,
+    fallbackTitle: title,
+    fallbackDescription: description,
+    fallbackImage: image,
     lang: params.lang,
     path: `/${params.lang}/nyheter/${params.slug}`,
-    title,
-    description,
-    image,
   })
 }
 
 const page = async ({ params }: { params: { slug: string; lang: string } }) => {
-  const data = await getNewsSlug(params.slug, params.lang)
+  const story = await getNewsStory(params.slug, params.lang, true)
   const slugsNews = await getAllNewsSlug(params.lang)
 
-  if (!data || data.length === 0) {
+  if (!story) {
     notFound()
   }
 
@@ -55,29 +58,35 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
 
   return (
     <div className="mt-20">
-      <NewsSlug props={data} locale={params.lang} nextCaseSlug={nextCaseSlug} />
+      <NewsSlug props={[story]} locale={params.lang} nextCaseSlug={nextCaseSlug} />
     </div>
   )
 }
 
-async function getNewsSlug(slug: string, locale: string) {
+async function getNewsStory(
+  slug: string,
+  locale: string,
+  throwNotFound: boolean,
+) {
   const sbParams = {
     version: storyblokVersion,
-    starts_with: `nyheter/${slug}`,
-    excluding_slugs: 'nyheter/kategori*',
     language: locale,
   }
 
   const storyblokApi = getStoryblokApi()
 
   try {
-    const res = await storyblokApi.get(`cdn/stories/`, sbParams, {
+    const res = await storyblokApi.get(`cdn/stories/nyheter/${slug}`, sbParams, {
       cache: 'no-store',
     })
 
-    return res?.data?.stories || []
+    return res?.data?.story
   } catch {
-    notFound()
+    if (throwNotFound) {
+      notFound()
+    }
+
+    return null
   }
 }
 
@@ -103,4 +112,3 @@ async function getAllNewsSlug(locale: string) {
 }
 
 export default page
-
