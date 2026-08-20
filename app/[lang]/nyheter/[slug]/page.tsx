@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import NewsSlug from '@/app/[lang]/components/NewsComponent/NewsSlug'
+import Breadcrumbs from '../../components/Breadcrumbs'
 import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
 import { buildStoryblokSeoMetadata } from '../../../lib/seo'
@@ -57,9 +58,18 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
       : ''
 
   return (
-    <div className="mt-20">
-      <NewsSlug props={[story]} locale={params.lang} nextCaseSlug={nextCaseSlug} />
-    </div>
+    <>
+      <Breadcrumbs
+        items={[
+          { label: 'Start', href: `/${params.lang}` },
+          { label: 'Nyheter', href: `/${params.lang}/nyheter` },
+          { label: story.name },
+        ]}
+      />
+      <div className="mt-6">
+        <NewsSlug props={[story]} locale={params.lang} nextCaseSlug={nextCaseSlug} />
+      </div>
+    </>
   )
 }
 
