@@ -69,7 +69,7 @@ const Page = async () => {
                 {configData.about_subtitle}
               </span>
             )}
-            <div
+            <h1
               className={`w-full max-w-full lg:max-w-[100%] ${
                 configData.about_marginleft
                   ? "text-[50px] lg:text-[70px] font-normal leading-[50px] lg:leading-[85px]"
@@ -77,7 +77,7 @@ const Page = async () => {
               }`}
             >
               {render(configData.about_title)}
-            </div>
+            </h1>
             <span className="flex flex-col gap-5 max-w-[100%] lg:max-w-[90%] font-light-sofia text-[20px]">
               {render(configData.about_subtext)}
             </span>
@@ -124,7 +124,6 @@ const Page = async () => {
           </div>
         )}
       </div>
-      {/* SPLIT */}
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
         id="dinakompisar"
