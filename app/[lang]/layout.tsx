@@ -1,8 +1,8 @@
-import Footer from "./components/footer/footer";
-import Header from "./components/header/header";
-import "./globals.css";
-import CookieConsent from "./components/cookie-consent/cookie-consent";
-import { getStoryblokApi, StoryblokStory } from "@storyblok/react/rsc";
+import Footer from "../components/footer/footer";
+import Header from "../components/header/header";
+import "../globals.css";
+import CookieConsent from "../components/cookie-consent/cookie-consent";
+import { getStoryblokApi } from "@storyblok/react/rsc";
 import StoryblokProvider from "@/components/StoryblokProvider";
 import { buildPageMetadata, htmlLangForLang } from "../lib/seo";
 import type { Metadata } from "next";
