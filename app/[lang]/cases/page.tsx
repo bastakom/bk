@@ -1,10 +1,26 @@
+import type { Metadata } from 'next'
 import { getStoryblokApi } from '@storyblok/react'
 import CasePage from '../components/Cases/CasePage'
+import { buildPageMetadata } from '../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
     ? 'draft'
     : 'published'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: string }
+}): Promise<Metadata> {
+  return buildPageMetadata({
+    lang: params.lang,
+    path: `/${params.lang}/cases`,
+    title: 'Case - Bästa Kompisar',
+    description:
+      'Se utvalda case från Bästa Kompisar inom varumärke, filmproduktion, content och digital kommunikation.',
+  })
+}
 
 const Page = async ({ params }: { params: { lang: string } }) => {
   const props = await fetchCases(params.lang)
@@ -61,3 +77,4 @@ const fetchConfig = async (locale: string) => {
     return { data: { story: {} } }
   }
 }
+
