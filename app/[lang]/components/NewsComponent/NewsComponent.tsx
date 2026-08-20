@@ -43,6 +43,25 @@ interface Props {
   nofilter?: boolean;
 }
 
+const knownMissingInternalPaths = new Set([
+  "sv/marknadsfika/christina-elwing-skanetrafiken",
+  "sv/marknadsfika/henrik-jarl-smeg",
+  "sv/marknadsfika/jenny-holmstedt-homemaid",
+  "sv/marknadsfika/jenny-maltesson-granngarden",
+  "sv/marknadsfika/lars-aberg-tidigare-cmo-axis",
+  "sv/marknadsfika/mariette-lindsjoe-kjell-och-company",
+  "sv/marknadsfika/nilla-hedlund-eldan-recycling",
+  "sv/marknadsfika/patrik-rudenschoeld-assa-abloy",
+  "sv/marknadsfika/peter-fuele-axis",
+  "sv/marknadsfika/robin-jacobsson-bygghemma",
+  "sv/marknadsfika/rutger-hagstad-mff",
+  "sv/nyheter/frontpac-i-ny-foerpackning",
+]);
+
+function normalizeInternalPath(path: string) {
+  return path.replace(/^\/+/, "").replace(/\/+$/, "");
+}
+
 const NewsComponent = ({ props,
   hero_title,
   subtitle,
@@ -60,9 +79,14 @@ const NewsComponent = ({ props,
     isOpenFilter(!openFilter);
   };
 
+  const safePosts = props.filter((item) => {
+    const fullSlug = normalizeInternalPath(item.full_slug || "");
+    return !knownMissingInternalPaths.has(fullSlug);
+  });
+
   const filteredPosts = selectedCategory
-    ? props.filter((item) => item.content.kategori.includes(selectedCategory))
-    : props;
+    ? safePosts.filter((item) => item.content?.kategori?.includes(selectedCategory))
+    : safePosts;
 
   const handleMouseEnter = (uuid: string) => {
     setHoveredUuid(uuid);
@@ -144,7 +168,7 @@ const NewsComponent = ({ props,
         {filteredPosts.map((item) => {
           return (
             <Link
-              href={`${item.full_slug}`}
+              href={`/${normalizeInternalPath(item.full_slug)}`}
               key={item.uuid}
               className="flex flex-col gap-5 mb-10"
               onMouseEnter={() => handleMouseEnter(item.uuid)}
@@ -182,3 +206,4 @@ const NewsComponent = ({ props,
 };
 
 export default NewsComponent;
+
