@@ -14,20 +14,19 @@ storyblokInit({
 });
 
 export const metadata: Metadata = {
-  title: "Bästa Kompisar – Fullservice- och filmproduktionsbyrå i Malmö",
-  description: "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
+  title: "Bästa Kompisar - Fullservice- och filmproduktionsbyrå i Malmö",
+  description:
+    "Kreativ reklambyrå och produktionsbolag i Malmö. Filmproduktion, content och digital kommunikation med fokus på affärsnytta och effekt.",
 };
 
 export default function RootLayout({
   children,
-  params: { lang },
 }: Readonly<{
   children: React.ReactNode;
-  params: { lang: string };
 }>) {
   return (
     <StoryblokProvider>
-      <html lang={lang}>
+      <html lang="sv">
         <body>
           <ThemeProvider defaultTheme="light" attribute="class">
             {children}
