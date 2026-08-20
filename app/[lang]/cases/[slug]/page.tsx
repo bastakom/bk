@@ -2,7 +2,7 @@ import { getStoryblokApi, renderRichText } from "@storyblok/react";
 import { notFound } from "next/navigation";
 import CaseSlugPage from "../../components/Cases/CaseSlugPage";
 import type { Metadata } from "next";
-import { buildPageMetadata } from "../../../lib/seo";
+import { buildStoryblokSeoMetadata } from "../../../lib/seo";
 
 const storyblokVersion: "published" | "draft" =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === "true"
@@ -79,28 +79,23 @@ export async function generateMetadata({
     truncate(stripHtml(`${titleText} ${contentText}`)) ||
     `${story?.name || "Case"} från Bästa Kompisar.`;
   const image =
-    story?.content?.Meta?.og_image ||
     story?.content?.image?.filename ||
     story?.content?.preview_image?.filename ||
     undefined;
   const title = `${story?.name || "Case"} - Bästa Kompisar kundcase`;
+  const metadata = buildStoryblokSeoMetadata({
+    content: story?.content,
+    fallbackTitle: title,
+    fallbackDescription: truncate(description),
+    fallbackImage: image,
+    lang: params.lang,
+    path: `/${params.lang}/cases/${params.slug}`,
+  });
 
   return {
-    ...buildPageMetadata({
-      lang: params.lang,
-      path: `/${params.lang}/cases/${params.slug}`,
-      title,
-      description: truncate(description),
-      image,
-    }),
+    ...metadata,
     openGraph: {
-      ...buildPageMetadata({
-        lang: params.lang,
-        path: `/${params.lang}/cases/${params.slug}`,
-        title,
-        description: truncate(description),
-        image,
-      }).openGraph,
+      ...metadata.openGraph,
       type: "article",
     },
     other: {
@@ -152,4 +147,3 @@ const page = async ({
 };
 
 export default page;
-
