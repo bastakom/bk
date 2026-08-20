@@ -1,11 +1,39 @@
+import type { Metadata } from 'next'
 import NewsSlug from '@/app/[lang]/components/NewsComponent/NewsSlug'
 import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
+import { buildPageMetadata } from '../../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
     ? 'draft'
     : 'published'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string; lang: string }
+}): Promise<Metadata> {
+  const data = await getNewsSlug(params.slug, params.lang)
+  const story = data?.[0]
+  const title = story?.name
+    ? `${story.name} - Bästa Kompisar`
+    : 'Nyhet - Bästa Kompisar'
+  const description =
+    story?.content?.intro ||
+    story?.content?.excerpt ||
+    story?.content?.description ||
+    'Nyhet från Bästa Kompisar i Malmö.'
+  const image = story?.content?.image?.filename || undefined
+
+  return buildPageMetadata({
+    lang: params.lang,
+    path: `/${params.lang}/nyheter/${params.slug}`,
+    title,
+    description,
+    image,
+  })
+}
 
 const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   const data = await getNewsSlug(params.slug, params.lang)
