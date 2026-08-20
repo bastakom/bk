@@ -15,6 +15,18 @@ interface Props {
   nextCaseSlug: string
 }
 
+function formatStoryDate(item: any) {
+  const rawDate = item?.sort_by_date || item?.published_at || item?.first_published_at
+
+  if (!rawDate) return ''
+
+  const date = new Date(rawDate)
+
+  if (Number.isNaN(date.getTime())) return ''
+
+  return format(date, 'yyyy.MM.dd')
+}
+
 const NewsSlug = ({ props, nextCaseSlug }: Props) => {
   const params = useParams()
   const router = useRouter()
@@ -25,16 +37,12 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
 
   return props.map((item: any, index: number) => {
     const content = item?.content || {}
-    const imageFilename = content?.image?.filename
-    const formattedDate = item.sort_by_date
-      ? format(new Date(`${item.sort_by_date}`), 'yyyy.MM.dd')
-      : item.published_at
-        ? format(new Date(`${item.published_at}`), 'yyyy.MM.dd')
-        : ''
+    const imageFilename = content?.image?.filename || content?.future_picture?.filename
+    const formattedDate = formatStoryDate(item)
 
     const handleNextClick = () => {
       if (nextCaseSlug) {
-        router.push(`${nextCaseSlug}`)
+        router.push(`/${params.lang}/nyheter/${nextCaseSlug}`)
       }
     }
 
@@ -71,7 +79,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
           </div>
         )}
         <div
-          className={`${!content.full_width && "lg:grid"} flex flex-col-reverse grid-cols-2 gap-10 m-auto container`}
+          className={`${!content.full_width && 'lg:grid'} flex flex-col-reverse grid-cols-2 gap-10 m-auto container`}
         >
           <div>
             <span className="flex flex-col gap-2 w-full lg:max-w-[80%] font-primary text-[20px] font-light mb-5">
@@ -83,7 +91,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
               </span>
 
               <FacebookShareButton
-                url={`${window.location.toString()}`}
+                url={window.location.toString()}
                 className="text-left flex gap-2 font-light"
               >
                 Facebook
@@ -92,7 +100,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
                 </span>
               </FacebookShareButton>
               <LinkedinShareButton
-                url={`${window.location.toString()}`}
+                url={window.location.toString()}
                 className="text-left flex gap-2 font-light"
               >
                 LinkedIn
@@ -120,4 +128,3 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
 }
 
 export default NewsSlug
-
