@@ -1,6 +1,7 @@
 import { getStoryblokApi, renderRichText } from "@storyblok/react";
 import { notFound } from "next/navigation";
 import CaseSlugPage from "../../components/Cases/CaseSlugPage";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import type { Metadata } from "next";
 import { buildStoryblokSeoMetadata } from "../../../lib/seo";
 
@@ -143,7 +144,18 @@ const page = async ({
       ? slugs[(currentIndex + 1) % slugs.length]
       : "";
 
-  return <CaseSlugPage story={story} nextCaseSlug={nextCaseSlug} />;
+  return (
+    <>
+      <Breadcrumbs
+        items={[
+          { label: "Start", href: `/${params.lang}` },
+          { label: "Case", href: `/${params.lang}/cases` },
+          { label: story.name },
+        ]}
+      />
+      <CaseSlugPage story={story} nextCaseSlug={nextCaseSlug} />
+    </>
+  );
 };
 
 export default page;
