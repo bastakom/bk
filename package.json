@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seo:baseline": "node scripts/seo-baseline.mjs",
+    "release:gate": "node scripts/release-gate.mjs",
     "proxy": "local-ssl-proxy --source 3010 --target 3000 --cert localhost.pem --key localhost-key.pem"
   },
   "dependencies": {
@@ -52,3 +53,4 @@
     "typescript": "^5"
   }
 }
+
