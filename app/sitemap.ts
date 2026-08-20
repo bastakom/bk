@@ -6,9 +6,13 @@ const STORYBLOK_API_BASE = 'https://api.storyblok.com/v2/cdn/stories'
 
 export const revalidate = 3600
 
-const staticRoutes = [
+const fallbackStaticRoutes = [
   '/sv',
   '/sv/vara-tjanster',
+  '/sv/vara-tjanster/ljud',
+  '/sv/vara-tjanster/sociala-medier',
+  '/sv/vara-tjanster/varumarke',
+  '/sv/vara-tjanster/webb',
   '/sv/cases',
   '/sv/omoss',
   '/sv/nyheter',
@@ -25,7 +29,6 @@ const pageSlugMap: Record<string, string> = {
 }
 
 const serviceSlugMap: Record<string, string> = {
-  film: 'sv/vara-tjanster/film',
   ljud: 'sv/vara-tjanster/ljud',
   'sociala-medier': 'sv/vara-tjanster/sociala-medier',
   varumarke: 'sv/vara-tjanster/varumarke',
@@ -74,14 +77,13 @@ function storyPath(story: any) {
   if (!fullSlug || excludedStorySlugs.has(fullSlug)) return ''
   if (fullSlug === 'home') return 'sv'
   if (fullSlug.startsWith('home/')) return `sv/${fullSlug.replace(/^home\/?/, '')}`
-  if (fullSlug.startsWith('sv/') || fullSlug === 'sv') return fullSlug
-  if (fullSlug.startsWith('en/') || fullSlug === 'en') return fullSlug
+  if (fullSlug === 'sv') return 'sv'
+  if (fullSlug.startsWith('sv/')) return fullSlug
+  if (fullSlug === 'en' || fullSlug.startsWith('en/')) return ''
   if (fullSlug.startsWith('cases/')) return `sv/${fullSlug}`
   if (fullSlug.startsWith('nyheter/')) return `sv/${fullSlug}`
   if (fullSlug.startsWith('marknadsfika/')) return `sv/${fullSlug}`
-  if (fullSlug.startsWith('filmproduction/')) {
-    return `sv/filmproduction/${fullSlug.replace(/^filmproduction\//, '')}`
-  }
+  if (fullSlug.startsWith('filmproduction/')) return `sv/${fullSlug}`
   if (pageSlugMap[fullSlug]) return pageSlugMap[fullSlug]
   if (serviceSlugMap[fullSlug]) return serviceSlugMap[fullSlug]
 
@@ -141,13 +143,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
   const entries = new Map<string, MetadataRoute.Sitemap[number]>()
 
-  for (const route of staticRoutes) {
-    entries.set(`${SITE_URL}${route}`, {
-      url: `${SITE_URL}${route}`,
-      lastModified: now,
-    })
-  }
-
   const stories = await fetchAllStories()
 
   for (const story of stories) {
@@ -161,6 +156,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   }
 
+  for (const route of fallbackStaticRoutes) {
+    const url = `${SITE_URL}${route}`
+
+    if (!entries.has(url)) {
+      entries.set(url, {
+        url,
+        lastModified: now,
+      })
+    }
+  }
+
   return Array.from(entries.values()).sort((a, b) => a.url.localeCompare(b.url))
 }
-
