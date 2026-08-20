@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
 import MarknadsSlug from '../../components/NewsComponent/marknadsfikaslug'
-import { buildPageMetadata } from '../../../lib/seo'
+import { buildStoryblokSeoMetadata } from '../../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
@@ -23,12 +23,18 @@ export async function generateMetadata({
     story?.content?.excerpt ||
     story?.content?.description ||
     'Marknadsfika från Bästa Kompisar med samtal och perspektiv på marknadsföring.'
+  const image =
+    story?.content?.image?.filename ||
+    story?.content?.future_picture?.filename ||
+    undefined
 
-  return buildPageMetadata({
+  return buildStoryblokSeoMetadata({
+    content: story?.content,
+    fallbackTitle: title,
+    fallbackDescription: description,
+    fallbackImage: image,
     lang: params.lang,
     path: `/${params.lang}/marknadsfika/${params.slug}`,
-    title,
-    description,
   })
 }
 
@@ -105,4 +111,3 @@ async function getAllNewsSlug(locale: string) {
 }
 
 export default page
-
