@@ -1,10 +1,7 @@
-import Footer from "../components/footer/footer";
-import Header from "../components/header/header";
-import "../globals.css";
-import CookieConsent from "../components/cookie-consent/cookie-consent";
-import { getStoryblokApi } from "@storyblok/react/rsc";
-import StoryblokProvider from "@/components/StoryblokProvider";
-import { buildPageMetadata, htmlLangForLang } from "../lib/seo";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import CookieConsent from "./components/CookieConsent/CookieConsent";
+import { buildPageMetadata } from "../lib/seo";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -36,32 +33,19 @@ export async function generateMetadata({
   };
 }
 
-export default async function RootLayout({
+export default function LangLayout({
   children,
   params: { lang },
 }: {
   children: React.ReactNode;
   params: { lang: string };
 }) {
-  let { data } = await fetchData(lang);
-
   return (
-    <StoryblokProvider>
-      <html lang={htmlLangForLang(lang)}>
-        <body>
-          <Header story={data.story} />
-          <main>{children}</main>
-          <Footer lang={lang} />
-          <CookieConsent lang={lang} />
-        </body>
-      </html>
-    </StoryblokProvider>
+    <>
+      <Header locale={lang} />
+      <main>{children}</main>
+      <Footer locale={lang} />
+      <CookieConsent />
+    </>
   );
-}
-
-async function fetchData(lang: string) {
-  let sbParams = { version: "published", language: lang } as const;
-
-  const storyblokApi = getStoryblokApi();
-  return storyblokApi.get(`cdn/stories/config`, sbParams);
 }
