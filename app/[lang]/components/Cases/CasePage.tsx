@@ -17,19 +17,8 @@ interface Props {
 
 const CasePage = ({ props, config, locale }: Props) => {
   const [selectedCategory, setSelectedCategory] = useState('')
-  const [data, setData] = useState<{ data: { stories: any[] } } | null>(null)
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const container = useRef<HTMLInputElement>(null)
-
-  const enCat = props.flatMap((item: any) => item.content.categoriesen)
-
-  useGSAP(() => {
-    async function fetchData() {
-      const casesData = props
-      setData(casesData)
-    }
-    fetchData()
-  }, [])
 
   useGSAP(() => {
     gsap.fromTo(
@@ -51,7 +40,6 @@ const CasePage = ({ props, config, locale }: Props) => {
     setSelectedCategory(category)
   }
 
-  if (!data) return <div>Loading...</div>
   const uniqueCategories = new Set<string>()
 
   props.forEach((item: any) => {
@@ -61,14 +49,12 @@ const CasePage = ({ props, config, locale }: Props) => {
           uniqueCategories.add(category)
         })
       }
-    } else {
-      if (Array.isArray(item.content.Kategori)) {
-        item.content.Kategori.forEach((category: string) => {
-          uniqueCategories.add(category)
-        })
-      } else {
-        http: uniqueCategories.add(item.content.Kategori)
-      }
+    } else if (Array.isArray(item.content.Kategori)) {
+      item.content.Kategori.forEach((category: string) => {
+        uniqueCategories.add(category)
+      })
+    } else if (item.content.Kategori) {
+      uniqueCategories.add(item.content.Kategori)
     }
   })
 
@@ -92,19 +78,18 @@ const CasePage = ({ props, config, locale }: Props) => {
             >
               {locale === 'en' ? 'All Case' : 'Alla Case'}
             </button>
-            {Array.from(uniqueCategories).map(
-              (category: string, index: number) =>
-                category ? (
-                  <button
-                    className={`font-primary uppercase text-[14px] ${
-                      selectedCategory === category ? 'text-[#FF6063]' : ''
-                    }`}
-                    key={index}
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    {category}
-                  </button>
-                ) : null
+            {Array.from(uniqueCategories).map((category: string, index: number) =>
+              category ? (
+                <button
+                  className={`font-primary uppercase text-[14px] ${
+                    selectedCategory === category ? 'text-[#FF6063]' : ''
+                  }`}
+                  key={index}
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category}
+                </button>
+              ) : null
             )}
           </div>
           <div className="flex m-auto">
@@ -120,13 +105,11 @@ const CasePage = ({ props, config, locale }: Props) => {
                         ? item.content.categoriesen
                         : []
                       : Array.isArray(item.content.Kategori)
-                      ? item.content.Kategori
-                      : [item.content.Kategori]
-                  return (
-                    !selectedCategory || categories.includes(selectedCategory)
-                  )
+                        ? item.content.Kategori
+                        : [item.content.Kategori]
+                  return !selectedCategory || categories.includes(selectedCategory)
                 })
-                .map((item: any, index: number) => {
+                .map((item: any) => {
                   return (
                     <Link
                       key={item.uuid}
@@ -138,18 +121,12 @@ const CasePage = ({ props, config, locale }: Props) => {
                       <div className="filtered-item h-full">
                         <div
                           className={`transition-opacity duration-300 ${
-                            hoveredItem === item.uuid
-                              ? 'opacity-80'
-                              : 'opacity-0'
+                            hoveredItem === item.uuid ? 'opacity-80' : 'opacity-0'
                           } absolute inset-0 bg-[#25364f] z-10`}
                         />
 
-                        {item?.content?.videoimage?.filename?.endsWith(
-                          '.mp4'
-                        ) ||
-                        item?.content?.videoimage?.filename?.endsWith(
-                          '.mov'
-                        ) ? (
+                        {item?.content?.videoimage?.filename?.endsWith('.mp4') ||
+                        item?.content?.videoimage?.filename?.endsWith('.mov') ? (
                           <video
                             autoPlay
                             loop
@@ -157,15 +134,11 @@ const CasePage = ({ props, config, locale }: Props) => {
                             playsInline
                             className="object-cover absolute h-full w-full transition-opacity duration-300"
                           >
-                            <source
-                              src={`${item.content.videoimage.filename}`}
-                            />
+                            <source src={`${item.content.videoimage.filename}`} />
                           </video>
                         ) : (
                           <Image
-                            src={
-                              item.content.videoimage?.filename || placeholder
-                            }
+                            src={item.content.videoimage?.filename || placeholder}
                             height={500}
                             width={500}
                             style={{ width: '100%', height: '400px' }}
@@ -175,9 +148,7 @@ const CasePage = ({ props, config, locale }: Props) => {
                         )}
                       </div>
 
-                      <div
-                        className={`flex p-5 h-full w-full items-start justify-end z-20 absolute flex-col bottom-0`}
-                      >
+                      <div className="flex p-5 h-full w-full items-start justify-end z-20 absolute flex-col bottom-0">
                         <span
                           className={`transition-opacity duration-300 ${
                             hoveredItem === item.uuid
