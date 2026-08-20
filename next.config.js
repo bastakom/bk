@@ -20,6 +20,16 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/sv/vara-tjanster/cases',
+        destination: '/sv/cases',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
+
