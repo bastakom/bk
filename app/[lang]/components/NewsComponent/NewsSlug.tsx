@@ -27,6 +27,16 @@ function formatStoryDate(item: any) {
   return format(date, 'yyyy.MM.dd')
 }
 
+function renderRichText(value: any) {
+  if (!value || typeof value !== 'object') return null
+
+  try {
+    return render(value)
+  } catch {
+    return null
+  }
+}
+
 const NewsSlug = ({ props, nextCaseSlug }: Props) => {
   const params = useParams()
   const router = useRouter()
@@ -83,7 +93,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
         >
           <div>
             <span className="flex flex-col gap-2 w-full lg:max-w-[80%] font-primary text-[20px] font-light mb-5">
-              {content.content ? render(content.content) : null}
+              {renderRichText(content.content)}
             </span>
             <div className="flex justify-start flex-col text-left text-[20px]">
               <span className="font-bold">
@@ -91,7 +101,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
               </span>
 
               <FacebookShareButton
-                url={window.location.toString()}
+                url={typeof window !== 'undefined' ? window.location.toString() : ''}
                 className="text-left flex gap-2 font-light"
               >
                 Facebook
@@ -100,7 +110,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
                 </span>
               </FacebookShareButton>
               <LinkedinShareButton
-                url={window.location.toString()}
+                url={typeof window !== 'undefined' ? window.location.toString() : ''}
                 className="text-left flex gap-2 font-light"
               >
                 LinkedIn
