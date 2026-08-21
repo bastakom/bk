@@ -56,7 +56,7 @@ function truncate(value: string, maxLength = 150) {
 }
 
 function richTextToPlainText(value: any) {
-  return isRichText(value) ? stripHtml(renderRichText(value)) : "";
+  return isRichText(value) ? stripHtml(renderRichText(value) || "") : "";
 }
 
 export async function generateMetadata({
