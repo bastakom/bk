@@ -16,17 +16,28 @@ const fields = [
 ] as const
 
 const questions = [
-  ['syfte', '1. Syfte med kampanjen'],
-  ['malgrupp', '2. Målgrupp'],
-  ['budskap', '3. Huvudbudskap'],
-  ['cta', '4. Call to action'],
-  ['ton', '5. Ton och känsla'],
-  ['ovriga_tankar', 'Övriga tankar'],
-  ['praktiskt', '6. Praktiskt'],
-  ['period_detaljer', 'Kampanjperiod detaljer'],
-  ['ovrigt', 'Övrigt'],
-  ['tankapa', '7. Att tänka på'],
+  ['syfte', '1', 'Syfte med kampanjen'],
+  ['malgrupp', '2', 'Målgrupp'],
+  ['budskap', '3', 'Huvudbudskap'],
+  ['cta', '4', 'Call to action'],
+  ['ton', '5', 'Ton och känsla'],
+  ['ovriga_tankar', '', 'Övriga tankar'],
+  ['praktiskt', '6', 'Praktiskt'],
+  ['period_detaljer', '', 'Kampanjperiod detaljer'],
+  ['ovrigt', '', 'Övrigt'],
+  ['tankapa', '7', 'Att tänka på'],
 ] as const
+
+function Mark() {
+  return (
+    <div className="flex w-[22px] shrink-0 flex-col gap-0.5">
+      <span className="h-0.5 bg-black" />
+      <span className="h-0.5 w-[70%] bg-black" />
+      <span className="h-0.5 w-[85%] bg-black" />
+      <span className="h-0.5 bg-black" />
+    </div>
+  )
+}
 
 export default function OrderForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
@@ -58,79 +69,106 @@ export default function OrderForm() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f3f3f1] px-4 py-6 text-[#0b0b0b]">
-      <div className="mx-auto max-w-5xl">
-        <header className="mb-8 flex items-center gap-4 border-b-2 border-black pb-4">
-          <div className="flex w-7 flex-col gap-1">
-            <span className="h-0.5 bg-black" />
-            <span className="h-0.5 w-2/3 bg-black" />
-            <span className="h-0.5 w-5/6 bg-black" />
-            <span className="h-0.5 bg-black" />
-          </div>
-          <div>
-            <p className="text-sm uppercase tracking-[0.12em] text-[#70706c]">
-              Bästa Kompisar
-            </p>
-            <h1 className="text-3xl font-bold text-black md:text-5xl">
-              Radiobrief
-            </h1>
+    <main className="min-h-screen bg-[#f3f3f1] text-[15px] leading-[1.45] text-[#0b0b0b] antialiased">
+      <header className="sticky top-0 z-40 border-b-[1.5px] border-black bg-[#f3f3f1]/95 backdrop-blur">
+        <div className="mx-auto flex max-w-[1200px] items-center gap-3 px-[18px] py-3">
+          <Mark />
+          <div className="font-sans text-[19px] font-extrabold uppercase tracking-normal text-black">
+            BK <span className="ml-2 text-sm font-medium normal-case text-[#70706c]">Skicka radiobrief</span>
           </div>
           <a
-            className="ml-auto border border-black px-4 py-2 text-sm font-semibold hover:bg-black hover:text-white"
+            className="ml-auto border-[1.5px] border-black px-3 py-1.5 text-[13px] font-medium transition hover:bg-black hover:text-white"
             href="/dashboard"
           >
             Logga in
           </a>
-        </header>
+        </div>
+      </header>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="mx-auto max-w-[1200px] px-[18px] pb-24 pt-5">
+        <form onSubmit={handleSubmit} className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
           <input name="website" type="text" className="hidden" tabIndex={-1} autoComplete="off" />
 
-          <section className="grid gap-4 md:grid-cols-2">
-            {fields.map(([name, label, type, required]) => (
-              <label key={name} className="block">
-                <span className="mb-1 block text-sm font-semibold">{label}</span>
-                <input
-                  className="w-full border border-[#dededa] bg-white px-4 py-3 outline-none focus:border-black"
-                  name={name}
-                  type={type}
-                  required={required}
-                />
-              </label>
-            ))}
+          <section className="border-[1.5px] border-[#dededa] bg-white">
+            <div className="border-b border-[#dededa] px-5 py-4">
+              <h1 className="text-[28px] font-extrabold leading-none tracking-normal text-black md:text-[40px]">
+                Radiobrief
+              </h1>
+              <p className="mt-2 text-sm text-[#70706c]">
+                Fyll i briefen i samma ordning som produktionen använder den.
+              </p>
+            </div>
+
+            <div className="grid gap-x-4 gap-y-3 border-b border-[#dededa] p-5 md:grid-cols-2">
+              {fields.map(([name, label, type, required]) => (
+                <label key={name} className="block">
+                  <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#70706c]">
+                    {label}{required ? ' *' : ''}
+                  </span>
+                  <input
+                    className="w-full border-[1.5px] border-[#dededa] bg-white px-3 py-3 text-[15px] outline-none transition focus:border-black"
+                    name={name}
+                    type={type}
+                    required={required}
+                  />
+                </label>
+              ))}
+            </div>
+
+            <div>
+              {questions.map(([name, number, label]) => {
+                const critical = name === 'tankapa'
+
+                return (
+                  <label
+                    key={name}
+                    className={`block border-b border-[#dededa] p-5 ${
+                      critical ? 'border-l-[3px] border-l-[#d6202b] bg-[#fdf6f6]' : ''
+                    }`}
+                  >
+                    <span className="mb-2 flex items-baseline gap-3">
+                      {number && <span className="font-mono text-xs text-[#70706c]">{number}</span>}
+                      <span className={`text-[16.5px] font-bold ${critical ? 'text-[#d6202b]' : 'text-black'}`}>
+                        {label}
+                      </span>
+                    </span>
+                    <textarea
+                      className="min-h-28 w-full border-[1.5px] border-[#dededa] bg-white px-3 py-3 text-[15px] outline-none transition focus:border-black"
+                      name={name}
+                    />
+                  </label>
+                )
+              })}
+            </div>
           </section>
 
-          <section className="space-y-4">
-            {questions.map(([name, label]) => (
-              <label key={name} className="block">
-                <span className={`mb-1 block text-sm font-semibold ${name === 'tankapa' ? 'text-[#d6202b]' : ''}`}>
-                  {label}
-                </span>
-                <textarea
-                  className={`min-h-28 w-full border bg-white px-4 py-3 outline-none focus:border-black ${
-                    name === 'tankapa' ? 'border-[#d6202b]' : 'border-[#dededa]'
-                  }`}
-                  name={name}
-                />
-              </label>
-            ))}
-          </section>
-
-          <div className="flex flex-col gap-3 border-t border-black pt-5 md:flex-row md:items-center">
-            <button
-              className="bg-black px-6 py-3 font-semibold text-white disabled:opacity-60"
-              type="submit"
-              disabled={status === 'sending'}
-            >
-              {status === 'sending' ? 'Skickar...' : 'Skicka radiobrief'}
-            </button>
-            {status === 'sent' && (
-              <p className="font-semibold text-green-700">Briefen är skickad.</p>
-            )}
-            {status === 'error' && (
-              <p className="font-semibold text-[#d6202b]">{error}</p>
-            )}
-          </div>
+          <aside className="h-fit border-[1.5px] border-black bg-white lg:sticky lg:top-[76px]">
+            <div className="border-b-[1.5px] border-black p-5">
+              <h2 className="text-[22px] font-extrabold leading-tight text-black">Skicka in</h2>
+              <p className="mt-2 text-sm text-[#70706c]">
+                Briefen sparas i dashboarden och skickar mailnotis till produktionen.
+              </p>
+            </div>
+            <div className="p-5">
+              <button
+                className="w-full bg-black px-5 py-3 font-semibold text-white transition hover:bg-[#2a2a28] disabled:opacity-60"
+                type="submit"
+                disabled={status === 'sending'}
+              >
+                {status === 'sending' ? 'Skickar...' : 'Skicka radiobrief'}
+              </button>
+              {status === 'sent' && (
+                <p className="mt-3 border border-[#dededa] bg-[#e9e9e5] px-3 py-2 text-sm font-semibold">
+                  Briefen är skickad.
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="mt-3 border border-[#d6202b] bg-[#fdecec] px-3 py-2 text-sm font-semibold text-[#d6202b]">
+                  {error}
+                </p>
+              )}
+            </div>
+          </aside>
         </form>
       </div>
     </main>
