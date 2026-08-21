@@ -2,8 +2,9 @@ import { getStoryblokApi, renderRichText } from "@storyblok/react";
 import { notFound } from "next/navigation";
 import CaseSlugPage from "../../components/Cases/CaseSlugPage";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import JsonLd from "../../components/JsonLd";
 import type { Metadata } from "next";
-import { buildStoryblokSeoMetadata } from "../../../lib/seo";
+import { buildStoryblokSeoMetadata, siteName, siteUrl } from "../../../lib/seo";
 
 const storyblokVersion: "published" | "draft" =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === "true"
@@ -53,6 +54,10 @@ function truncate(value: string, maxLength = 150) {
   return value.length > maxLength ? `${value.substring(0, maxLength)}...` : value;
 }
 
+function richTextToPlainText(value: any) {
+  return isRichText(value) ? stripHtml(renderRichText(value)) : "";
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -67,14 +72,8 @@ export async function generateMetadata({
     story = undefined;
   }
 
-  const titleText =
-    story?.content && isRichText(story.content.title)
-      ? stripHtml(renderRichText(story.content.title))
-      : "";
-  const contentText =
-    story?.content && isRichText(story.content.content)
-      ? stripHtml(renderRichText(story.content.content))
-      : "";
+  const titleText = richTextToPlainText(story?.content?.title);
+  const contentText = richTextToPlainText(story?.content?.content);
   const description =
     story?.content?.ingress ||
     truncate(stripHtml(`${titleText} ${contentText}`)) ||
@@ -144,8 +143,55 @@ const page = async ({
       ? slugs[(currentIndex + 1) % slugs.length]
       : "";
 
+  const titleText = richTextToPlainText(story.content?.title);
+  const contentText = richTextToPlainText(story.content?.content);
+  const description =
+    story.content?.ingress ||
+    truncate(stripHtml(`${titleText} ${contentText}`), 220) ||
+    `${story.name} från Bästa Kompisar.`;
+  const image =
+    story.content?.image?.filename ||
+    story.content?.preview_image?.filename ||
+    `${siteUrl}/bk-black.png`;
+  const categories = Array.isArray(story.content?.Kategori)
+    ? story.content.Kategori
+    : story.content?.Kategori
+      ? [story.content.Kategori]
+      : [];
+
+  const caseJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": `${siteUrl}/${params.lang}/cases/${params.slug}#case`,
+    url: `${siteUrl}/${params.lang}/cases/${params.slug}`,
+    name: story.name,
+    headline: story.name,
+    description,
+    image,
+    datePublished: story.first_published_at || story.published_at,
+    dateModified: story.published_at || story.first_published_at,
+    inLanguage: params.lang === "en" ? "en-US" : "sv-SE",
+    creator: {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+    },
+    about: categories.map((category: string) => ({
+      "@type": "Thing",
+      name: category,
+    })),
+  };
+
   return (
     <>
+      <JsonLd data={caseJsonLd} />
       <Breadcrumbs
         items={[
           { label: "Start", href: `/${params.lang}` },
