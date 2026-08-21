@@ -1,4 +1,6 @@
-import { storyblokEditable } from '@storyblok/react/rsc'
+'use client'
+
+import { storyblokEditable } from '@storyblok/react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { render } from 'storyblok-rich-text-react-renderer'
@@ -9,6 +11,7 @@ import Link from 'next/link'
 const Form = ({ blok, settings }) => {
   const [sent, setSent] = useState(false)
   const [status, setStatus] = useState('')
+  const [acceptedPrivacy, setAcceptedPrivacy] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,6 +19,8 @@ const Form = ({ blok, settings }) => {
   })
 
   const params = useParams()
+  const isEnglish = params.lang === 'en'
+  const isSubmitting = status === 'loading'
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -24,6 +29,8 @@ const Form = ({ blok, settings }) => {
 
   const handleButtonClick = async (e) => {
     e.preventDefault()
+    setStatus('loading')
+
     try {
       const response = await fetch('/api/form', {
         method: 'POST',
@@ -43,8 +50,20 @@ const Form = ({ blok, settings }) => {
     } catch (error) {
       console.error('Error sending message.', error)
       setStatus('error')
+      setSent(false)
     }
   }
+
+  const statusMessage =
+    status === 'loading'
+      ? isEnglish
+        ? 'Sending message...'
+        : 'Skickar meddelande...'
+      : status === 'error'
+        ? isEnglish
+          ? 'The message could not be sent. Please try again.'
+          : 'Meddelandet kunde inte skickas. Försök igen.'
+        : ''
 
   return (
     <div
@@ -61,7 +80,6 @@ const Form = ({ blok, settings }) => {
         <span className="text-[20px] font-normal text-center">
           {render(blok.adress)}
         </span>
-        {/* FORM */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 px-20 py-10">
           {blok.salespeople.map((member) => {
@@ -93,6 +111,7 @@ const Form = ({ blok, settings }) => {
             )
           })}
         </div>
+
         <div className="grid lg:grid-cols-[30%_70%] gap-10 px-20">
           <div className="text-4xl flex flex-col items-center lg:items-start gap-5">
             {render(settings.config.data.story.content.kontakt_text)}{' '}
@@ -101,75 +120,120 @@ const Form = ({ blok, settings }) => {
               <IoMdArrowForward fontSize={'1.6em'} color="#FF6062" />
             </Link>
           </div>
+
           {!sent ? (
             <form
-              className={`w-full lg:max-w-[60%] m-auto flex flex-col gap-10`}
+              className="w-full lg:max-w-[60%] m-auto flex flex-col gap-10"
               onSubmit={handleButtonClick}
             >
-              <div className={`flex flex-col gap-5`}>
-                <label>
-                  {params.lang === 'en'
+              <div className="flex flex-col gap-5">
+                <label htmlFor="contact-name">
+                  {isEnglish
                     ? 'Hello Dear Friends, my name is…*'
                     : 'Hej Bästa Kompisar, mitt namn är…*'}
                 </label>
                 <input
+                  id="contact-name"
                   className="bg-transparent border border-black rounded-[22px] py-2 px-5"
                   required
                   type="text"
                   name="name"
+                  autoComplete="name"
+                  aria-describedby="contact-name-help"
                   value={formData.name}
                   onChange={handleChange}
                 />
+                <span id="contact-name-help" className="sr-only">
+                  {isEnglish ? 'Enter your name.' : 'Ange ditt namn.'}
+                </span>
               </div>
-              <div className={`flex flex-col gap-5`}>
-                <label>
-                  {params.lang === 'en'
+
+              <div className="flex flex-col gap-5">
+                <label htmlFor="contact-email">
+                  {isEnglish
                     ? 'You can contact me at my email address…*'
                     : 'Ni kan kontakta mig på min e-postadress…*'}
                 </label>
                 <input
+                  id="contact-email"
                   className="bg-transparent border border-black rounded-[22px] py-2 px-5"
+                  required
                   type="email"
-                  onChange={handleChange}
                   name="email"
+                  autoComplete="email"
+                  aria-describedby="contact-email-help"
                   value={formData.email}
+                  onChange={handleChange}
                 />
+                <span id="contact-email-help" className="sr-only">
+                  {isEnglish ? 'Enter your email address.' : 'Ange din e-postadress.'}
+                </span>
               </div>
 
-              <div className="w-full  flex flex-col gap-4 ">
-                <label>
-                  {params.lang === 'en'
+              <div className="w-full flex flex-col gap-4">
+                <label htmlFor="contact-message">
+                  {isEnglish
                     ? 'I would like to know more about…*'
                     : 'Jag skulle vilja veta mer om…*'}
                 </label>
                 <textarea
+                  id="contact-message"
                   className="bg-transparent border border-black rounded-[22px] py-5 px-5"
+                  required
                   rows={10}
                   name="message"
-                  onChange={handleChange}
+                  aria-describedby="contact-message-help"
                   value={formData.message}
+                  onChange={handleChange}
                 />
+                <span id="contact-message-help" className="sr-only">
+                  {isEnglish ? 'Enter your message.' : 'Skriv ditt meddelande.'}
+                </span>
               </div>
+
               <div className="flex gap-5">
-                <input type="checkbox" style={{ width: '35px' }} />
-                <label className="flex items-start md:items-center text-left gap-2">
-                  {params.lang === 'en'
+                <input
+                  id="contact-consent"
+                  type="checkbox"
+                  name="consent"
+                  required
+                  checked={acceptedPrivacy}
+                  onChange={(e) => setAcceptedPrivacy(e.target.checked)}
+                  style={{ width: '35px' }}
+                />
+                <label
+                  htmlFor="contact-consent"
+                  className="flex items-start md:items-center text-left gap-2"
+                >
+                  {isEnglish
                     ? 'I agree that Bästa Kompisar use the specified personal data to contact me.*'
                     : 'Jag godkänner att Bästa Kompisar använder angivna personuppgifter för att kontakta mig.*'}
                 </label>
               </div>
 
-              <button className="w-full flex gap-2 justify-end" type="submit">
-                {params.lang === 'en' ? 'Send' : 'Skicka'}
+              <div aria-live="polite" aria-atomic="true">
+                {statusMessage && (
+                  <p className={status === 'error' ? 'text-red-700' : 'sr-only'} role={status === 'error' ? 'alert' : undefined}>
+                    {statusMessage}
+                  </p>
+                )}
+              </div>
+
+              <button
+                className="w-full flex gap-2 justify-end disabled:opacity-60"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (isEnglish ? 'Sending' : 'Skickar') : isEnglish ? 'Send' : 'Skicka'}
                 <span>
                   <IoMdArrowForward fontSize={'1.3em'} color="#FF6062" />
                 </span>
               </button>
             </form>
           ) : (
-            <div className="lg:h-[50vh] flex items-center justify-center">
+            <div className="lg:h-[50vh] flex items-center justify-center" aria-live="polite">
               <div>
-                {params.lang === 'en'
+                {isEnglish
                   ? 'Thank you for your message, we will get back to you as soon as we can!'
                   : 'Tack för ditt meddelande, vi återkommer så fort vi kan!'}
               </div>
