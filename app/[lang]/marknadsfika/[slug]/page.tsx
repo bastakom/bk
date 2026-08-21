@@ -3,7 +3,8 @@ import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
 import MarknadsSlug from '../../components/NewsComponent/marknadsfikaslug'
 import Breadcrumbs from '../../components/Breadcrumbs'
-import { buildStoryblokSeoMetadata } from '../../../lib/seo'
+import JsonLd from '../../components/JsonLd'
+import { buildStoryblokSeoMetadata, siteName, siteUrl } from '../../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
@@ -57,8 +58,46 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
       ? slugs[(currentIndex + 1) % slugs.length]
       : ''
 
+  const description =
+    data.content?.intro ||
+    data.content?.excerpt ||
+    data.content?.description ||
+    'Marknadsfika från Bästa Kompisar med samtal och perspektiv på marknadsföring.'
+  const image =
+    data.content?.image?.filename ||
+    data.content?.future_picture?.filename ||
+    `${siteUrl}/bk-black.png`
+
+  const podcastEpisodeJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'PodcastEpisode',
+    '@id': `${siteUrl}/${params.lang}/marknadsfika/${params.slug}#podcast-episode`,
+    url: `${siteUrl}/${params.lang}/marknadsfika/${params.slug}`,
+    name: data.name,
+    description,
+    image,
+    datePublished: data.first_published_at || data.published_at,
+    dateModified: data.published_at || data.first_published_at,
+    inLanguage: params.lang === 'en' ? 'en-US' : 'sv-SE',
+    partOfSeries: {
+      '@type': 'PodcastSeries',
+      name: 'Marknadsfika',
+      url: `${siteUrl}/${params.lang}/marknadsfika`,
+      publisher: {
+        '@id': `${siteUrl}/#organization`,
+      },
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+    },
+  }
+
   return (
     <>
+      <JsonLd data={podcastEpisodeJsonLd} />
       <Breadcrumbs
         items={[
           { label: 'Start', href: `/${params.lang}` },
