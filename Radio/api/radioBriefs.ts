@@ -196,3 +196,32 @@ export async function updateBriefStatus(
 
   return Response.json(updated)
 }
+
+export async function deleteBrief(
+  _req: Request,
+  { params }: { params: { id: string } }
+) {
+  if (!isRadioDashboardAuthenticated()) {
+    return Response.json({ error: 'Inte inloggad' }, { status: 401 })
+  }
+
+  const id = Number(params.id)
+
+  if (!Number.isInteger(id) || id < 1) {
+    return Response.json({ error: 'Ogiltigt id' }, { status: 400 })
+  }
+
+  const sql = getRadioSql()
+  const deletedRows = await sql`
+    delete from radio_briefs
+    where id = ${id}
+    returning id
+  ` as Array<Record<string, unknown>>
+  const [deleted] = deletedRows
+
+  if (!deleted) {
+    return Response.json({ error: 'Briefen hittades inte' }, { status: 404 })
+  }
+
+  return Response.json({ ok: true, id })
+}
