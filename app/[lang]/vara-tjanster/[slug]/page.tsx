@@ -8,6 +8,8 @@ import JsonLd from "../../components/JsonLd";
 import StoryblokImage from "../../components/StoryblokImage";
 import { siteName, siteUrl } from "../../../lib/seo";
 
+export const dynamic = "force-dynamic";
+
 const storyblokVersion: "published" | "draft" =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === "true"
     ? "draft"
@@ -94,20 +96,15 @@ const getSlugData = async (slug: string, locale: string) => {
   }
 };
 
-function stripHtml(value: string) {
-  return value.replace(/<\/?[^>]+(>|$)/g, "").replace(/\s+/g, " ").trim();
-}
+function textFromRichText(value: any): string {
+  if (!value?.content || !Array.isArray(value.content)) return "";
 
-function isRichText(value: any) {
-  return (
-    value &&
-    typeof value === "object" &&
-    (Array.isArray(value.content) || value.type)
-  );
-}
-
-function richTextToPlainText(value: any) {
-  return isRichText(value) ? stripHtml(render(value)) : "";
+  return value.content
+    .flatMap((node: any) => node.content || [])
+    .map((node: any) => node.text || "")
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function truncate(value: string, maxLength = 220) {
@@ -144,8 +141,8 @@ const page = async ({
   });
 
   const description =
-    richTextToPlainText(story.content.single_content) ||
-    richTextToPlainText(story.content.text_block_content) ||
+    textFromRichText(story.content.single_content) ||
+    textFromRichText(story.content.text_block_content) ||
     `${story.name} från ${siteName}.`;
   const image =
     story.content.image?.filename ||
