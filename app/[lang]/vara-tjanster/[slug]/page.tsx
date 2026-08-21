@@ -4,7 +4,9 @@ import { render } from "storyblok-rich-text-react-renderer";
 import Button from "../../components/Button/Button";
 import CasesReelComponent from "../../components/Cases/CaseReelComponent";
 import FilmCases from "../../components/Cases/filmcases";
+import JsonLd from "../../components/JsonLd";
 import StoryblokImage from "../../components/StoryblokImage";
+import { siteName, siteUrl } from "../../../lib/seo";
 
 const storyblokVersion: "published" | "draft" =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === "true"
@@ -92,6 +94,26 @@ const getSlugData = async (slug: string, locale: string) => {
   }
 };
 
+function stripHtml(value: string) {
+  return value.replace(/<\/?[^>]+(>|$)/g, "").replace(/\s+/g, " ").trim();
+}
+
+function isRichText(value: any) {
+  return (
+    value &&
+    typeof value === "object" &&
+    (Array.isArray(value.content) || value.type)
+  );
+}
+
+function richTextToPlainText(value: any) {
+  return isRichText(value) ? stripHtml(render(value)) : "";
+}
+
+function truncate(value: string, maxLength = 220) {
+  return value.length > maxLength ? `${value.substring(0, maxLength)}...` : value;
+}
+
 const page = async ({
   params,
 }: {
@@ -121,8 +143,40 @@ const page = async ({
     return categories.toString().toLowerCase() === storyNameLower;
   });
 
+  const description =
+    richTextToPlainText(story.content.single_content) ||
+    richTextToPlainText(story.content.text_block_content) ||
+    `${story.name} från ${siteName}.`;
+  const image =
+    story.content.image?.filename ||
+    story.content.film_case_image?.filename ||
+    `${siteUrl}/bk-black.png`;
+
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${siteUrl}/${params.lang}/vara-tjanster/${params.slug}#service`,
+    url: `${siteUrl}/${params.lang}/vara-tjanster/${params.slug}`,
+    name: story.name,
+    description: truncate(description),
+    image,
+    inLanguage: params.lang === "en" ? "en-US" : "sv-SE",
+    provider: {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "Sverige",
+    },
+    serviceType: story.name,
+  };
+
   return story.content.filmproductionsida ? (
     <div className="">
+      <JsonLd data={serviceJsonLd} />
       <div className="w-full relative h-[90vh]">
         <video
           autoPlay
@@ -221,6 +275,7 @@ const page = async ({
         background: `${story.content.background ? story.content.background : "none"}`,
       }}
     >
+      <JsonLd data={serviceJsonLd} />
       <div className="container m-auto px-2 lg:px-0">
         <div className="text-left lg:text-center flex flex-col gap-5 lg:gap-10 justify-center">
           <h1 className="text-[20px] uppercase text-black">{story.name}</h1>
