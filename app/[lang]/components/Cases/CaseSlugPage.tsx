@@ -1,7 +1,7 @@
 'use client'
 
 import { render } from 'storyblok-rich-text-react-renderer'
-import Image from 'next/image'
+import StoryblokImage from '@/app/[lang]/components/StoryblokImage'
 import { useParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { IoMdArrowForward } from 'react-icons/io'
@@ -12,6 +12,10 @@ import { useState } from 'react'
 interface Props {
   story: any
   nextCaseSlug: string
+}
+
+function imageAlt(storyName: string, context: string) {
+  return `${storyName} - ${context}`
 }
 
 const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
@@ -37,7 +41,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
             </div>
           ) : (
             <div className="w-full relative h-[300px] lg:h-[602px]">
-              {story?.content?.image?.filename.endsWith('.mp4') ? (
+              {story?.content?.image?.filename?.endsWith('.mp4') ? (
                 <video
                   autoPlay
                   muted
@@ -48,10 +52,12 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
                   <source src={story.content.image?.filename || ''} />
                 </video>
               ) : (
-                <Image
-                  src={story?.content?.image?.filename || ''}
+                <StoryblokImage
+                  asset={story?.content?.image}
+                  alt={imageAlt(story.name, 'casebild')}
                   fill
-                  alt="placeholder"
+                  priority
+                  sizes="100vw"
                   quality={100}
                   className="object-cover bg-[-200px]"
                 />
@@ -97,32 +103,30 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
         </div>
         {story.content && Array.isArray(story.content.gallery) && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-5 container m-auto">
-            {story.content &&
-              Array.isArray(story.content.gallery) &&
-              story.content.gallery.length > 0 &&
-              story.content.gallery.slice(0, 4).map((item: any) => (
-                <div className="h-[377px] relative w-full" key={item.filename}>
-                  {item.filename.endsWith('.mp4') || item.filename.endsWith('.mov') ? (
-                    <video
-                      autoPlay
-                      muted
-                      controls
-                      playsInline
-                      loop
-                      className="object-cover h-full w-full"
-                    >
-                      <source src={item?.filename || ''} />
-                    </video>
-                  ) : (
-                    <Image
-                      src={item?.filename || ''}
-                      fill
-                      alt=""
-                      className="object-cover"
-                    />
-                  )}
-                </div>
-              ))}
+            {story.content.gallery.slice(0, 4).map((item: any, index: number) => (
+              <div className="h-[377px] relative w-full" key={item.filename}>
+                {item.filename.endsWith('.mp4') || item.filename.endsWith('.mov') ? (
+                  <video
+                    autoPlay
+                    muted
+                    controls
+                    playsInline
+                    loop
+                    className="object-cover h-full w-full"
+                  >
+                    <source src={item?.filename || ''} />
+                  </video>
+                ) : (
+                  <StoryblokImage
+                    asset={item}
+                    alt={imageAlt(story.name, `galleribild ${index + 1}`)}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                )}
+              </div>
+            ))}
           </div>
         )}
         {!story.content.hide_content_under_gallery && (
@@ -160,7 +164,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
           {story.content &&
             Array.isArray(story.content.gallery) &&
             story.content.gallery.length > 4 &&
-            story.content.gallery.slice(4, 8).map((item: any) => (
+            story.content.gallery.slice(4, 8).map((item: any, index: number) => (
               <div className="h-[377px] relative w-full" key={item.filename}>
                 {item.filename.endsWith('.mp4') || item.filename.endsWith('.mov') ? (
                   <video
@@ -173,10 +177,11 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
                     <source src={item?.filename || ''} />
                   </video>
                 ) : (
-                  <Image
-                    src={item?.filename || ''}
+                  <StoryblokImage
+                    asset={item}
+                    alt={imageAlt(story.name, `galleribild ${index + 5}`)}
                     fill
-                    alt=""
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
                   />
                 )}
@@ -189,6 +194,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
         </div>
         <div className="w-ful gap-5 container m-auto">
           {Array.isArray(story.content.gallery) &&
+            Array.isArray(story.content.videos) &&
             story.content.videos.length === 2 &&
             story.content.videos.slice(1, 2).map((item: any, index: number) => (
               <div className="object-cover relative w-full" key={index}>
@@ -201,10 +207,11 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
       </div>
       {story?.content?.footer_image?.filename && (
         <div className="w-full relative h-[602px] mb-5 container m-auto">
-          <Image
-            src={story?.content?.footer_image?.filename || ''}
+          <StoryblokImage
+            asset={story.content.footer_image}
+            alt={imageAlt(story.name, 'avslutande casebild')}
             fill
-            alt="placeholder"
+            sizes="100vw"
             quality={100}
             className="object-cover bg-[-200px]"
           />
