@@ -10,12 +10,28 @@ interface Props {
   props: any
 }
 
+function localizedHref(cachedUrl: string | undefined, locale: string) {
+  if (!cachedUrl) return `/${locale}`
+  if (cachedUrl.startsWith('http') || cachedUrl.startsWith('mailto:') || cachedUrl.startsWith('tel:')) {
+    return cachedUrl
+  }
+
+  const normalized = cachedUrl.startsWith('/') ? cachedUrl : `/${cachedUrl}`
+
+  if (normalized === `/${locale}` || normalized.startsWith(`/${locale}/`)) {
+    return normalized
+  }
+
+  return `/${locale}${normalized}`.replace(/\/$/, '')
+}
+
 const FooterComponent = ({ props }: Props) => {
   const {
     story: { content },
   } = props
 
   const params = useParams()
+  const currentLocale = typeof params.lang === 'string' ? params.lang : 'sv'
 
   return (
     <div className="w-full min-h-[80vh] justify-between flex flex-col bg-[#25364F] p-4 lg:p-14 pb-5 text-white relative">
@@ -29,7 +45,7 @@ const FooterComponent = ({ props }: Props) => {
             {content.footer_menu.map((item: any, index: string) => (
               <Link
                 key={index}
-                href={`${item.link.cached_url}`}
+                href={localizedHref(item.link.cached_url, currentLocale)}
                 className="font-normal"
               >
                 {item.name}
@@ -102,16 +118,15 @@ const FooterComponent = ({ props }: Props) => {
           <span className="font-light-sofia uppercase lg:mt-0 mt-10 flex flex-col gap-10">
             <div className="flex flex-wrap gap-5">
               {content.Logos.map((el: any, i: number) => {
-                const isLast = i === content.Logos.length - 1;
-                const isSecondLast = i === content.Logos.length - 2;
-                // is it last?
+                const isLast = i === content.Logos.length - 1
+                const isSecondLast = i === content.Logos.length - 2
                 return (
                   <Image
                     key={i}
                     src={el.filename}
-                    alt={el.filename}
+                    alt={el.alt || el.name || 'Bästa Kompisar partnerlogotyp'}
                     width={isLast ? 120 : isSecondLast ? 120 : 80}
-                    className={`object-contain`}
+                    className="object-contain"
                     height={50}
                   />
                 )
@@ -120,17 +135,16 @@ const FooterComponent = ({ props }: Props) => {
             <span>© Reklambyrån Bästa Kompisar 2024</span>
           </span>
           <div className="flex flex-col lg:flex-row gap-2 lg:gap-10 items-end">
-            <Link className="text-[16px] font-light" href="/cookies">
+            <Link className="text-[16px] font-light" href={`/${currentLocale}/cookies`}>
               Cookies
             </Link>
-            <Link className="text-[16px] font-light" href="privacy-policy">
+            <Link className="text-[16px] font-light" href={`/${currentLocale}/privacy-policy`}>
               {params.lang === 'en' ? 'Privacy Policy' : 'Integritetspolicy'}
             </Link>
             <Link
               className="text-[16px] font-light-sofia"
-              href="allmaena-vilkor"
+              href={`/${currentLocale}/allmaena-vilkor`}
             >
-              {/* Terms */}
               {params.lang === 'en'
                 ? 'Terms and conditions'
                 : 'Allmänna villkor'}
