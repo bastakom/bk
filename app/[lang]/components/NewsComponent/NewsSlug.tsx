@@ -1,7 +1,7 @@
 'use client'
 
 import { format } from 'date-fns'
-import Image from 'next/image'
+import StoryblokImage from '@/app/[lang]/components/StoryblokImage'
 import { render } from 'storyblok-rich-text-react-renderer'
 import { useRouter } from 'next/navigation'
 import { IoMdArrowForward } from 'react-icons/io'
@@ -47,7 +47,7 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
 
   return props.map((item: any, index: number) => {
     const content = item?.content || {}
-    const imageFilename = content?.image?.filename || content?.future_picture?.filename
+    const imageAsset = content?.image?.filename ? content.image : content?.future_picture
     const formattedDate = formatStoryDate(item)
 
     const handleNextClick = () => {
@@ -120,13 +120,14 @@ const NewsSlug = ({ props, nextCaseSlug }: Props) => {
               </LinkedinShareButton>
             </div>
           </div>
-          {imageFilename && (
+          {imageAsset?.filename && (
             <div className="w-full h-[500px] lg:h-[500px] relative">
-              <Image
-                src={imageFilename}
+              <StoryblokImage
+                asset={imageAsset}
                 fill
-                quality={100}
-                className={`object-contain`}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                quality={90}
+                className="object-contain"
                 alt={item.name || ''}
               />
             </div>
