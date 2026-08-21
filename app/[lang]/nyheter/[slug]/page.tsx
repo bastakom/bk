@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import NewsSlug from '@/app/[lang]/components/NewsComponent/NewsSlug'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import BreadcrumbJsonLd from '../../components/BreadcrumbJsonLd'
 import JsonLd from '../../components/JsonLd'
 import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
@@ -58,6 +59,11 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
       ? slugs[(currentIndex + 1) % slugs.length]
       : ''
 
+  const breadcrumbItems = [
+    { label: 'Start', href: `/${params.lang}` },
+    { label: 'Nyheter', href: `/${params.lang}/nyheter` },
+    { label: story.name },
+  ]
   const description =
     story.content?.intro ||
     story.content?.excerpt ||
@@ -101,13 +107,8 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   return (
     <>
       <JsonLd data={articleJsonLd} />
-      <Breadcrumbs
-        items={[
-          { label: 'Start', href: `/${params.lang}` },
-          { label: 'Nyheter', href: `/${params.lang}/nyheter` },
-          { label: story.name },
-        ]}
-      />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
+      <Breadcrumbs items={breadcrumbItems} />
       <div className="mt-6">
         <NewsSlug props={[story]} locale={params.lang} nextCaseSlug={nextCaseSlug} />
       </div>
