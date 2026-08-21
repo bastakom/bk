@@ -31,7 +31,7 @@ function escapeHtml(input: string | null) {
 }
 
 async function sendNotification(brief: Record<string, string | null>) {
-  const apiKey = process.env.RESEND_API_KEY
+  const apiKey = process.env.RADIO_RESEND_API_KEY || process.env.RESEND_API_KEY
   const to = process.env.RADIO_BRIEF_NOTIFICATION_TO
 
   if (!apiKey || !to) {
