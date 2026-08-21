@@ -1,5 +1,7 @@
+import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import { StoryblokStory, getStoryblokApi } from '@storyblok/react/rsc'
+import { buildStoryblokSeoMetadata } from '../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
@@ -49,6 +51,33 @@ const fetchConfig = async (locale: string) => {
   return { config }
 }
 
+function plainText(value: any): string {
+  if (!value) return ''
+  if (typeof value === 'string') return value
+  if (Array.isArray(value.content)) {
+    return value.content
+      .map((item: any) => plainText(item))
+      .filter(Boolean)
+      .join(' ')
+  }
+  if (value.text) return value.text
+  return ''
+}
+
+function truncate(value: string, maxLength = 155) {
+  const clean = value.replace(/\s+/g, ' ').trim()
+  return clean.length > maxLength ? `${clean.substring(0, maxLength)}...` : clean
+}
+
+function slugForParams(params: { slug?: string }) {
+  return params.slug === undefined ? 'hem' : params.slug
+}
+
+function pathForParams(params: { slug?: string; lang: string }) {
+  const slugName = slugForParams(params)
+  return slugName === 'hem' ? `/${params.lang}` : `/${params.lang}/${slugName}`
+}
+
 function fallbackH1(slug: string, locale: string) {
   if (slug === 'omoss') {
     return locale === 'en' ? 'About Bästa Kompisar' : 'Om Bästa Kompisar'
@@ -57,13 +86,61 @@ function fallbackH1(slug: string, locale: string) {
   return ''
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug?: string; lang: string }
+}): Promise<Metadata> {
+  const slugName = slugForParams(params)
+
+  try {
+    const { data } = await fetchData(slugName, params.lang)
+    const story = data?.data?.story
+    const content = story?.content || {}
+    const title = story?.name
+      ? `${story.name} - Bästa Kompisar`
+      : 'Bästa Kompisar'
+    const description =
+      content.description ||
+      content.intro ||
+      content.sub_title ||
+      truncate(
+        plainText(content.content) ||
+          plainText(content.single_content) ||
+          plainText(content.text_block_content)
+      ) ||
+      'Bästa Kompisar är en kreativ reklambyrå och filmproduktionsbyrå i Malmö.'
+    const image =
+      content.image?.filename ||
+      content.hero_image?.filename ||
+      content.preview_image?.filename ||
+      undefined
+
+    return buildStoryblokSeoMetadata({
+      content,
+      fallbackTitle: title,
+      fallbackDescription: description,
+      fallbackImage: image,
+      lang: params.lang,
+      path: pathForParams(params),
+    })
+  } catch {
+    return buildStoryblokSeoMetadata({
+      fallbackTitle: 'Bästa Kompisar',
+      fallbackDescription:
+        'Kreativ reklambyrå och filmproduktionsbyrå i Malmö.',
+      lang: params.lang,
+      path: pathForParams(params),
+    })
+  }
+}
+
 export default async function page({
   params,
 }: {
-  params: { slug: string; lang: string }
+  params: { slug?: string; lang: string }
 }) {
-  const pathname = params.slug
-  const slugName = pathname === undefined ? `hem` : pathname
+  const slugName = slugForParams(params)
   const settings = await fetchConfig(params.lang)
   const hiddenH1 = fallbackH1(slugName, params.lang)
 
