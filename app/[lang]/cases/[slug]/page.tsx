@@ -2,6 +2,7 @@ import { getStoryblokApi, renderRichText } from "@storyblok/react";
 import { notFound } from "next/navigation";
 import CaseSlugPage from "../../components/Cases/CaseSlugPage";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import BreadcrumbJsonLd from "../../components/BreadcrumbJsonLd";
 import JsonLd from "../../components/JsonLd";
 import type { Metadata } from "next";
 import { buildStoryblokSeoMetadata, siteName, siteUrl } from "../../../lib/seo";
@@ -143,6 +144,11 @@ const page = async ({
       ? slugs[(currentIndex + 1) % slugs.length]
       : "";
 
+  const breadcrumbItems = [
+    { label: "Start", href: `/${params.lang}` },
+    { label: "Case", href: `/${params.lang}/cases` },
+    { label: story.name },
+  ];
   const titleText = richTextToPlainText(story.content?.title);
   const contentText = richTextToPlainText(story.content?.content);
   const description =
@@ -192,13 +198,8 @@ const page = async ({
   return (
     <>
       <JsonLd data={caseJsonLd} />
-      <Breadcrumbs
-        items={[
-          { label: "Start", href: `/${params.lang}` },
-          { label: "Case", href: `/${params.lang}/cases` },
-          { label: story.name },
-        ]}
-      />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
+      <Breadcrumbs items={breadcrumbItems} />
       <CaseSlugPage story={story} nextCaseSlug={nextCaseSlug} />
     </>
   );
