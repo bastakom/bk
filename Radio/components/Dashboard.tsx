@@ -161,6 +161,27 @@ export default function Dashboard() {
     setToast(`${updated.kund} flyttad till ${labels[updated.status as RadioBriefStatus].toLowerCase()}`)
   }
 
+  async function deleteSelectedBrief(brief: RadioBrief) {
+    const confirmed = window.confirm(`Radera briefen för ${brief.kund}? Detta kan inte ångras.`)
+
+    if (!confirmed) {
+      return
+    }
+
+    const response = await fetch(`/api/radio-briefs/${brief.id}`, {
+      method: 'DELETE',
+    })
+
+    if (!response.ok) {
+      setToast('Briefen kunde inte raderas')
+      return
+    }
+
+    setBriefs((current) => current.filter((item) => item.id !== brief.id))
+    setSelected(null)
+    setToast('Briefen raderades')
+  }
+
   async function logout() {
     await fetch('/api/radio-auth/logout', { method: 'POST' })
     window.location.reload()
@@ -331,6 +352,12 @@ export default function Dashboard() {
                   onClick={() => copy(fullText(selected), 'Hela briefen')}
                 >
                   Kopiera hela briefen
+                </button>
+                <button
+                  className="border border-[#d6202b] px-4 py-3 font-semibold text-[#d6202b]"
+                  onClick={() => deleteSelectedBrief(selected)}
+                >
+                  Radera
                 </button>
                 <button
                   className="flex-1 bg-black px-4 py-3 font-semibold text-white disabled:opacity-60"
