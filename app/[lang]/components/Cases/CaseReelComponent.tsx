@@ -14,12 +14,28 @@ interface Props {
   props: any
 }
 
+function localizedStoryHref(fullSlug: string | undefined, lang: string) {
+  const normalized = fullSlug ? fullSlug.replace(/^\/+|\/+$/g, '') : ''
+
+  if (!normalized) return `/${lang}`
+  if (normalized === lang || normalized.startsWith(`${lang}/`)) {
+    return `/${normalized}`
+  }
+
+  return `/${lang}/${normalized}`
+}
+
+function caseImageAlt(item: any) {
+  return item?.content?.videoimage?.alt || item?.content?.videoimage?.name || `${item.name} - casebild`
+}
+
 function CasesReelComponent({ props }: Props) {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const [showPrevArrow, setShowPrevArrow] = useState<boolean>(false)
   const [showNextArrow, setShowNextArrow] = useState<boolean>(true)
   const open = useStore((state) => state.open)
   const router = useParams()
+  const lang = typeof router.lang === 'string' ? router.lang : 'sv'
 
   const handleMouseEnter = (uuid: string) => {
     setHoveredItem(uuid)
@@ -113,7 +129,7 @@ function CasesReelComponent({ props }: Props) {
           return (
             <Link
               key={item.uuid}
-              href={`/${item.full_slug ? item.full_slug : ''} `}
+              href={localizedStoryHref(item.full_slug, lang)}
               className="relative h-[500px] overflow-hidden"
               onMouseEnter={() => handleMouseEnter(item.uuid)}
               onMouseLeave={handleMouseLeave}
@@ -133,7 +149,8 @@ function CasesReelComponent({ props }: Props) {
                 <Image
                   src={item.content?.videoimage?.filename || placeholder}
                   fill
-                  alt={item.title}
+                  alt={caseImageAlt(item)}
+                  sizes="(max-width: 768px) 100vw, 40vw"
                   className="object-cover absolute h-full transition-opacity duration-300"
                 />
               )}
@@ -143,7 +160,7 @@ function CasesReelComponent({ props }: Props) {
                 } absolute inset-0 bg-[#25364f]`}
               />
               <div
-                className={`flex p-5 h-full w-full items-start justify-end absolute flex-col`}
+                className="flex p-5 h-full w-full items-start justify-end absolute flex-col"
               >
                 <span
                   className={`transition-opacity duration-300 ${
@@ -192,7 +209,7 @@ function CasesReelComponent({ props }: Props) {
         align="center"
         size="20"
         margin="mt-5"
-        href={`cases`}
+        href={`/${lang}/cases`}
       />
     </div>
   )
