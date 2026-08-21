@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import { getStoryblokApi } from "@storyblok/react";
 import Image from "next/image";
 import { render } from "storyblok-rich-text-react-renderer";
 import Button from "../components/Button/Button";
 import Link from "next/link";
 import { IoMdArrowDown } from "react-icons/io";
+import { buildStoryblokSeoMetadata } from "../../lib/seo";
 
 const getTeam = async () => {
   let sbParams = {
@@ -37,9 +39,50 @@ const fetchConfig = async (locale: string) => {
   return { config };
 };
 
-const Page = async () => {
+function plainText(value: any): string {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  if (Array.isArray(value.content)) {
+    return value.content
+      .map((item: any) => plainText(item))
+      .filter(Boolean)
+      .join(" ");
+  }
+  if (value.text) return value.text;
+  return "";
+}
+
+function truncate(value: string, maxLength = 155) {
+  const clean = value.replace(/\s+/g, " ").trim();
+  return clean.length > maxLength ? `${clean.substring(0, maxLength)}...` : clean;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: string };
+}): Promise<Metadata> {
+  const blok = await fetchConfig(params.lang);
+  const configData = blok.config.data.story.content;
+  const title = "Om Bästa Kompisar - Reklambyrå i Malmö";
+  const description =
+    truncate(plainText(configData.about_subtext)) ||
+    "Lär känna Bästa Kompisar, en kreativ reklambyrå och filmproduktionsbyrå i Malmö.";
+  const image = configData.about_image?.filename || undefined;
+
+  return buildStoryblokSeoMetadata({
+    content: configData,
+    fallbackTitle: title,
+    fallbackDescription: description,
+    fallbackImage: image,
+    lang: params.lang,
+    path: `/${params.lang}/omoss`,
+  });
+}
+
+const Page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTeam();
-  const blok = await fetchConfig("sv");
+  const blok = await fetchConfig(params.lang);
   const configData = blok.config.data.story.content;
   return (
     <div className="">
