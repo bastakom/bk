@@ -14,11 +14,27 @@ interface Props {
   locale: any
 }
 
+function localizedHref(cachedUrl: string | undefined, locale: string) {
+  if (!cachedUrl) return `/${locale}`
+  if (cachedUrl.startsWith('http') || cachedUrl.startsWith('mailto:') || cachedUrl.startsWith('tel:')) {
+    return cachedUrl
+  }
+
+  const normalized = cachedUrl.startsWith('/') ? cachedUrl : `/${cachedUrl}`
+
+  if (normalized === `/${locale}` || normalized.startsWith(`/${locale}/`)) {
+    return normalized
+  }
+
+  return `/${locale}${normalized}`.replace(/\/$/, '')
+}
+
 const Navigation = ({ props, locale }: Props) => {
   const open = useStore((state) => state.open)
   const setIsOpen = useStore((state) => state.setIsOpenMenu)
 
   const { theme } = useTheme()
+  const currentLocale = locale.locale || 'sv'
   // const usePath = usePathname()
   // const router = useRouter()
 
@@ -35,7 +51,7 @@ const Navigation = ({ props, locale }: Props) => {
   return (
     <div className="flex py-2 items-center justify-between fixed z-30 w-full px-5 lg:px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
       <Link
-        href={`/${locale.locale}`}
+        href={`/${currentLocale}`}
         className="flex gap-5 w-full lg:w-1/3 items-center"
         onClick={() => setIsOpen(false)}
       >
@@ -56,9 +72,7 @@ const Navigation = ({ props, locale }: Props) => {
       </div>
       <nav className="hidden xl:flex gap-5 w-2/3 justify-start">
         {props.story.content.header_menu.map((item: any) => {
-          const link = item.link.cached_url.startsWith('/')
-            ? item.link.cached_url
-            : `/${item.link.cached_url}`
+          const link = localizedHref(item.link.cached_url, currentLocale)
           return (
             <Link
               href={link}
