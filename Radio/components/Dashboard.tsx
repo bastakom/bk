@@ -45,6 +45,11 @@ function nextStatus(status: RadioBriefStatus) {
   return RADIO_BRIEF_STATUSES[Math.min(index + 1, RADIO_BRIEF_STATUSES.length - 1)]
 }
 
+function previousStatus(status: RadioBriefStatus) {
+  const index = RADIO_BRIEF_STATUSES.indexOf(status)
+  return RADIO_BRIEF_STATUSES[Math.max(index - 1, 0)]
+}
+
 function fullText(brief: RadioBrief) {
   const meta = [
     `${brief.kund} - ${brief.order_id || 'utan order-id'}`,
@@ -144,8 +149,11 @@ export default function Dashboard() {
     setToast(`${label} kopierad`)
   }
 
-  async function moveForward(brief: RadioBrief) {
-    const status = nextStatus(brief.status)
+  async function updateStatus(brief: RadioBrief, status: RadioBriefStatus) {
+    if (status === brief.status) {
+      return
+    }
+
     const response = await fetch(`/api/radio-briefs/${brief.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -161,6 +169,14 @@ export default function Dashboard() {
     setBriefs((current) => current.map((item) => (item.id === updated.id ? updated : item)))
     setSelected(updated)
     setToast(`${updated.kund} flyttad till ${labels[updated.status as RadioBriefStatus].toLowerCase()}`)
+  }
+
+  async function moveForward(brief: RadioBrief) {
+    await updateStatus(brief, nextStatus(brief.status))
+  }
+
+  async function moveBackward(brief: RadioBrief) {
+    await updateStatus(brief, previousStatus(brief.status))
   }
 
   async function deleteSelectedBrief(brief: RadioBrief) {
@@ -387,6 +403,13 @@ export default function Dashboard() {
             <div className="sticky bottom-0 flex gap-2 border-t-[1.5px] border-black bg-white px-5 py-3">
               <button className="flex-1 border-[1.5px] border-black px-3 py-3 text-sm font-medium hover:bg-[#f0f0ec]" onClick={() => copy(fullText(selected), 'Hela briefen')}>
                 Kopiera hela briefen
+              </button>
+              <button
+                className="border-[1.5px] border-black px-3 py-3 text-sm font-medium hover:bg-[#f0f0ec] disabled:opacity-40"
+                disabled={selected.status === 'ny'}
+                onClick={() => moveBackward(selected)}
+              >
+                Tillbaka
               </button>
               <button className="border-[1.5px] border-[#d6202b] px-3 py-3 text-sm font-medium text-[#d6202b]" onClick={() => deleteSelectedBrief(selected)}>
                 Radera
