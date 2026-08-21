@@ -15,12 +15,28 @@ interface Props {
   locale: any
 }
 
+function localizedHref(cachedUrl: string | undefined, locale: string) {
+  if (!cachedUrl) return `/${locale}`
+  if (cachedUrl.startsWith('http') || cachedUrl.startsWith('mailto:') || cachedUrl.startsWith('tel:')) {
+    return cachedUrl
+  }
+
+  const normalized = cachedUrl.startsWith('/') ? cachedUrl : `/${cachedUrl}`
+
+  if (normalized === `/${locale}` || normalized.startsWith(`/${locale}/`)) {
+    return normalized
+  }
+
+  return `/${locale}${normalized}`.replace(/\/$/, '')
+}
+
 const MobileNavigation = ({ props, locale }: Props) => {
   const open = useStore((state) => state.open)
   const setIsOpen = useStore((state) => state.setIsOpenMenu)
   const usePath = usePathname()
   const router = useRouter()
   const { theme } = useTheme()
+  const currentLocale = locale.locale || 'sv'
 
   const changeLanguage = (newLang: string) => {
     const currentPath = usePath
@@ -28,7 +44,6 @@ const MobileNavigation = ({ props, locale }: Props) => {
     router.push(newPath, { scroll: false })
     setIsOpen(false)
   }
-
 
   const handleClick = debounce(() => {
     setIsOpen(false)
@@ -41,7 +56,7 @@ const MobileNavigation = ({ props, locale }: Props) => {
   return (
     <div className="flex py-2 items-center justify-between fixed z-30 w-full px-5 lg:px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
       <Link
-        href={`/${locale.locale}`}
+        href={`/${currentLocale}`}
         className="flex gap-5 w-full lg:w-1/3 items-center"
         onClick={() => setIsOpen(false)}
       >
@@ -61,17 +76,16 @@ const MobileNavigation = ({ props, locale }: Props) => {
         <span />
       </div>
       <nav
-        className={`flex flex-col h-[100vh] top-0 z-50 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${open ? 'translate-x-0' : 'translate-x-full'
-          }`}
+        className={`flex flex-col h-[100vh] top-0 z-50 bg-[#F7DAD2] gap-5 w-[100%] pt-24 absolute transition-all duration-500 right-0 ${
+          open ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
         <div className="flex flex-col mt-5 px-5">
           {props.story.content.header_menu.map((item: any) => {
-            const link = item.link.cached_url.startsWith('/')
-              ? item.link.cached_url
-              : `/${item.link.cached_url}`
+            const link = localizedHref(item.link.cached_url, currentLocale)
             return (
               <Link
-                href={`${link}`}
+                href={link}
                 onClick={handleClick}
                 key={item._uid}
                 className="font-secondary text-[28px] z-50"
