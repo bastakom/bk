@@ -1,11 +1,10 @@
 import { getStoryblokApi } from "@storyblok/react";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { render } from "storyblok-rich-text-react-renderer";
 import Button from "../../components/Button/Button";
 import CasesReelComponent from "../../components/Cases/CaseReelComponent";
 import FilmCases from "../../components/Cases/filmcases";
-import ExpandableContent from "../../components/ExpandableContent/ExpandableContent";
+import StoryblokImage from "../../components/StoryblokImage";
 
 const storyblokVersion: "published" | "draft" =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === "true"
@@ -173,10 +172,11 @@ const page = async ({
           </div>
 
           <div className="h-[350px] lg:h-[500px] w-full relative">
-            <Image
-              src={story.content.film_case_image.filename}
-              alt=""
+            <StoryblokImage
+              asset={story.content.film_case_image}
+              alt={`${story.name} - exempelbild`}
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
           </div>
@@ -200,7 +200,7 @@ const page = async ({
         {story.content.text_block_repeater &&
           story.content.text_block_repeater.map((item: any) => {
             return (
-              <div className="text-left">
+              <div className="text-left" key={item._uid || item.title}>
                 <span className="text-[35px] text-[#25364F]">
                   {render(item.title)}
                 </span>
@@ -266,10 +266,11 @@ const page = async ({
                 <source src={story?.content?.video?.filename} />
               </video>
             ) : (
-              <Image
-                src={story.content.image.filename}
+              <StoryblokImage
+                asset={story.content.image}
+                alt={`${story.name} - tjänstebild`}
                 fill
-                alt=""
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
             )}
@@ -297,7 +298,7 @@ const page = async ({
         {story.content.text_block_repeater &&
           story.content.text_block_repeater.map((item: any) => {
             return (
-              <div className="m-auto">
+              <div className="m-auto" key={item._uid || item.title}>
                 <span className="text-[35px]">{render(item.title)}</span>
                 <span>{render(item.content)}</span>
               </div>
