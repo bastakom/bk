@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import NewsSlug from '@/app/[lang]/components/NewsComponent/NewsSlug'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import JsonLd from '../../components/JsonLd'
 import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
-import { buildStoryblokSeoMetadata } from '../../../lib/seo'
+import { buildStoryblokSeoMetadata, siteName, siteUrl } from '../../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
@@ -57,8 +58,49 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
       ? slugs[(currentIndex + 1) % slugs.length]
       : ''
 
+  const description =
+    story.content?.intro ||
+    story.content?.excerpt ||
+    story.content?.description ||
+    'Nyhet från Bästa Kompisar i Malmö.'
+  const image =
+    story.content?.image?.filename ||
+    story.content?.future_picture?.filename ||
+    `${siteUrl}/bk-black.png`
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    '@id': `${siteUrl}/${params.lang}/nyheter/${params.slug}#article`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${siteUrl}/${params.lang}/nyheter/${params.slug}`,
+    },
+    headline: story.name,
+    description,
+    image: [image],
+    datePublished: story.first_published_at || story.published_at,
+    dateModified: story.published_at || story.first_published_at,
+    inLanguage: params.lang === 'en' ? 'en-US' : 'sv-SE',
+    author: {
+      '@type': 'Organization',
+      name: siteName,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: siteName,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/bk-black.png`,
+      },
+    },
+  }
+
   return (
     <>
+      <JsonLd data={articleJsonLd} />
       <Breadcrumbs
         items={[
           { label: 'Start', href: `/${params.lang}` },
