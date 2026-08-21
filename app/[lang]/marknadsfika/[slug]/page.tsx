@@ -3,6 +3,7 @@ import { getStoryblokApi } from '@storyblok/react'
 import { notFound } from 'next/navigation'
 import MarknadsSlug from '../../components/NewsComponent/marknadsfikaslug'
 import Breadcrumbs from '../../components/Breadcrumbs'
+import BreadcrumbJsonLd from '../../components/BreadcrumbJsonLd'
 import JsonLd from '../../components/JsonLd'
 import { buildStoryblokSeoMetadata, siteName, siteUrl } from '../../../lib/seo'
 
@@ -58,6 +59,11 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
       ? slugs[(currentIndex + 1) % slugs.length]
       : ''
 
+  const breadcrumbItems = [
+    { label: 'Start', href: `/${params.lang}` },
+    { label: 'Marknadsfika', href: `/${params.lang}/marknadsfika` },
+    { label: data.name },
+  ]
   const description =
     data.content?.intro ||
     data.content?.excerpt ||
@@ -98,13 +104,8 @@ const page = async ({ params }: { params: { slug: string; lang: string } }) => {
   return (
     <>
       <JsonLd data={podcastEpisodeJsonLd} />
-      <Breadcrumbs
-        items={[
-          { label: 'Start', href: `/${params.lang}` },
-          { label: 'Marknadsfika', href: `/${params.lang}/marknadsfika` },
-          { label: data.name },
-        ]}
-      />
+      <BreadcrumbJsonLd items={breadcrumbItems} />
+      <Breadcrumbs items={breadcrumbItems} />
       <div className="mt-6">
         <MarknadsSlug item={data} locale={params.lang} nextCaseSlug={nextCaseSlug} />
       </div>
