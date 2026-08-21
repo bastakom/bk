@@ -14,6 +14,8 @@ interface Props {
   props: any
 }
 
+const SlickSlider = Slider as any
+
 function localizedStoryHref(fullSlug: string | undefined, lang: string) {
   const normalized = fullSlug ? fullSlug.replace(/^\/+|\/+$/g, '') : ''
 
@@ -65,7 +67,7 @@ function CasesReelComponent({ props }: Props) {
     </button>
   )
 
-  const sliderRef = useRef<Slider>(null)
+  const sliderRef = useRef<any>(null)
 
   const nextSlide = () => {
     if (sliderRef.current) {
@@ -117,7 +119,7 @@ function CasesReelComponent({ props }: Props) {
 
   return (
     <div className={`${open ? 'hidden' : 'flex'} flex-col gap-5 relative`}>
-      <Slider
+      <SlickSlider
         key="1"
         {...settings}
         ref={sliderRef}
@@ -190,7 +192,7 @@ function CasesReelComponent({ props }: Props) {
             </Link>
           )
         })}
-      </Slider>
+      </SlickSlider>
       {props.length > 3 && (
         <div className="flex justify-end">
           <PrevArrow
