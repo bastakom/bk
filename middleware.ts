@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 
 const locales = ['sv', 'en']
 const primaryHost = 'bastakompisar.se'
+const orderHost = 'order.bastakompisar.se'
 
 function getLocale() {
   return 'sv'
@@ -33,6 +34,22 @@ export function middleware(request: any) {
     return
   }
 
+  if (hostname === orderHost) {
+    if (pathname === '/') {
+      url.pathname = '/order'
+      return NextResponse.rewrite(url)
+    }
+
+    if (pathname === '/dashboard') {
+      url.pathname = '/order/dashboard'
+      return NextResponse.rewrite(url)
+    }
+
+    if (pathname.startsWith('/order')) {
+      return
+    }
+  }
+
   if (hostname === `www.${primaryHost}`) {
     url.hostname = primaryHost
     url.protocol = 'https'
@@ -51,4 +68,3 @@ export const config = {
     '/((?!api|_next/static|_next/image|img/|favicon.ico|robots.txt|sitemap.xml).*)',
   ],
 }
-
