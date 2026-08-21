@@ -6,6 +6,7 @@ import Button from "../components/Button/Button";
 import Link from "next/link";
 import { IoMdArrowDown } from "react-icons/io";
 import { buildStoryblokSeoMetadata } from "../../lib/seo";
+import StoryblokImage from "../components/StoryblokImage";
 
 const getTeam = async () => {
   let sbParams = {
@@ -141,16 +142,17 @@ const Page = async ({ params }: { params: { lang: string } }) => {
                 : "flex-col flex gap-10"
             }`}
           >
-            <Image
-              src={configData.about_image.filename}
+            <StoryblokImage
+              asset={configData.about_image}
+              alt="Bästa Kompisar team i Malmö"
+              width={600}
+              height={600}
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className={`object-cover ${
                 !configData.marginleft
                   ? "min-h-full max-h-[400px] w-full"
                   : "min-h-[100%] lg:min-h-[50vh] "
               }`}
-              width={600}
-              height={600}
-              alt=""
             />
             {configData.about_link &&
               !configData.about_marginleft && (
