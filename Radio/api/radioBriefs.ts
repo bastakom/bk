@@ -11,6 +11,21 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 }
 
+const REQUIRED_FIELDS: Array<[string, string]> = [
+  ['kund', 'Kund'],
+  ['kontaktperson', 'Kontaktperson'],
+  ['epost', 'E-post'],
+  ['saljare', 'Säljare'],
+  ['deadline', 'Deadline'],
+  ['format', 'Format'],
+  ['antal_spottar', 'Antal spottar'],
+  ['syfte', 'Syfte med kampanjen'],
+  ['malgrupp', 'Målgrupp'],
+  ['budskap', 'Huvudbudskap'],
+  ['cta', 'Call to action'],
+  ['ton', 'Ton och känsla'],
+]
+
 function value(data: Record<string, unknown>, key: string) {
   const raw = data[key]
 
@@ -22,12 +37,18 @@ function value(data: Record<string, unknown>, key: string) {
   return trimmed ? trimmed : null
 }
 
+function missingRequiredFields(data: Record<string, unknown>) {
+  return REQUIRED_FIELDS
+    .filter(([key]) => !value(data, key))
+    .map(([, label]) => label)
+}
+
 function escapeHtml(input: string | null) {
   return String(input || '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+    .replace(/\"/g, '&quot;')
 }
 
 async function sendNotification(brief: Record<string, string | null>) {
@@ -103,6 +124,15 @@ export async function createBrief(req: Request) {
     return Response.json({ ok: true }, { headers: CORS_HEADERS })
   }
 
+  const missingFields = missingRequiredFields(d)
+
+  if (missingFields.length > 0) {
+    return Response.json(
+      { error: `Fyll i obligatoriska fält: ${missingFields.join(', ')}` },
+      { status: 400, headers: CORS_HEADERS }
+    )
+  }
+
   const brief = {
     order_id: value(d, 'order_id'),
     kund: value(d, 'kund'),
@@ -124,13 +154,6 @@ export async function createBrief(req: Request) {
     ovrigt: value(d, 'ovrigt'),
     tankapa: value(d, 'tankapa'),
     deadline: value(d, 'deadline'),
-  }
-
-  if (!brief.kund) {
-    return Response.json(
-      { error: 'Kund måste fyllas i' },
-      { status: 400, headers: CORS_HEADERS }
-    )
   }
 
   const sql = getRadioSql()
