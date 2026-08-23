@@ -23,21 +23,80 @@ const sections: Array<[string, string, keyof RadioBrief]> = [
   ['7', 'Att tänka på', 'tankapa'],
 ]
 
-function daysLeft(deadline: string | null) {
+function parseDeadline(deadline: string | null) {
   if (!deadline) return null
+
+  const trimmed = String(deadline).trim()
+  if (!trimmed) return null
+
+  const isoDateMatch = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})/)
+  if (isoDateMatch) {
+    const [, year, month, day] = isoDateMatch
+    const date = new Date(Number(year), Number(month) - 1, Number(day), 12, 0, 0, 0)
+    return Number.isNaN(date.getTime()) ? null : date
+  }
+
+  const swedishDateMatch = trimmed.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2}|\d{4})$/)
+  if (swedishDateMatch) {
+    const [, day, month, year] = swedishDateMatch
+    const fullYear = year.length === 2 ? 2000 + Number(year) : Number(year)
+    const date = new Date(fullYear, Number(month) - 1, Number(day), 12, 0, 0, 0)
+    return Number.isNaN(date.getTime()) ? null : date
+  }
+
+  const fallback = new Date(trimmed)
+  if (Number.isNaN(fallback.getTime())) return null
+
+  return new Date(
+    fallback.getFullYear(),
+    fallback.getMonth(),
+    fallback.getDate(),
+    12,
+    0,
+    0,
+    0
+  )
+}
+
+function daysLeft(deadline: string | null) {
+  const due = parseDeadline(deadline)
+  if (!due) return null
+
   const today = new Date()
   today.setHours(12, 0, 0, 0)
-  const due = new Date(`${deadline}T12:00:00`)
+
   return Math.ceil((due.getTime() - today.getTime()) / 86400000)
 }
 
-function deadlineText(deadline: string | null) {
+function formatDeadlineDate(deadline: string | null) {
+  const due = parseDeadline(deadline)
+  if (!due) return null
+
+  const day = String(due.getDate()).padStart(2, '0')
+  const month = String(due.getMonth() + 1).padStart(2, '0')
+  const year = String(due.getFullYear()).slice(-2)
+
+  return `${day}/${month}-${year}`
+}
+
+function deadlineText(deadline: string | null, includeDate = false) {
   const days = daysLeft(deadline)
+  const date = formatDeadlineDate(deadline)
+  const suffix = includeDate && date ? ` (${date})` : ''
+
   if (days === null) return 'Ingen deadline'
-  if (days < 0) return 'Deadline passerad'
-  if (days === 0) return 'Deadline idag'
-  if (days === 1) return 'Deadline imorgon'
-  return `Deadline om ${days} dagar`
+  if (days < 0) return `Deadline passerad${suffix}`
+  if (days === 0) return `Deadline idag${suffix}`
+  if (days === 1) return `Deadline imorgon${suffix}`
+
+  return `Deadline om ${days} dagar${suffix}`
+}
+
+function isUrgentDeadline(brief: RadioBrief) {
+  if (brief.status === 'levererad') return false
+
+  const days = daysLeft(brief.deadline)
+  return days !== null && days < 5
 }
 
 function nextStatus(status: RadioBriefStatus) {
@@ -260,14 +319,14 @@ export default function Dashboard() {
           )}
 
           {filtered.map((brief) => {
-            const hot = brief.status !== 'levererad' && (daysLeft(brief.deadline) ?? 99) <= 2
+            const hot = isUrgentDeadline(brief)
             const stageIndex = RADIO_BRIEF_STATUSES.indexOf(brief.status)
 
             return (
               <button
                 key={brief.id}
                 className={`flex min-h-[230px] flex-col border-[1.5px] bg-white text-left transition hover:-translate-y-0.5 hover:border-black focus:outline-[#d6202b] ${
-                  selected?.id === brief.id ? 'border-black' : 'border-[#dededa]'
+                  hot ? 'border-[#d6202b] shadow-[0_0_0_1px_#d6202b]' : selected?.id === brief.id ? 'border-black' : 'border-[#dededa]'
                 } ${brief.status === 'levererad' ? 'opacity-60 hover:opacity-100' : ''}`}
                 onClick={() => setSelected(brief)}
               >
@@ -302,7 +361,7 @@ export default function Dashboard() {
                   <span className="border border-[#dededa] px-2 py-1 font-mono text-[11.5px]">{brief.format || 'Format saknas'}</span>
                   <span className="border border-[#dededa] px-2 py-1 font-mono text-[11.5px]">{brief.antal_spottar || 'Antal saknas'}</span>
                   <span className={`border px-2 py-1 font-mono text-[11.5px] ${hot ? 'border-[#d6202b] bg-[#fdecec] text-[#d6202b]' : 'border-black'}`}>
-                    {deadlineText(brief.deadline)}
+                    {deadlineText(brief.deadline, true)}
                   </span>
                 </div>
 
@@ -330,14 +389,14 @@ export default function Dashboard() {
       />
 
       <aside
-        className={`fixed bottom-0 right-0 top-0 z-[70] w-full max-w-[560px] overflow-y-auto border-l-[1.5px] border-black bg-white transition duration-300 ${
-          selected ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed bottom-0 right-0 top-0 z-[70] w-full max-w-[560px] overflow-y-auto border-l-[1.5px] bg-white transition duration-300 ${
+          selected && isUrgentDeadline(selected) ? 'border-[#d6202b]' : 'border-black'
+        } ${selected ? 'translate-x-0' : 'translate-x-full'}`}
         aria-label="Brief"
       >
         {selected && (
           <div>
-            <div className="sticky top-0 z-10 border-b-[1.5px] border-black bg-white px-5 py-4">
+            <div className={`sticky top-0 z-10 border-b-[1.5px] bg-white px-5 py-4 ${isUrgentDeadline(selected) ? 'border-[#d6202b]' : 'border-black'}`}>
               <button
                 className="absolute right-4 top-3.5 h-8 w-8 border-[1.5px] border-[#dededa] text-base hover:border-black"
                 onClick={() => setSelected(null)}
@@ -346,8 +405,8 @@ export default function Dashboard() {
                 ×
               </button>
               <h2 className="pr-10 text-[27px] font-bold leading-[1.1] tracking-normal text-black">{selected.kund}</h2>
-              <p className="mt-1 font-mono text-xs text-[#70706c]">
-                {selected.order_id || 'Utan order-id'} - {selected.format || 'Format saknas'} - {deadlineText(selected.deadline)}
+              <p className={`mt-1 font-mono text-xs ${isUrgentDeadline(selected) ? 'text-[#d6202b]' : 'text-[#70706c]'}`}>
+                {selected.order_id || 'Utan order-id'} - {selected.format || 'Format saknas'} - {deadlineText(selected.deadline, true)}
               </p>
             </div>
 
@@ -364,7 +423,7 @@ export default function Dashboard() {
               ] as Array<[string, string | null]>).map(([label, value]) => (
                 <button
                   key={label}
-                  className="grid w-full grid-cols-[96px_1fr_22px] items-center gap-2.5 border-b border-dotted border-[#dededa] py-2 pl-0 pr-2 text-left hover:bg-[#fafaf8]"
+                  className="group grid w-full grid-cols-[96px_1fr_22px] items-center gap-2.5 border-b border-dotted border-[#dededa] py-2 pl-0 pr-2 text-left hover:bg-[#fafaf8]"
                   onClick={() => copy(value, label)}
                 >
                   <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[#70706c]">{label}</span>
@@ -409,7 +468,7 @@ export default function Dashboard() {
                 disabled={selected.status === 'ny'}
                 onClick={() => moveBackward(selected)}
               >
-                Tillbaka
+                Flytta bakåt
               </button>
               <button className="border-[1.5px] border-[#d6202b] px-3 py-3 text-sm font-medium text-[#d6202b]" onClick={() => deleteSelectedBrief(selected)}>
                 Radera
