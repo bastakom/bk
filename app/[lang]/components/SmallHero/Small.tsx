@@ -9,13 +9,24 @@ import { useParams } from 'next/navigation'
 interface Props {
   image: {
     filename: string
+    alt?: string
+    name?: string
   }
   title: string
   content: string
 }
 
+function heroImageAlt(image: Props['image'], fallback: string) {
+  return image.alt || image.name || fallback
+}
+
 const Small = ({ title, content, image }: Props) => {
   const params = useParams()
+  const fallbackAlt =
+    params.lang === 'en'
+      ? 'Bästa Kompisar services'
+      : 'Bästa Kompisar tjänster'
+
   return (
     <div className="flex flex-col lg:flex-row w-full gap-14 pt-10 pb-10">
       <div className="w-full gap-10 lg:gap-0 lg:w-1/2 h-full flex flex-col justify-center">
@@ -37,11 +48,12 @@ const Small = ({ title, content, image }: Props) => {
             style={{ maxHeight: '600px' }}
             width={500}
             height={400}
-            alt=""
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            alt={heroImageAlt(image, fallbackAlt)}
           />
           <div className="flex gap-10">
             <Link
-              href={`#tjanster`}
+              href="#tjanster"
               className="link-color hidden lg:flex gap-2 items-center"
             >
               {params.lang === 'en' ? 'Our services' : 'Våra tjänster'}
@@ -50,7 +62,7 @@ const Small = ({ title, content, image }: Props) => {
               </span>
             </Link>
             <Link
-              href={`#process`}
+              href="#process"
               className="link-color flex gap-2 items-center"
             >
               {params.lang === 'en' ? 'Our process' : 'Vår process'}
