@@ -29,9 +29,9 @@ const fields = [
 ] as const
 
 const defaultData: SignatureData = {
-  name: 'Alex Tanski',
-  title: 'Digital projektledare',
-  phone: '0709 48 68 30',
+  name: '',
+  title: '',
+  phone: '',
 }
 
 function normalizeTitle(value: string) {
@@ -121,7 +121,7 @@ function buildSignatureHtml(data: SignatureData, logoUrl: string) {
   <tr>
     <td style="padding:24px 0 0 0;font-family:${FONT_STACK};font-size:16px;line-height:22px;font-weight:400;color:#5d5a5d;">
       <div>${ADDRESS}</div>
-      <div>Växel ${SWITCHBOARD}, <a href="https://${WEBSITE}/" style="color:#5d5a5d;text-decoration:none;">${WEBSITE}</a></div>
+      <div>Växel ${SWITCHBOARD}, <a href="https://${WEBSITE}/" style="color:#5d5a5d;text-decoration:none;font-size:16px;line-height:22px;font-weight:400;">${WEBSITE}</a></div>
     </td>
   </tr>
 </table>`.trim()
