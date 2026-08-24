@@ -16,6 +16,8 @@ function shouldSkipPath(pathname: string) {
     pathname === '/favicon.ico' ||
     pathname === '/robots.txt' ||
     pathname === '/sitemap.xml' ||
+    pathname === '/bk-black.png' ||
+    pathname.startsWith('/fonts/') ||
     pathname.startsWith('/img/')
   )
 }
