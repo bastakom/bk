@@ -62,6 +62,10 @@ export function middleware(request: any) {
     }
   }
 
+  if (pathname.startsWith('/signatur')) {
+    return
+  }
+
   if (hostname === `www.${primaryHost}`) {
     url.hostname = primaryHost
     url.protocol = 'https'
