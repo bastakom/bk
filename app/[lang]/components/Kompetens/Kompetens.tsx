@@ -9,6 +9,10 @@ interface Props {
   tiles: any
 }
 
+function competenceImageAlt(image: any, title: string) {
+  return image?.alt || image?.name || `${title} - kompetensbild`
+}
+
 const Kompetens = ({ title, content, image, tiles }: Props) => {
   return (
     <div className="px-10 bg-white pt-14 pb-20 my-20">
@@ -26,8 +30,9 @@ const Kompetens = ({ title, content, image, tiles }: Props) => {
             src={image.filename}
             width={497}
             height={400}
+            sizes="(max-width: 1024px) 100vw, 50vw"
             className="mix-blend-multiply m-auto"
-            alt={image.filename}
+            alt={competenceImageAlt(image, title)}
           />
         </div>
       </div>
@@ -35,14 +40,14 @@ const Kompetens = ({ title, content, image, tiles }: Props) => {
         <div className="grid grid-cols-3">
           {tiles.map((item: any) =>
             item.title ? (
-              <div>
+              <div key={item._uid || item.title}>
                 <Button text={item.title} size={'20'} />
                 <span className="text-[20px] font-light">
                   {render(item.content)}
                 </span>
               </div>
             ) : (
-              <div />
+              <div key={item._uid || item.title || 'empty'} />
             )
           )}
         </div>
