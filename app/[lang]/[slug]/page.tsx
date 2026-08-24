@@ -300,7 +300,7 @@ export default async function page({
     const extraJsonLd = [
       faqPageJsonLd(slugName, content, pageUrl),
       filmproduktionServiceJsonLd(slugName, content, pageUrl),
-    ].filter(Boolean)
+    ].filter((item): item is Record<string, unknown> => item !== null)
     const jsonLdData =
       extraJsonLd.length > 0 ? [webPageJsonLd, ...extraJsonLd] : webPageJsonLd
 
