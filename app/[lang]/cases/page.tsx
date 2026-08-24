@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { getStoryblokApi } from '@storyblok/react'
 import CasePage from '../components/Cases/CasePage'
-import { buildPageMetadata } from '../../lib/seo'
+import JsonLd from '../components/JsonLd'
+import { buildPageMetadata, siteName, siteUrl } from '../../lib/seo'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
@@ -25,13 +26,50 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: { lang: string } }) => {
   const props = await fetchCases(params.lang)
   const config = await fetchConfig(params.lang)
+  const stories = props.data.stories
+  const pageUrl = `${siteUrl}/${params.lang}/cases`
+
+  const collectionJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${pageUrl}#cases`,
+    url: pageUrl,
+    name: 'Case - Bästa Kompisar',
+    description:
+      'Utvalda kundcase från Bästa Kompisar inom varumärke, filmproduktion, content och digital kommunikation.',
+    inLanguage: params.lang === 'en' ? 'en-US' : 'sv-SE',
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      name: siteName,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: stories.map((story: any, index: number) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `${siteUrl}/${params.lang}/${story.full_slug}`,
+        name: story.name,
+      })),
+    },
+  }
 
   return (
-    <CasePage
-      props={props.data.stories}
-      config={config.data.story}
-      locale={params.lang}
-    />
+    <>
+      <JsonLd data={collectionJsonLd} />
+      <CasePage
+        props={stories}
+        config={config.data.story}
+        locale={params.lang}
+      />
+    </>
   )
 }
 
@@ -77,4 +115,3 @@ const fetchConfig = async (locale: string) => {
     return { data: { story: {} } }
   }
 }
-
