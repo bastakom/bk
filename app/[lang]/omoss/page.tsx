@@ -58,6 +58,21 @@ function truncate(value: string, maxLength = 155) {
   return clean.length > maxLength ? `${clean.substring(0, maxLength)}...` : clean;
 }
 
+function localizedHref(cachedUrl: string | undefined, locale: string) {
+  if (!cachedUrl) return `/${locale}`;
+  if (cachedUrl.startsWith("http") || cachedUrl.startsWith("mailto:") || cachedUrl.startsWith("tel:")) {
+    return cachedUrl;
+  }
+
+  const normalized = cachedUrl.startsWith("/") ? cachedUrl : `/${cachedUrl}`;
+
+  if (normalized === `/${locale}` || normalized.startsWith(`/${locale}/`)) {
+    return normalized;
+  }
+
+  return `/${locale}${normalized}`.replace(/\/$/, "");
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -157,7 +172,7 @@ const Page = async ({ params }: { params: { lang: string } }) => {
             {configData.about_link &&
               !configData.about_marginleft && (
                 <Link
-                  href={`${configData.about_link.cached_url}`}
+                  href={localizedHref(configData.about_link.cached_url, params.lang)}
                   className="link-color flex gap-2 items-center"
                 >
                   {configData.about_linkname}
@@ -190,6 +205,7 @@ const Page = async ({ params }: { params: { lang: string } }) => {
                 src={member.content.image.filename}
                 width={800}
                 height={480}
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
                 alt={member.name}
               />
             </div>
