@@ -1,6 +1,5 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import CookieConsent from "./components/CookieConsent/CookieConsent";
 import StructuredData from "./components/StructuredData";
 import { buildPageMetadata } from "../lib/seo";
 import type { Metadata } from "next";
@@ -47,7 +46,6 @@ export default function LangLayout({
       <Header locale={lang} />
       <main>{children}</main>
       <Footer locale={lang} />
-      <CookieConsent />
     </>
   );
 }
