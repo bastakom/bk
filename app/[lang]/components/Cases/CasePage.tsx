@@ -15,6 +15,75 @@ interface Props {
   locale: string
 }
 
+function caseCategories(item: any, locale: string) {
+  if (locale === 'en') {
+    return Array.isArray(item?.content?.categoriesen)
+      ? item.content.categoriesen.filter(Boolean)
+      : []
+  }
+
+  if (Array.isArray(item?.content?.Kategori)) {
+    return item.content.Kategori.filter(Boolean)
+  }
+
+  return item?.content?.Kategori ? [item.content.Kategori] : []
+}
+
+function localizedCaseHref(fullSlug: string | undefined, locale: string) {
+  const normalized = fullSlug?.replace(/^\/+|\/+$/g, '') || ''
+
+  if (!normalized) return `/${locale}/cases`
+  if (normalized === locale || normalized.startsWith(`${locale}/`)) {
+    return `/${normalized}`
+  }
+
+  return `/${locale}/${normalized}`
+}
+
+function richTextToPlainText(value: any): string {
+  if (!value) return ''
+  if (typeof value === 'string') return value
+  if (Array.isArray(value)) return value.map(richTextToPlainText).join(' ')
+  if (typeof value !== 'object') return ''
+
+  const ownText = typeof value.text === 'string' ? value.text : ''
+  const childText = Array.isArray(value.content)
+    ? value.content.map(richTextToPlainText).join(' ')
+    : ''
+
+  return `${ownText} ${childText}`.trim()
+}
+
+function truncateText(value: string, maxLength = 155) {
+  const cleanValue = value.replace(/\s+/g, ' ').trim()
+  if (cleanValue.length <= maxLength) return cleanValue
+
+  return `${cleanValue.slice(0, maxLength).replace(/\s+\S*$/, '')}...`
+}
+
+function caseDescription(item: any, locale: string) {
+  const content = item?.content || {}
+  const categories = caseCategories(item, locale).join(' / ')
+
+  return truncateText(
+    content.ingress ||
+      content.description ||
+      content.meta_description ||
+      richTextToPlainText(content.content) ||
+      categories
+  )
+}
+
+function caseImageAlt(item: any) {
+  const image = item?.content?.videoimage
+
+  return (
+    image?.alt ||
+    image?.name ||
+    `${item?.name || 'Case'} - kundcase fran Basta Kompisar`
+  )
+}
+
 const CasePage = ({ props, config, locale }: Props) => {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
@@ -43,19 +112,9 @@ const CasePage = ({ props, config, locale }: Props) => {
   const uniqueCategories = new Set<string>()
 
   props.forEach((item: any) => {
-    if (locale === 'en') {
-      if (Array.isArray(item.content.categoriesen)) {
-        item.content.categoriesen.forEach((category: string) => {
-          uniqueCategories.add(category)
-        })
-      }
-    } else if (Array.isArray(item.content.Kategori)) {
-      item.content.Kategori.forEach((category: string) => {
-        uniqueCategories.add(category)
-      })
-    } else if (item.content.Kategori) {
-      uniqueCategories.add(item.content.Kategori)
-    }
+    caseCategories(item, locale).forEach((category: string) => {
+      uniqueCategories.add(category)
+    })
   })
 
   return (
@@ -78,13 +137,13 @@ const CasePage = ({ props, config, locale }: Props) => {
             >
               {locale === 'en' ? 'All Case' : 'Alla Case'}
             </button>
-            {Array.from(uniqueCategories).map((category: string, index: number) =>
+            {Array.from(uniqueCategories).map((category: string) =>
               category ? (
                 <button
                   className={`font-primary uppercase text-[14px] ${
                     selectedCategory === category ? 'text-[#FF6063]' : ''
                   }`}
-                  key={index}
+                  key={category}
                   onClick={() => handleCategoryClick(category)}
                 >
                   {category}
@@ -99,21 +158,17 @@ const CasePage = ({ props, config, locale }: Props) => {
             >
               {props
                 .filter((item: any) => {
-                  const categories =
-                    locale === 'en'
-                      ? Array.isArray(item.content.categoriesen)
-                        ? item.content.categoriesen
-                        : []
-                      : Array.isArray(item.content.Kategori)
-                        ? item.content.Kategori
-                        : [item.content.Kategori]
+                  const categories = caseCategories(item, locale)
                   return !selectedCategory || categories.includes(selectedCategory)
                 })
                 .map((item: any) => {
+                  const categories = caseCategories(item, locale)
+                  const description = caseDescription(item, locale)
+
                   return (
                     <Link
                       key={item.uuid}
-                      href={`/${item.full_slug}`}
+                      href={localizedCaseHref(item.full_slug, locale)}
                       className="w-full h-[400px] lg:h-[400px] relative"
                       onMouseEnter={() => handleMouseEnter(item.uuid)}
                       onMouseLeave={handleMouseLeave}
@@ -133,6 +188,7 @@ const CasePage = ({ props, config, locale }: Props) => {
                             muted
                             playsInline
                             className="object-cover absolute h-full w-full transition-opacity duration-300"
+                            aria-label={caseImageAlt(item)}
                           >
                             <source src={`${item.content.videoimage.filename}`} />
                           </video>
@@ -142,7 +198,8 @@ const CasePage = ({ props, config, locale }: Props) => {
                             height={500}
                             width={500}
                             style={{ width: '100%', height: '400px' }}
-                            alt="placeholder"
+                            alt={caseImageAlt(item)}
+                            sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
                             className="object-cover absolute h-full w-full"
                           />
                         )}
@@ -158,19 +215,16 @@ const CasePage = ({ props, config, locale }: Props) => {
                         >
                           {item.name}
                         </span>
-                        {locale === 'en'
-                          ? item.content.categoriesen && (
-                              <span className="text-[16px] font-light italic font-primary text-white">
-                                {item.content.categoriesen.join(', ')}
-                              </span>
-                            )
-                          : item.content.Kategori && (
-                              <span className="text-[16px] font-light italic font-primary text-white">
-                                {Array.isArray(item.content.Kategori)
-                                  ? item.content.Kategori.join(' / ')
-                                  : item.content.Kategori}
-                              </span>
-                            )}
+                        {categories.length > 0 && (
+                          <span className="text-[16px] font-light italic font-primary text-white">
+                            {categories.join(' / ')}
+                          </span>
+                        )}
+                        {description && (
+                          <p className="mt-2 max-h-[64px] max-w-[90%] overflow-hidden text-[14px] leading-[21px] font-light font-primary text-white">
+                            {description}
+                          </p>
+                        )}
                       </div>
                     </Link>
                   )
