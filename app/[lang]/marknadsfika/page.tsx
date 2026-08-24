@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { getStoryblokApi } from '@storyblok/react'
 import NewsComponent from '../components/NewsComponent/NewsComponent'
-import { buildPageMetadata } from '../../lib/seo'
+import JsonLd from '../components/JsonLd'
+import { buildPageMetadata, siteName, siteUrl } from '../../lib/seo'
 
 export async function generateMetadata({
   params,
@@ -23,18 +24,54 @@ const Page = async ({ params }: { params: { lang: string } }) => {
   const {
     data: { stories },
   } = res
+  const pageUrl = `${siteUrl}/${params.lang}/marknadsfika`
+
+  const marknadsfikaJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${pageUrl}#marknadsfika`,
+    url: pageUrl,
+    name: 'Marknadsfika - Bästa Kompisar',
+    description:
+      'Samtal, gäster och perspektiv på marknadsföring och kommunikation från Bästa Kompisar.',
+    inLanguage: params.lang === 'en' ? 'en-US' : 'sv-SE',
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      name: siteName,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: stories.map((story: any, index: number) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `${siteUrl}/${params.lang}/${story.full_slug}`,
+        name: story.name,
+      })),
+    },
+  }
 
   return (
-    <NewsComponent
-      title={params.lang === 'en' ? 'Market Breaks' : 'MARKNADSFIKA'}
-      props={stories}
-      locale={params.lang}
-      hero_title={settings.content.marknadsfika_title}
-      subtitle={settings.content.marknadsfika_subtitle}
-      content={settings.content.marknadsfika_content}
-      filename={settings.content.marknadsfika_image.filename}
-      nofilter={true}
-    />
+    <>
+      <JsonLd data={marknadsfikaJsonLd} />
+      <NewsComponent
+        title={params.lang === 'en' ? 'Market Breaks' : 'MARKNADSFIKA'}
+        props={stories}
+        locale={params.lang}
+        hero_title={settings.content.marknadsfika_title}
+        subtitle={settings.content.marknadsfika_subtitle}
+        content={settings.content.marknadsfika_content}
+        filename={settings.content.marknadsfika_image.filename}
+        nofilter={true}
+      />
+    </>
   )
 }
 
@@ -62,4 +99,3 @@ const fetchConfig = async (locale: string) => {
 }
 
 export default Page
-
