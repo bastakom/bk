@@ -18,6 +18,8 @@ const fallbackStaticRoutes = [
   '/sv/nyheter',
   '/sv/marknadsfika',
   '/sv/filmproduktion',
+  '/sv/faq',
+  '/sv/kontakt',
   '/sv/cookies',
   '/sv/privacy-policy',
   '/sv/allmaena-vilkor',
@@ -102,6 +104,46 @@ function getLastModified(story: any) {
   return date ? new Date(date) : undefined
 }
 
+function routeMetadata(path: string) {
+  if (path === 'sv') {
+    return { changeFrequency: 'weekly' as const, priority: 1 }
+  }
+
+  if (
+    path === 'sv/vara-tjanster' ||
+    path === 'sv/cases' ||
+    path === 'sv/nyheter' ||
+    path === 'sv/marknadsfika'
+  ) {
+    return { changeFrequency: 'weekly' as const, priority: 0.9 }
+  }
+
+  if (
+    path.startsWith('sv/vara-tjanster/') ||
+    path.startsWith('sv/cases/') ||
+    path.startsWith('sv/filmproduction/')
+  ) {
+    return { changeFrequency: 'monthly' as const, priority: 0.8 }
+  }
+
+  if (
+    path.startsWith('sv/nyheter/') ||
+    path.startsWith('sv/marknadsfika/')
+  ) {
+    return { changeFrequency: 'monthly' as const, priority: 0.7 }
+  }
+
+  if (
+    path === 'sv/cookies' ||
+    path === 'sv/privacy-policy' ||
+    path === 'sv/allmaena-vilkor'
+  ) {
+    return { changeFrequency: 'yearly' as const, priority: 0.2 }
+  }
+
+  return { changeFrequency: 'monthly' as const, priority: 0.6 }
+}
+
 async function fetchStories(page: number) {
   const url = new URL(STORYBLOK_API_BASE)
   url.searchParams.set('token', STORYBLOK_TOKEN)
@@ -156,16 +198,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entries.set(`${SITE_URL}/${path}`, {
       url: `${SITE_URL}/${path}`,
       lastModified: getLastModified(story) || now,
+      ...routeMetadata(path),
     })
   }
 
   for (const route of fallbackStaticRoutes) {
+    const path = route.replace(/^\/+/, '')
     const url = `${SITE_URL}${route}`
 
     if (!entries.has(url)) {
       entries.set(url, {
         url,
         lastModified: now,
+        ...routeMetadata(path),
       })
     }
   }
