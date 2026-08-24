@@ -55,6 +55,9 @@ const fetchConfig = async (locale: string) => {
 function plainText(value: any): string {
   if (!value) return ''
   if (typeof value === 'string') return value
+  if (Array.isArray(value)) {
+    return value.map((item: any) => plainText(item)).filter(Boolean).join(' ')
+  }
   if (Array.isArray(value.content)) {
     return value.content
       .map((item: any) => plainText(item))
@@ -135,6 +138,88 @@ function contactPageFields(slugName: string) {
   }
 }
 
+function collectFaqItems(value: any, items: Array<{ question: string; answer: string }> = []) {
+  if (!value || typeof value !== 'object') return items
+
+  if (Array.isArray(value)) {
+    value.forEach((item) => collectFaqItems(item, items))
+    return items
+  }
+
+  const question =
+    plainText(value.question) ||
+    plainText(value.fraga) ||
+    plainText(value.fråga) ||
+    plainText(value.title)
+  const answer =
+    plainText(value.answer) ||
+    plainText(value.svar) ||
+    plainText(value.content) ||
+    plainText(value.text)
+
+  if (question && answer && question !== answer) {
+    items.push({
+      question: truncate(question, 180),
+      answer: truncate(answer, 500),
+    })
+  }
+
+  Object.values(value).forEach((childValue) => {
+    if (childValue && typeof childValue === 'object') {
+      collectFaqItems(childValue, items)
+    }
+  })
+
+  return items
+}
+
+function faqPageJsonLd(slugName: string, content: any, pageUrl: string) {
+  if (slugName !== 'faq') return null
+
+  const faqItems = collectFaqItems(content).slice(0, 20)
+  if (faqItems.length === 0) return null
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${pageUrl}#faq`,
+    url: pageUrl,
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  }
+}
+
+function filmproduktionServiceJsonLd(slugName: string, content: any, pageUrl: string) {
+  if (slugName !== 'filmproduktion') return null
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${pageUrl}#filmproduktion-service`,
+    url: pageUrl,
+    name: 'Filmproduktion',
+    description: storyDescription(content),
+    image: storyImage(content),
+    provider: {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+    },
+    areaServed: {
+      '@type': 'Country',
+      name: 'Sverige',
+    },
+    serviceType: 'Filmproduktion',
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -212,10 +297,16 @@ export default async function page({
       },
       ...contactPageFields(slugName),
     }
+    const extraJsonLd = [
+      faqPageJsonLd(slugName, content, pageUrl),
+      filmproduktionServiceJsonLd(slugName, content, pageUrl),
+    ].filter(Boolean)
+    const jsonLdData =
+      extraJsonLd.length > 0 ? [webPageJsonLd, ...extraJsonLd] : webPageJsonLd
 
     return (
       <div className="mt-10">
-        <JsonLd data={webPageJsonLd} />
+        <JsonLd data={jsonLdData} />
         {hiddenH1 && (
           <h1 className="sr-only">
             {hiddenH1}
