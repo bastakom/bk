@@ -6,7 +6,8 @@ import Link from 'next/link'
 import { IoMdArrowForward } from 'react-icons/io'
 import TilesIcons from '../components/TilesIcons/TilesIcons'
 import Button from '../components/Button/Button'
-import { buildPageMetadata } from '../../lib/seo'
+import JsonLd from '../components/JsonLd'
+import { buildPageMetadata, siteName, siteUrl } from '../../lib/seo'
 
 export async function generateMetadata({
   params,
@@ -25,44 +26,80 @@ export async function generateMetadata({
 const page = async ({ params }: { params: { lang: string } }) => {
   const res = await getTjanster(params.lang)
   const config = await fetchConfig(params.lang)
+  const pageUrl = `${siteUrl}/${params.lang}/vara-tjanster`
+
+  const servicesJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${pageUrl}#services`,
+    url: pageUrl,
+    name: 'Tjänster - Bästa Kompisar',
+    description:
+      'Tjänster från Bästa Kompisar inom varumärke, filmproduktion, ljud, sociala medier och webb.',
+    inLanguage: params.lang === 'en' ? 'en-US' : 'sv-SE',
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      name: siteName,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: res.map((story: any, index: number) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `${siteUrl}/${params.lang}/${story.full_slug}`,
+        name: story.name,
+      })),
+    },
+  }
 
   return (
-    <div className="no-padding-bottom">
-      <div className="full-width-element bg-[#F7F0EE] pt-20 lg:pt-32 px-2">
-        <div className="px-2 lg:px-10">
-          <Small
-            image={config.image_tjanster}
-            title={config.tjanster_title}
-            content={config.tjanster_content}
-          />
-
-          <Staplar props={res} config={config} />
-          <Link
-            href={`/${params.lang}/cases`}
-            className="text-center text-[#FF6062] text-xl font-normal lg:mx-0 flex gap-2 justify-center items-center mt-14"
-            style={{ fontSize: '18px' }}
-          >
-            {params.lang === 'en' ? 'See all case' : 'Se alla case'}
-            <span className="">
-              <IoMdArrowForward fontSize={'1.5em'} />
-            </span>
-          </Link>
-        </div>
-        <div className="bg-[#F7DAD2] mt-10 lg:px-20 full-width-element no-padding-bottom">
-          <TilesIcons
-            tiles={config.tile}
-            header={config.tile_header}
-            content={config.tile_content}
-          />
-          <div className="w-full justify-center flex -mt-5 pb-16">
-            <Button
-              text="Nyfiken? Boka ett möte med oss!"
-              href={`/${params.lang}/kontakt`}
+    <>
+      <JsonLd data={servicesJsonLd} />
+      <div className="no-padding-bottom">
+        <div className="full-width-element bg-[#F7F0EE] pt-20 lg:pt-32 px-2">
+          <div className="px-2 lg:px-10">
+            <Small
+              image={config.image_tjanster}
+              title={config.tjanster_title}
+              content={config.tjanster_content}
             />
+
+            <Staplar props={res} config={config} />
+            <Link
+              href={`/${params.lang}/cases`}
+              className="text-center text-[#FF6062] text-xl font-normal lg:mx-0 flex gap-2 justify-center items-center mt-14"
+              style={{ fontSize: '18px' }}
+            >
+              {params.lang === 'en' ? 'See all case' : 'Se alla case'}
+              <span className="">
+                <IoMdArrowForward fontSize={'1.5em'} />
+              </span>
+            </Link>
+          </div>
+          <div className="bg-[#F7DAD2] mt-10 lg:px-20 full-width-element no-padding-bottom">
+            <TilesIcons
+              tiles={config.tile}
+              header={config.tile_header}
+              content={config.tile_content}
+            />
+            <div className="w-full justify-center flex -mt-5 pb-16">
+              <Button
+                text="Nyfiken? Boka ett möte med oss!"
+                href={`/${params.lang}/kontakt`}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
