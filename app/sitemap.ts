@@ -18,13 +18,18 @@ const fallbackStaticRoutes = [
   '/sv/nyheter',
   '/sv/marknadsfika',
   '/sv/filmproduktion',
+  '/sv/cookies',
+  '/sv/privacy-policy',
+  '/sv/allmaena-vilkor',
 ]
 
 const pageSlugMap: Record<string, string> = {
+  'allmaena-vilkor': 'sv/allmaena-vilkor',
   faq: 'sv/faq',
   filmproduktion: 'sv/filmproduktion',
   kontakt: 'sv/kontakt',
   omoss: 'sv/omoss',
+  'privacy-policy': 'sv/privacy-policy',
   'vara-tjanster': 'sv/vara-tjanster',
 }
 
@@ -36,9 +41,7 @@ const serviceSlugMap: Record<string, string> = {
 }
 
 const excludedStorySlugs = new Set([
-  'allmaena-vilkor',
   'config',
-  'privacy-policy',
   'service-avtal-webbtjaenster',
   'nyheter/kategori/baestakompisar',
   'nyheter/kategori/branding',
