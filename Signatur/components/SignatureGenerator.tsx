@@ -24,7 +24,7 @@ const fields = [
     name: 'phone',
     label: 'Mobilnummer',
     type: 'tel',
-    help: 'Visas exakt som du skriver det. Länken rensas automatiskt för Outlook.',
+    help: 'Formateras automatiskt i signaturen.',
   },
 ] as const
 
@@ -84,19 +84,25 @@ function RequiredMark() {
 }
 
 function buildSignatureHtml(data: SignatureData, logoUrl: string) {
+function buildSignatureHtml(data: SignatureData, logoUrl: string, darkMode: boolean) {
   const name = escapeHtml(data.name.trim())
   const title = escapeHtml(normalizeTitle(data.title))
   const phone = escapeHtml(formatPhoneNumber(data.phone))
   const phoneHref = escapeHtml(getPhoneHref(data.phone))
   const logoSrc = escapeHtml(logoUrl)
+  const mainColor = darkMode ? '#ffffff' : '#242124'
+  const mutedColor = darkMode ? '#d8d8d8' : '#5d5a5d'
 
   return `
 <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:520px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;font-family:${FONT_STACK};color:#242124;">
+<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:350px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;font-family:${FONT_STACK};color:${mainColor};">
   <tr>
     <td style="padding:0 0 22px 0;font-family:${FONT_STACK};font-size:18px;line-height:22px;font-weight:400;color:#242124;">Bästa hälsningar,</td>
+    <td style="padding:0 0 15px 0;font-family:${FONT_STACK};font-size:12px;line-height:15px;font-weight:400;color:${mainColor};">Bästa hälsningar,</td>
   </tr>
   <tr>
     <td style="padding:0 0 21px 0;font-family:${FONT_STACK};font-size:34px;line-height:38px;font-weight:700;color:#242124;">${name}</td>
+    <td style="padding:0 0 14px 0;font-family:${FONT_STACK};font-size:23px;line-height:26px;font-weight:700;color:${mainColor};">${name}</td>
   </tr>
   <tr>
     <td style="padding:0;">
@@ -104,10 +110,15 @@ function buildSignatureHtml(data: SignatureData, logoUrl: string) {
         <tr>
           <td valign="middle" style="width:106px;padding:0 30px 0 0;">
             <img src="${logoSrc}" width="96" alt="BK" style="display:block;width:96px;height:auto;border:0;outline:none;text-decoration:none;">
+          <td valign="middle" style="width:72px;padding:0 20px 0 0;">
+            <img src="${logoSrc}" width="64" alt="BK" style="display:block;width:64px;height:auto;border:0;outline:none;text-decoration:none;">
           </td>
           <td valign="middle" style="padding:0;font-family:${FONT_STACK};color:#242124;">
             <div style="font-size:20px;line-height:28px;font-weight:400;letter-spacing:1px;text-transform:uppercase;color:#242124;">${title}</div>
             <div style="font-size:20px;line-height:28px;font-weight:400;color:#242124;"><a href="tel:${phoneHref}" style="color:#242124;text-decoration:none;">${phone}</a></div>
+          <td valign="middle" style="padding:0;font-family:${FONT_STACK};color:${mainColor};">
+            <div style="font-size:14px;line-height:19px;font-weight:400;letter-spacing:1px;text-transform:uppercase;color:${mainColor};">${title}</div>
+            <div style="font-size:14px;line-height:19px;font-weight:400;color:${mainColor};"><a href="tel:${phoneHref}" style="color:${mainColor};text-decoration:none;">${phone}</a></div>
           </td>
         </tr>
       </table>
@@ -116,12 +127,16 @@ function buildSignatureHtml(data: SignatureData, logoUrl: string) {
   <tr>
     <td style="padding:25px 0 0 0;">
       <div style="width:160px;height:1px;background:#242124;line-height:1px;font-size:1px;">&nbsp;</div>
+    <td style="padding:17px 0 0 0;">
+      <div style="width:108px;height:1px;background:${mainColor};line-height:1px;font-size:1px;">&nbsp;</div>
     </td>
   </tr>
   <tr>
     <td style="padding:24px 0 0 0;font-family:${FONT_STACK};font-size:16px;line-height:22px;font-weight:400;color:#5d5a5d;">
+    <td style="padding:16px 0 0 0;font-family:${FONT_STACK};font-size:12px;line-height:16px;font-weight:400;color:${mutedColor};">
       <div>${ADDRESS}</div>
       <div>Växel ${SWITCHBOARD}, <a href="https://${WEBSITE}/" style="color:#5d5a5d;text-decoration:none;font-size:16px;line-height:22px;font-weight:400;">${WEBSITE}</a></div>
+      <div>Växel ${SWITCHBOARD}, <a href="https://${WEBSITE}/" style="color:${mutedColor};text-decoration:none;font-size:12px;line-height:16px;font-weight:400;">${WEBSITE}</a></div>
     </td>
   </tr>
 </table>`.trim()
@@ -142,14 +157,20 @@ function buildPlainText(data: SignatureData) {
 export default function SignatureGenerator() {
   const [formData, setFormData] = useState<SignatureData>(defaultData)
   const [signatureData, setSignatureData] = useState<SignatureData>(defaultData)
+  const [darkMode, setDarkMode] = useState(false)
   const [message, setMessage] = useState('')
   const previewRef = useRef<HTMLDivElement>(null)
 
   const logoUrl =
     typeof window === 'undefined' ? '' : `${window.location.origin}/bk-black.png`
+    typeof window === 'undefined'
+      ? ''
+      : `${window.location.origin}/${darkMode ? 'bk-white.png' : 'bk-black.png'}`
   const signatureHtml = useMemo(
     () => buildSignatureHtml(signatureData, logoUrl),
     [signatureData, logoUrl]
+    () => buildSignatureHtml(signatureData, logoUrl, darkMode),
+    [signatureData, logoUrl, darkMode]
   )
   const plainText = useMemo(() => buildPlainText(signatureData), [signatureData])
 
@@ -287,6 +308,7 @@ export default function SignatureGenerator() {
                 <div
                   ref={previewRef}
                   className="inline-block min-w-[520px] bg-white p-0"
+                  className={`inline-block min-w-[350px] p-0 ${darkMode ? 'bg-[#242124]' : 'bg-white'}`}
                   dangerouslySetInnerHTML={{ __html: signatureHtml }}
                 />
               </div>
@@ -301,6 +323,20 @@ export default function SignatureGenerator() {
               </p>
             </div>
             <div className="space-y-3 p-5">
+              <label className="flex items-start gap-3 border border-[#dededa] bg-[#f8f8f6] p-3 text-sm font-semibold">
+                <input
+                  className="mt-1"
+                  type="checkbox"
+                  checked={darkMode}
+                  onChange={(event) => setDarkMode(event.target.checked)}
+                />
+                <span>
+                  Mörk version
+                  <span className="mt-1 block text-[12px] font-normal leading-snug text-[#70706c]">
+                    Använder vit logga och ljus text.
+                  </span>
+                </span>
+              </label>
               <button
                 className="w-full bg-black px-5 py-3 font-semibold text-white transition hover:bg-[#2a2a28]"
                 type="submit"
