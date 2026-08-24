@@ -2,10 +2,10 @@
 
 import { FormEvent, useMemo, useRef, useState } from 'react'
 
-const LOGO_URL = 'https://bastakompisar.se/bk-black.png'
 const ADDRESS = 'Södra Tullgatan 3, 211 40 Malmö'
 const SWITCHBOARD = '040 127 327'
 const WEBSITE = 'bastakompisar.se'
+const FONT_STACK = "'Sofia Pro', Arial, Helvetica, sans-serif"
 
 type SignatureData = {
   name: string
@@ -36,6 +36,20 @@ const defaultData: SignatureData = {
 
 function normalizeTitle(value: string) {
   return value.trim().toUpperCase()
+}
+
+function formatPhoneNumber(value: string) {
+  let digits = value.replace(/[^\d]/g, '')
+
+  if (digits.length === 9 && digits.startsWith('7')) {
+    digits = `0${digits}`
+  }
+
+  if (digits.length === 10) {
+    return `${digits.slice(0, 4)} ${digits.slice(4, 6)} ${digits.slice(6, 8)} ${digits.slice(8, 10)}`
+  }
+
+  return value.trim()
 }
 
 function getPhoneHref(value: string) {
@@ -69,28 +83,29 @@ function RequiredMark() {
   return <span className="text-[#d6202b]"> *</span>
 }
 
-function buildSignatureHtml(data: SignatureData) {
+function buildSignatureHtml(data: SignatureData, logoUrl: string) {
   const name = escapeHtml(data.name.trim())
   const title = escapeHtml(normalizeTitle(data.title))
-  const phone = escapeHtml(data.phone.trim())
+  const phone = escapeHtml(formatPhoneNumber(data.phone))
   const phoneHref = escapeHtml(getPhoneHref(data.phone))
+  const logoSrc = escapeHtml(logoUrl)
 
   return `
-<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:520px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;font-family:Arial,Helvetica,sans-serif;color:#242124;">
+<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="width:520px;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;font-family:${FONT_STACK};color:#242124;">
   <tr>
-    <td style="padding:0 0 22px 0;font-family:Arial,Helvetica,sans-serif;font-size:18px;line-height:22px;font-weight:400;color:#242124;">Bästa hälsningar,</td>
+    <td style="padding:0 0 22px 0;font-family:${FONT_STACK};font-size:18px;line-height:22px;font-weight:400;color:#242124;">Bästa hälsningar,</td>
   </tr>
   <tr>
-    <td style="padding:0 0 21px 0;font-family:Arial,Helvetica,sans-serif;font-size:34px;line-height:38px;font-weight:700;color:#242124;">${name}</td>
+    <td style="padding:0 0 21px 0;font-family:${FONT_STACK};font-size:34px;line-height:38px;font-weight:700;color:#242124;">${name}</td>
   </tr>
   <tr>
     <td style="padding:0;">
       <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
         <tr>
           <td valign="middle" style="width:106px;padding:0 30px 0 0;">
-            <img src="${LOGO_URL}" width="96" alt="BK" style="display:block;width:96px;height:auto;border:0;outline:none;text-decoration:none;">
+            <img src="${logoSrc}" width="96" alt="BK" style="display:block;width:96px;height:auto;border:0;outline:none;text-decoration:none;">
           </td>
-          <td valign="middle" style="padding:0;font-family:Arial,Helvetica,sans-serif;color:#242124;">
+          <td valign="middle" style="padding:0;font-family:${FONT_STACK};color:#242124;">
             <div style="font-size:20px;line-height:28px;font-weight:400;letter-spacing:1px;text-transform:uppercase;color:#242124;">${title}</div>
             <div style="font-size:20px;line-height:28px;font-weight:400;color:#242124;"><a href="tel:${phoneHref}" style="color:#242124;text-decoration:none;">${phone}</a></div>
           </td>
@@ -104,7 +119,7 @@ function buildSignatureHtml(data: SignatureData) {
     </td>
   </tr>
   <tr>
-    <td style="padding:24px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:22px;font-weight:400;color:#5d5a5d;">
+    <td style="padding:24px 0 0 0;font-family:${FONT_STACK};font-size:16px;line-height:22px;font-weight:400;color:#5d5a5d;">
       <div>${ADDRESS}</div>
       <div>Växel ${SWITCHBOARD}, <a href="https://${WEBSITE}/" style="color:#5d5a5d;text-decoration:none;">${WEBSITE}</a></div>
     </td>
@@ -117,7 +132,7 @@ function buildPlainText(data: SignatureData) {
     'Bästa hälsningar,',
     '',
     data.name.trim(),
-    `${normalizeTitle(data.title)} ${data.phone.trim()}`,
+    `${normalizeTitle(data.title)} ${formatPhoneNumber(data.phone)}`,
     '',
     ADDRESS,
     `Växel ${SWITCHBOARD}, ${WEBSITE}`,
@@ -130,7 +145,12 @@ export default function SignatureGenerator() {
   const [message, setMessage] = useState('')
   const previewRef = useRef<HTMLDivElement>(null)
 
-  const signatureHtml = useMemo(() => buildSignatureHtml(signatureData), [signatureData])
+  const logoUrl =
+    typeof window === 'undefined' ? '' : `${window.location.origin}/bk-black.png`
+  const signatureHtml = useMemo(
+    () => buildSignatureHtml(signatureData, logoUrl),
+    [signatureData, logoUrl]
+  )
   const plainText = useMemo(() => buildPlainText(signatureData), [signatureData])
 
   function updateField(field: keyof SignatureData, value: string) {
@@ -142,8 +162,12 @@ export default function SignatureGenerator() {
     setSignatureData({
       name: formData.name.trim(),
       title: formData.title.trim(),
-      phone: formData.phone.trim(),
+      phone: formatPhoneNumber(formData.phone),
     })
+    setFormData((current) => ({
+      ...current,
+      phone: formatPhoneNumber(current.phone),
+    }))
     setMessage('Förhandsvisningen är uppdaterad.')
   }
 
