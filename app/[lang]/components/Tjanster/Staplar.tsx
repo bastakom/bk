@@ -14,6 +14,14 @@ interface Props {
   config: any
 }
 
+function serviceImageAlt(item: any, displayName: string) {
+  return (
+    item?.content?.image?.alt ||
+    item?.content?.image?.name ||
+    `${displayName} - tjänstebild`
+  )
+}
+
 const Staplar = ({ props }: Props) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -70,13 +78,14 @@ const Staplar = ({ props }: Props) => {
             className={`h-[600px] ${
               openIndex === index ? 'w-full' : 'w-full lg:w-1/5'
             } bg-gray-200 flex flex-col justify-center transition-all duration-300 hover:cursor-pointer relative`}
-            key={index}
+            key={item.uuid || item.id || item.slug || index}
           >
             {item.content.image && (
               <Image
                 src={item.content.image.filename}
                 fill
-                alt={item.name}
+                sizes="(max-width: 1024px) 100vw, 20vw"
+                alt={serviceImageAlt(item, displayName)}
                 className="object-cover"
               />
             )}
