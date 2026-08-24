@@ -52,11 +52,48 @@ function isRichText(value: any) {
 }
 
 function truncate(value: string, maxLength = 150) {
-  return value.length > maxLength ? `${value.substring(0, maxLength)}...` : value;
+  const cleanValue = value.replace(/\s+/g, " ").trim();
+  return cleanValue.length > maxLength
+    ? `${cleanValue.substring(0, maxLength).replace(/\s+\S*$/, "")}...`
+    : cleanValue;
 }
 
 function richTextToPlainText(value: any) {
   return isRichText(value) ? stripHtml(renderRichText(value) || "") : "";
+}
+
+function storyCategories(story: any, lang: string) {
+  if (lang === "en") {
+    return Array.isArray(story?.content?.categoriesen)
+      ? story.content.categoriesen.filter(Boolean)
+      : [];
+  }
+
+  if (Array.isArray(story?.content?.Kategori)) {
+    return story.content.Kategori.filter(Boolean);
+  }
+
+  return story?.content?.Kategori ? [story.content.Kategori] : [];
+}
+
+function storyDescription(story: any, maxLength = 220) {
+  const titleText = richTextToPlainText(story?.content?.title);
+  const contentText = richTextToPlainText(story?.content?.content);
+
+  return (
+    story?.content?.ingress ||
+    story?.content?.meta_description ||
+    truncate(stripHtml(`${titleText} ${contentText}`), maxLength) ||
+    `${story?.name || "Case"} från Bästa Kompisar.`
+  );
+}
+
+function storyImage(story: any) {
+  return (
+    story?.content?.image?.filename ||
+    story?.content?.preview_image?.filename ||
+    `${siteUrl}/bk-black.png`
+  );
 }
 
 export async function generateMetadata({
@@ -73,22 +110,12 @@ export async function generateMetadata({
     story = undefined;
   }
 
-  const titleText = richTextToPlainText(story?.content?.title);
-  const contentText = richTextToPlainText(story?.content?.content);
-  const description =
-    story?.content?.ingress ||
-    truncate(stripHtml(`${titleText} ${contentText}`)) ||
-    `${story?.name || "Case"} från Bästa Kompisar.`;
-  const image =
-    story?.content?.image?.filename ||
-    story?.content?.preview_image?.filename ||
-    undefined;
   const title = `${story?.name || "Case"} - Bästa Kompisar kundcase`;
   const metadata = buildStoryblokSeoMetadata({
     content: story?.content,
     fallbackTitle: title,
-    fallbackDescription: truncate(description),
-    fallbackImage: image,
+    fallbackDescription: truncate(storyDescription(story), 150),
+    fallbackImage: storyImage(story),
     lang: params.lang,
     path: `/${params.lang}/cases/${params.slug}`,
   });
@@ -144,39 +171,39 @@ const page = async ({
       ? slugs[(currentIndex + 1) % slugs.length]
       : "";
 
+  const pageUrl = `${siteUrl}/${params.lang}/cases/${params.slug}`;
   const breadcrumbItems = [
     { label: "Start", href: `/${params.lang}` },
     { label: "Case", href: `/${params.lang}/cases` },
     { label: story.name },
   ];
-  const titleText = richTextToPlainText(story.content?.title);
-  const contentText = richTextToPlainText(story.content?.content);
-  const description =
-    story.content?.ingress ||
-    truncate(stripHtml(`${titleText} ${contentText}`), 220) ||
-    `${story.name} från Bästa Kompisar.`;
-  const image =
-    story.content?.image?.filename ||
-    story.content?.preview_image?.filename ||
-    `${siteUrl}/bk-black.png`;
-  const categories = Array.isArray(story.content?.Kategori)
-    ? story.content.Kategori
-    : story.content?.Kategori
-      ? [story.content.Kategori]
-      : [];
+  const description = storyDescription(story);
+  const image = storyImage(story);
+  const categories = storyCategories(story, params.lang);
+  const publishedDate = story.first_published_at || story.published_at;
+  const modifiedDate = story.published_at || story.first_published_at;
 
   const caseJsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
-    "@id": `${siteUrl}/${params.lang}/cases/${params.slug}#case`,
-    url: `${siteUrl}/${params.lang}/cases/${params.slug}`,
+    "@id": `${pageUrl}#case`,
+    url: pageUrl,
+    mainEntityOfPage: pageUrl,
     name: story.name,
     headline: story.name,
     description,
     image,
-    datePublished: story.first_published_at || story.published_at,
-    dateModified: story.published_at || story.first_published_at,
+    datePublished: publishedDate,
+    dateModified: modifiedDate,
     inLanguage: params.lang === "en" ? "en-US" : "sv-SE",
+    genre: categories,
+    keywords: categories.join(", "),
+    isPartOf: {
+      "@type": "CollectionPage",
+      "@id": `${siteUrl}/${params.lang}/cases#cases`,
+      name: "Case",
+      url: `${siteUrl}/${params.lang}/cases`,
+    },
     creator: {
       "@type": "Organization",
       "@id": `${siteUrl}/#organization`,
@@ -193,6 +220,7 @@ const page = async ({
       "@type": "Thing",
       name: category,
     })),
+    abstract: description,
   };
 
   return (
@@ -206,4 +234,3 @@ const page = async ({
 };
 
 export default page;
- 
