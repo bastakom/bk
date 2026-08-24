@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import { StoryblokStory, getStoryblokApi } from '@storyblok/react/rsc'
-import { buildStoryblokSeoMetadata } from '../../lib/seo'
+import { buildStoryblokSeoMetadata, siteName, siteUrl } from '../../lib/seo'
+import JsonLd from '../components/JsonLd'
 
 const storyblokVersion: 'published' | 'draft' =
   process.env.NEXT_PUBLIC_STORYBLOK_PREVIEW === 'true'
@@ -86,6 +87,29 @@ function fallbackH1(slug: string, locale: string) {
   return ''
 }
 
+function storyDescription(content: any) {
+  return (
+    content.description ||
+    content.intro ||
+    content.sub_title ||
+    truncate(
+      plainText(content.content) ||
+        plainText(content.single_content) ||
+        plainText(content.text_block_content)
+    ) ||
+    'Bästa Kompisar är en kreativ reklambyrå och filmproduktionsbyrå i Malmö.'
+  )
+}
+
+function storyImage(content: any) {
+  return (
+    content.image?.filename ||
+    content.hero_image?.filename ||
+    content.preview_image?.filename ||
+    undefined
+  )
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -100,27 +124,12 @@ export async function generateMetadata({
     const title = story?.name
       ? `${story.name} - Bästa Kompisar`
       : 'Bästa Kompisar'
-    const description =
-      content.description ||
-      content.intro ||
-      content.sub_title ||
-      truncate(
-        plainText(content.content) ||
-          plainText(content.single_content) ||
-          plainText(content.text_block_content)
-      ) ||
-      'Bästa Kompisar är en kreativ reklambyrå och filmproduktionsbyrå i Malmö.'
-    const image =
-      content.image?.filename ||
-      content.hero_image?.filename ||
-      content.preview_image?.filename ||
-      undefined
 
     return buildStoryblokSeoMetadata({
       content,
       fallbackTitle: title,
-      fallbackDescription: description,
-      fallbackImage: image,
+      fallbackDescription: storyDescription(content),
+      fallbackImage: storyImage(content),
       lang: params.lang,
       path: pathForParams(params),
     })
@@ -151,14 +160,42 @@ export default async function page({
       notFound()
     }
 
+    const story = data.data.story
+    const content = story.content || {}
+    const path = pathForParams(params)
+    const pageUrl = `${siteUrl}${path}`
+    const webPageJsonLd = {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: story.name ? `${story.name} - Bästa Kompisar` : siteName,
+      description: storyDescription(content),
+      image: storyImage(content),
+      inLanguage: params.lang === 'en' ? 'en-US' : 'sv-SE',
+      isPartOf: {
+        '@type': 'WebSite',
+        '@id': `${siteUrl}/#website`,
+        name: siteName,
+        url: siteUrl,
+      },
+      publisher: {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: siteName,
+        url: siteUrl,
+      },
+    }
+
     return (
       <div className="mt-10">
+        <JsonLd data={webPageJsonLd} />
         {hiddenH1 && (
           <h1 className="sr-only">
             {hiddenH1}
           </h1>
         )}
-        <StoryblokStory story={data.data.story} settings={settings} />
+        <StoryblokStory story={story} settings={settings} />
       </div>
     )
   } catch (error: any) {
