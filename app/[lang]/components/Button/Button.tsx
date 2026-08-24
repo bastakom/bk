@@ -17,8 +17,30 @@ interface Props {
   arrowDown?: boolean
 }
 
+function localizedHref(href: any, lang: string) {
+  if (!href || typeof href !== 'string') return href || `/${lang}`
+  if (
+    href.startsWith('#') ||
+    href.startsWith('http') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:')
+  ) {
+    return href
+  }
+
+  const normalized = href.startsWith('/') ? href : `/${href}`
+
+  if (normalized === `/${lang}` || normalized.startsWith(`/${lang}/`)) {
+    return normalized
+  }
+
+  return `/${lang}${normalized}`.replace(/\/$/, '')
+}
+
 const Button = ({ arrowDown, TextEN, TextSV, href, margin, size, text, align }: Props) => {
   const params = useParams()
+  const lang = typeof params.lang === 'string' ? params.lang : 'sv'
+
   return (
     <motion.div
       whileHover="hover"
@@ -27,7 +49,7 @@ const Button = ({ arrowDown, TextEN, TextSV, href, margin, size, text, align }: 
         } items-center ${margin}`}
     >
       <Link
-        href={`${href}`}
+        href={localizedHref(href, lang)}
         className="flex items-center gap-2"
         style={{ fontSize: `${size}px` }}
       >
