@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 const locales = ['sv', 'en']
 const primaryHost = 'bastakompisar.se'
 const orderHost = 'order.bastakompisar.se'
+const signatureHost = 'signatur.bastakompisar.se'
 
 function getLocale() {
   return 'sv'
@@ -46,6 +47,17 @@ export function middleware(request: any) {
     }
 
     if (pathname.startsWith('/order')) {
+      return
+    }
+  }
+
+  if (hostname === signatureHost) {
+    if (pathname === '/') {
+      url.pathname = '/signatur'
+      return NextResponse.rewrite(url)
+    }
+
+    if (pathname.startsWith('/signatur')) {
       return
     }
   }
