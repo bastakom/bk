@@ -110,6 +110,31 @@ function storyImage(content: any) {
   )
 }
 
+function pageSchemaType(slugName: string) {
+  if (slugName === 'kontakt') return 'ContactPage'
+
+  return 'WebPage'
+}
+
+function contactPageFields(slugName: string) {
+  if (slugName !== 'kontakt') return {}
+
+  return {
+    mainEntity: {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: siteName,
+      url: siteUrl,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        areaServed: 'SE',
+        availableLanguage: ['sv', 'en'],
+      },
+    },
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -166,7 +191,7 @@ export default async function page({
     const pageUrl = `${siteUrl}${path}`
     const webPageJsonLd = {
       '@context': 'https://schema.org',
-      '@type': 'WebPage',
+      '@type': pageSchemaType(slugName),
       '@id': `${pageUrl}#webpage`,
       url: pageUrl,
       name: story.name ? `${story.name} - Bästa Kompisar` : siteName,
@@ -185,6 +210,7 @@ export default async function page({
         name: siteName,
         url: siteUrl,
       },
+      ...contactPageFields(slugName),
     }
 
     return (
