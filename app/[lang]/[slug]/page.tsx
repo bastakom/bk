@@ -297,12 +297,17 @@ export default async function page({
       },
       ...contactPageFields(slugName),
     }
-    const extraJsonLd = [
-      faqPageJsonLd(slugName, content, pageUrl),
-      filmproduktionServiceJsonLd(slugName, content, pageUrl),
-    ].filter((item): item is Record<string, unknown> => item !== null)
-    const jsonLdData =
-      extraJsonLd.length > 0 ? [webPageJsonLd, ...extraJsonLd] : webPageJsonLd
+    const jsonLdData: Record<string, unknown>[] = [webPageJsonLd]
+    const faqJsonLd = faqPageJsonLd(slugName, content, pageUrl)
+    const filmServiceJsonLd = filmproduktionServiceJsonLd(slugName, content, pageUrl)
+
+    if (faqJsonLd) {
+      jsonLdData.push(faqJsonLd)
+    }
+
+    if (filmServiceJsonLd) {
+      jsonLdData.push(filmServiceJsonLd)
+    }
 
     return (
       <div className="mt-10">
