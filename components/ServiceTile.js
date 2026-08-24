@@ -1,5 +1,25 @@
 import { storyblokEditable } from '@storyblok/react/rsc'
 
+function internalHref(cachedUrl) {
+  if (!cachedUrl) return '#'
+  if (
+    cachedUrl.startsWith('#') ||
+    cachedUrl.startsWith('http') ||
+    cachedUrl.startsWith('mailto:') ||
+    cachedUrl.startsWith('tel:')
+  ) {
+    return cachedUrl
+  }
+
+  const normalized = cachedUrl.startsWith('/') ? cachedUrl : `/${cachedUrl}`
+
+  if (normalized === '/sv' || normalized.startsWith('/sv/')) {
+    return normalized
+  }
+
+  return `/sv${normalized}`.replace(/\/$/, '')
+}
+
 const ServiceTile = ({ blok }) => {
   const backgroundStyle = blok?.background_image?.filename
     ? {
@@ -13,7 +33,7 @@ const ServiceTile = ({ blok }) => {
 
   return (
     <a
-      href={blok?.link?.cached_url || '#'}
+      href={internalHref(blok?.link?.cached_url)}
       className="relative min-h-[420px] p-10 flex flex-col justify-between overflow-hidden group border border-white/50"
       style={backgroundStyle}
       {...storyblokEditable(blok)}
@@ -27,7 +47,7 @@ const ServiceTile = ({ blok }) => {
           {blok?.icon?.filename ? (
             <img
               src={blok.icon.filename}
-              alt=""
+              alt={blok.icon.alt || blok.icon.name || ''}
               className="w-16 h-16 object-contain"
             />
           ) : (
