@@ -18,56 +18,10 @@ function imageAlt(storyName: string, context: string) {
   return `${storyName} - ${context}`
 }
 
-function richTextToPlainText(value: any): string {
-  if (!value) return ''
-  if (typeof value === 'string') return value
-  if (Array.isArray(value)) return value.map(richTextToPlainText).join(' ')
-  if (typeof value !== 'object') return ''
-
-  const ownText = typeof value.text === 'string' ? value.text : ''
-  const childText = Array.isArray(value.content)
-    ? value.content.map(richTextToPlainText).join(' ')
-    : ''
-
-  return `${ownText} ${childText}`.trim()
-}
-
-function truncateText(value: string, maxLength = 230) {
-  const cleanValue = value.replace(/\s+/g, ' ').trim()
-  if (cleanValue.length <= maxLength) return cleanValue
-
-  return `${cleanValue.slice(0, maxLength).replace(/\s+\S*$/, '')}...`
-}
-
-function caseCategories(story: any, lang: string) {
-  if (lang === 'en') {
-    return Array.isArray(story?.content?.categoriesen)
-      ? story.content.categoriesen.filter(Boolean)
-      : []
-  }
-
-  if (Array.isArray(story?.content?.Kategori)) {
-    return story.content.Kategori.filter(Boolean)
-  }
-
-  return story?.content?.Kategori ? [story.content.Kategori] : []
-}
-
-function caseSummary(story: any) {
-  return truncateText(
-    story?.content?.ingress ||
-      story?.content?.meta_description ||
-      richTextToPlainText(story?.content?.content)
-  )
-}
-
 const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
   const [loading, isLoaded] = useState(false)
   const router = useRouter()
   const locale = useParams()
-  const lang = typeof locale.lang === 'string' ? locale.lang : 'sv'
-  const categories = caseCategories(story, lang)
-  const summary = caseSummary(story)
 
   const handleNextClick = () => {
     router.push(`${nextCaseSlug}`)
@@ -113,37 +67,9 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
           )}
           <div className="flex justify-start w-full gap-2 my-5 ml-0 lg:ml-[3.75rem]">
             <span className="font-light">
-              {lang === 'en' ? 'Client: ' : 'Kund: '}
+              {locale.lang === 'en' ? 'Client: ' : 'Kund: '}
             </span>
             <span className="font-bold">{story.name}</span>
-          </div>
-          <div className="w-full container ml-0 lg:ml-[60px] mb-10">
-            <dl className="grid grid-cols-1 lg:grid-cols-3 gap-5 border-y border-[#25364F] py-6 font-primary">
-              <div>
-                <dt className="text-[13px] uppercase text-[#25364F]/70">
-                  {lang === 'en' ? 'Client' : 'Kund'}
-                </dt>
-                <dd className="mt-2 text-[20px]">{story.name}</dd>
-              </div>
-              {categories.length > 0 && (
-                <div>
-                  <dt className="text-[13px] uppercase text-[#25364F]/70">
-                    {lang === 'en' ? 'Category' : 'Kategori'}
-                  </dt>
-                  <dd className="mt-2 text-[20px]">{categories.join(' / ')}</dd>
-                </div>
-              )}
-              {summary && (
-                <div className={categories.length > 0 ? '' : 'lg:col-span-2'}>
-                  <dt className="text-[13px] uppercase text-[#25364F]/70">
-                    {lang === 'en' ? 'Summary' : 'Sammanfattning'}
-                  </dt>
-                  <dd className="mt-2 text-[16px] leading-[24px] font-light">
-                    {summary}
-                  </dd>
-                </div>
-              )}
-            </dl>
           </div>
           <div className="flex container flex-col lg:flex-row mb-10 ml-0 lg:ml-[60px]">
             <div className="w-full lg:w-1/2 flex-col flex gap-5 container">
@@ -299,7 +225,7 @@ const CaseSlugPage = ({ story, nextCaseSlug }: Props) => {
           className="m-auto flex justify-end items-center gap-2 container text-[#FF6062] mb-20 mt-20"
           onClick={handleNextClick}
         >
-          {lang === 'en' ? 'Next' : 'Nästa'}
+          {locale.lang === 'en' ? 'Next' : 'Nästa'}
           <motion.span
             variants={{
               hover: { x: 5 },
