@@ -1,6 +1,8 @@
+type JsonLdData = Record<string, unknown> | Record<string, unknown>[]
+
 type JsonLdProps = {
-  data: Record<string, unknown>;
-};
+  data: JsonLdData
+}
 
 export default function JsonLd({ data }: JsonLdProps) {
   return (
@@ -10,5 +12,5 @@ export default function JsonLd({ data }: JsonLdProps) {
         __html: JSON.stringify(data).replace(/</g, "\\u003c"),
       }}
     />
-  );
+  )
 }
