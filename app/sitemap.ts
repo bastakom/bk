@@ -85,6 +85,7 @@ function storyPath(story: any) {
   if (fullSlug === 'sv') return 'sv'
   if (fullSlug.startsWith('sv/')) return fullSlug
   if (fullSlug === 'en' || fullSlug.startsWith('en/')) return ''
+  if (fullSlug.startsWith('case/')) return `sv/${fullSlug}`
   if (fullSlug.startsWith('cases/')) return `sv/${fullSlug}`
   if (fullSlug.startsWith('nyheter/')) return `sv/${fullSlug}`
   if (fullSlug.startsWith('marknadsfika/')) return `sv/${fullSlug}`
@@ -120,6 +121,7 @@ function routeMetadata(path: string) {
 
   if (
     path.startsWith('sv/vara-tjanster/') ||
+    path.startsWith('sv/case/') ||
     path.startsWith('sv/cases/') ||
     path.startsWith('sv/filmproduction/')
   ) {
