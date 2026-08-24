@@ -38,7 +38,7 @@ const page = async ({ params }: { params: { lang: string } }) => {
 
           <Staplar props={res} config={config} />
           <Link
-            href={'/cases'}
+            href={`/${params.lang}/cases`}
             className="text-center text-[#FF6062] text-xl font-normal lg:mx-0 flex gap-2 justify-center items-center mt-14"
             style={{ fontSize: '18px' }}
           >
@@ -48,14 +48,17 @@ const page = async ({ params }: { params: { lang: string } }) => {
             </span>
           </Link>
         </div>
-        <div className="bg-[#F7DAD2] mt-10 lg:px-20 full-width-element  no-padding-bottom">
+        <div className="bg-[#F7DAD2] mt-10 lg:px-20 full-width-element no-padding-bottom">
           <TilesIcons
             tiles={config.tile}
             header={config.tile_header}
             content={config.tile_content}
           />
           <div className="w-full justify-center flex -mt-5 pb-16">
-            <Button text="Nyfiken? Boka ett möte med oss!" href={'/kontakt'} />
+            <Button
+              text="Nyfiken? Boka ett möte med oss!"
+              href={`/${params.lang}/kontakt`}
+            />
           </div>
         </div>
       </div>
@@ -89,4 +92,3 @@ const fetchConfig = async (locale: string) => {
   })
   return config.data.story.content
 }
-
