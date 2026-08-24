@@ -1,8 +1,27 @@
-import Button from '@/app/[lang]/components/Button/Button'
 import { storyblokEditable } from '@storyblok/react/rsc'
 import Link from 'next/link'
 import { IoMdArrowForward } from 'react-icons/io'
 import { render } from 'storyblok-rich-text-react-renderer'
+
+function internalHref(cachedUrl) {
+  if (!cachedUrl) return '#'
+  if (
+    cachedUrl.startsWith('#') ||
+    cachedUrl.startsWith('http') ||
+    cachedUrl.startsWith('mailto:') ||
+    cachedUrl.startsWith('tel:')
+  ) {
+    return cachedUrl
+  }
+
+  const normalized = cachedUrl.startsWith('/') ? cachedUrl : `/${cachedUrl}`
+
+  if (normalized === '/sv' || normalized.startsWith('/sv/')) {
+    return normalized
+  }
+
+  return `/sv${normalized}`.replace(/\/$/, '')
+}
 
 const CTA = ({ blok }) => {
   return (
@@ -38,7 +57,7 @@ const CTA = ({ blok }) => {
           <div className="flex mt-0 lg:mt-10">
             {blok.buttons.map((item, index) => (
               <Link
-                href={item.link.cached_url}
+                href={internalHref(item.link.cached_url)}
                 key={item._uid}
                 className="link-color font-normal"
               >
@@ -56,7 +75,7 @@ const CTA = ({ blok }) => {
           <div className="flex">
             {blok.buttons.map((item, index) => (
               <Link
-                href={item.link.cached_url}
+                href={internalHref(item.link.cached_url)}
                 key={item._uid}
                 className="link-color font-normal"
               >
