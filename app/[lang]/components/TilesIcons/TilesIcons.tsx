@@ -2,13 +2,16 @@
 
 import React, { useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { IoMdArrowForward } from 'react-icons/io'
 import { render } from 'storyblok-rich-text-react-renderer'
 
 interface Props {
   tiles: any
   header: string
   content: string
+}
+
+function processImageAlt(item: any) {
+  return item?.icon?.alt || item?.icon?.name || `${item.title} - processbild`
 }
 
 const TilesIcons = ({ tiles, header, content }: Props) => {
@@ -66,7 +69,8 @@ const TilesIcons = ({ tiles, header, content }: Props) => {
                 src={item.icon.filename}
                 width={488}
                 height={365}
-                alt={item.icon.filename}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                alt={processImageAlt(item)}
                 className="mix-blend-darken"
               />
             </div>
