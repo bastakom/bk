@@ -24,7 +24,7 @@ const fields = [
     name: 'phone',
     label: 'Mobilnummer',
     type: 'tel',
-    help: 'Formateras automatiskt i signaturen.',
+    help: 'Visas exakt som du skriver det. Länken rensas automatiskt för Outlook.',
   },
 ] as const
 
