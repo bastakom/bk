@@ -97,16 +97,17 @@ function styleText(values: Record<string, string | number>) {
     .join(';')
 }
 
-function buildSignatureHtml(data: SignatureData, logoUrl: string) {
+function buildSignatureHtml(data: SignatureData, lightLogoUrl: string, darkLogoUrl: string) {
   const name = escapeHtml(data.name.trim())
   const title = escapeHtml(normalizeTitle(data.title))
   const phone = escapeHtml(formatPhoneNumber(data.phone))
   const phoneHref = escapeHtml(getPhoneHref(data.phone))
-  const logoSrc = escapeHtml(logoUrl)
+  const lightLogoSrc = escapeHtml(lightLogoUrl)
+  const darkLogoSrc = escapeHtml(darkLogoUrl)
   const mainColor = '#242124'
   const mutedColor = '#5d5a5d'
   const tableStyle = styleText({
-    width: '467px',
+    width: '409px',
     'border-collapse': 'collapse',
     'mso-table-lspace': '0pt',
     'mso-table-rspace': '0pt',
@@ -114,52 +115,61 @@ function buildSignatureHtml(data: SignatureData, logoUrl: string) {
     color: mainColor,
   })
   const greetingStyle = styleText({
-    padding: '0 0 20px 0',
+    padding: '0 0 18px 0',
     'font-family': FONT_STACK,
-    'font-size': '16px',
-    'line-height': '20px',
+    'font-size': '14px',
+    'line-height': '18px',
     'font-weight': 400,
     color: mainColor,
   })
   const nameStyle = styleText({
-    padding: '0 0 19px 0',
+    padding: '0 0 17px 0',
     'font-family': FONT_STACK,
-    'font-size': '31px',
-    'line-height': '35px',
+    'font-size': '27px',
+    'line-height': '31px',
     'font-weight': 700,
     color: mainColor,
   })
   const detailStyle = styleText({
-    'font-size': '19px',
-    'line-height': '25px',
+    'font-size': '17px',
+    'line-height': '22px',
     'font-weight': 400,
     color: mainColor,
   })
   const footerStyle = styleText({
-    padding: '21px 0 0 0',
+    padding: '18px 0 0 0',
     'font-family': FONT_STACK,
-    'font-size': '16px',
-    'line-height': '21px',
+    'font-size': '14px',
+    'line-height': '18px',
     'font-weight': 400,
     color: mutedColor,
   })
   const footerLinkStyle = styleText({
     color: mutedColor,
     'text-decoration': 'none',
-    'font-size': '16px',
-    'line-height': '21px',
+    'font-size': '14px',
+    'line-height': '18px',
     'font-weight': 400,
   })
 
   return [
+    '<style>',
+    '@media (prefers-color-scheme: dark) {',
+    '.bk-light-logo { display: none !important; }',
+    '.bk-dark-logo { display: block !important; width: 74px !important; height: auto !important; max-height: none !important; overflow: visible !important; }',
+    '}',
+    '[data-ogsc] .bk-light-logo { display: none !important; }',
+    '[data-ogsc] .bk-dark-logo { display: block !important; width: 74px !important; height: auto !important; max-height: none !important; overflow: visible !important; }',
+    '</style>',
     '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="' + tableStyle + '">',
     '<tr><td style="' + greetingStyle + '">Bästa hälsningar,</td></tr>',
     '<tr><td style="' + nameStyle + '">' + name + '</td></tr>',
     '<tr><td style="padding:0;">',
     '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">',
     '<tr>',
-    '<td valign="middle" style="width:96px;padding:0 27px 0 0;">',
-    '<img src="' + logoSrc + '" width="85" alt="BK" style="display:block;width:85px;height:auto;border:0;outline:none;text-decoration:none;">',
+    '<td valign="middle" style="width:84px;padding:0 24px 0 0;">',
+    '<img class="bk-light-logo" src="' + lightLogoSrc + '" width="74" alt="BK" style="display:block;width:74px;height:auto;border:0;outline:none;text-decoration:none;">',
+    '<img class="bk-dark-logo" src="' + darkLogoSrc + '" width="74" alt="BK" style="display:none;width:74px;height:auto;border:0;outline:none;text-decoration:none;">',
     '</td>',
     '<td valign="middle" style="padding:0;font-family:' + FONT_STACK + ';color:' + mainColor + ';">',
     '<div style="' + detailStyle + ';letter-spacing:1px;text-transform:uppercase;">' + title + '</div>',
@@ -168,8 +178,8 @@ function buildSignatureHtml(data: SignatureData, logoUrl: string) {
     '</tr>',
     '</table>',
     '</td></tr>',
-    '<tr><td style="padding:23px 0 0 0;">',
-    '<div style="width:144px;height:1px;background:' + mainColor + ';line-height:1px;font-size:1px;">&nbsp;</div>',
+    '<tr><td style="padding:20px 0 0 0;">',
+    '<div style="width:126px;height:1px;background:' + mainColor + ';line-height:1px;font-size:1px;">&nbsp;</div>',
     '</td></tr>',
     '<tr><td style="' + footerStyle + '">',
     '<div>' + ADDRESS + '</div>',
@@ -197,10 +207,11 @@ export default function SignatureGenerator() {
   const [message, setMessage] = useState('')
   const previewRef = useRef<HTMLDivElement>(null)
 
-  const logoUrl = typeof window === 'undefined' ? '' : window.location.origin + '/bk-black.png'
+  const lightLogoUrl = typeof window === 'undefined' ? '' : window.location.origin + '/bk-black.png'
+  const darkLogoUrl = typeof window === 'undefined' ? '' : window.location.origin + '/bk-white.png'
   const signatureHtml = useMemo(
-    () => buildSignatureHtml(signatureData, logoUrl),
-    [signatureData, logoUrl]
+    () => buildSignatureHtml(signatureData, lightLogoUrl, darkLogoUrl),
+    [signatureData, lightLogoUrl, darkLogoUrl]
   )
   const plainText = useMemo(() => buildPlainText(signatureData), [signatureData])
 
@@ -339,7 +350,7 @@ export default function SignatureGenerator() {
               <div className="overflow-x-auto border-[1.5px] border-[#dededa] bg-white p-5">
                 <div
                   ref={previewRef}
-                  className="inline-block min-w-[467px] bg-white p-0"
+                  className="inline-block min-w-[409px] bg-white p-0"
                   dangerouslySetInnerHTML={{ __html: signatureHtml }}
                 />
               </div>
