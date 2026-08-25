@@ -106,7 +106,7 @@ function buildSignatureHtml(data: SignatureData, logoUrl: string) {
   const mainColor = '#242124'
   const mutedColor = '#5d5a5d'
   const tableStyle = styleText({
-    width: '350px',
+    width: '467px',
     'border-collapse': 'collapse',
     'mso-table-lspace': '0pt',
     'mso-table-rspace': '0pt',
@@ -114,40 +114,40 @@ function buildSignatureHtml(data: SignatureData, logoUrl: string) {
     color: mainColor,
   })
   const greetingStyle = styleText({
-    padding: '0 0 15px 0',
+    padding: '0 0 20px 0',
     'font-family': FONT_STACK,
-    'font-size': '12px',
-    'line-height': '15px',
+    'font-size': '16px',
+    'line-height': '20px',
     'font-weight': 400,
     color: mainColor,
   })
   const nameStyle = styleText({
-    padding: '0 0 14px 0',
+    padding: '0 0 19px 0',
     'font-family': FONT_STACK,
-    'font-size': '23px',
-    'line-height': '26px',
+    'font-size': '31px',
+    'line-height': '35px',
     'font-weight': 700,
     color: mainColor,
   })
   const detailStyle = styleText({
-    'font-size': '14px',
-    'line-height': '19px',
+    'font-size': '19px',
+    'line-height': '25px',
     'font-weight': 400,
     color: mainColor,
   })
   const footerStyle = styleText({
-    padding: '16px 0 0 0',
+    padding: '21px 0 0 0',
     'font-family': FONT_STACK,
-    'font-size': '12px',
-    'line-height': '16px',
+    'font-size': '16px',
+    'line-height': '21px',
     'font-weight': 400,
     color: mutedColor,
   })
   const footerLinkStyle = styleText({
     color: mutedColor,
     'text-decoration': 'none',
-    'font-size': '12px',
-    'line-height': '16px',
+    'font-size': '16px',
+    'line-height': '21px',
     'font-weight': 400,
   })
 
@@ -158,8 +158,8 @@ function buildSignatureHtml(data: SignatureData, logoUrl: string) {
     '<tr><td style="padding:0;">',
     '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">',
     '<tr>',
-    '<td valign="middle" style="width:72px;padding:0 20px 0 0;">',
-    '<img src="' + logoSrc + '" width="64" alt="BK" style="display:block;width:64px;height:auto;border:0;outline:none;text-decoration:none;">',
+    '<td valign="middle" style="width:96px;padding:0 27px 0 0;">',
+    '<img src="' + logoSrc + '" width="85" alt="BK" style="display:block;width:85px;height:auto;border:0;outline:none;text-decoration:none;">',
     '</td>',
     '<td valign="middle" style="padding:0;font-family:' + FONT_STACK + ';color:' + mainColor + ';">',
     '<div style="' + detailStyle + ';letter-spacing:1px;text-transform:uppercase;">' + title + '</div>',
@@ -168,8 +168,8 @@ function buildSignatureHtml(data: SignatureData, logoUrl: string) {
     '</tr>',
     '</table>',
     '</td></tr>',
-    '<tr><td style="padding:17px 0 0 0;">',
-    '<div style="width:108px;height:1px;background:' + mainColor + ';line-height:1px;font-size:1px;">&nbsp;</div>',
+    '<tr><td style="padding:23px 0 0 0;">',
+    '<div style="width:144px;height:1px;background:' + mainColor + ';line-height:1px;font-size:1px;">&nbsp;</div>',
     '</td></tr>',
     '<tr><td style="' + footerStyle + '">',
     '<div>' + ADDRESS + '</div>',
@@ -339,7 +339,7 @@ export default function SignatureGenerator() {
               <div className="overflow-x-auto border-[1.5px] border-[#dededa] bg-white p-5">
                 <div
                   ref={previewRef}
-                  className="inline-block min-w-[350px] bg-white p-0"
+                  className="inline-block min-w-[467px] bg-white p-0"
                   dangerouslySetInnerHTML={{ __html: signatureHtml }}
                 />
               </div>
