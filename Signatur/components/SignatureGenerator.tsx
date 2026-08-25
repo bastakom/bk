@@ -167,7 +167,7 @@ function buildSignatureHtml(data: SignatureData, lightLogoUrl: string, darkLogoU
     '<tr><td style="padding:0;">',
     '<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">',
     '<tr>',
-    '<td valign="middle" style="width:84px;padding:0 24px 0 0;">',
+    '<td valign="middle" style="width:84px;padding:0 24px 0 2px;">',
     '<img class="bk-light-logo" src="' + lightLogoSrc + '" width="74" alt="BK" style="display:block;width:74px;height:auto;border:0;outline:none;text-decoration:none;">',
     '<img class="bk-dark-logo" src="' + darkLogoSrc + '" width="74" alt="BK" style="display:none;width:74px;height:auto;border:0;outline:none;text-decoration:none;">',
     '</td>',
