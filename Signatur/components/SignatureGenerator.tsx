@@ -97,14 +97,14 @@ function styleText(values: Record<string, string | number>) {
     .join(';')
 }
 
-function buildSignatureHtml(data: SignatureData, logoUrl: string, darkMode: boolean) {
+function buildSignatureHtml(data: SignatureData, logoUrl: string) {
   const name = escapeHtml(data.name.trim())
   const title = escapeHtml(normalizeTitle(data.title))
   const phone = escapeHtml(formatPhoneNumber(data.phone))
   const phoneHref = escapeHtml(getPhoneHref(data.phone))
   const logoSrc = escapeHtml(logoUrl)
-  const mainColor = darkMode ? '#ffffff' : '#242124'
-  const mutedColor = darkMode ? '#d8d8d8' : '#5d5a5d'
+  const mainColor = '#242124'
+  const mutedColor = '#5d5a5d'
   const tableStyle = styleText({
     width: '350px',
     'border-collapse': 'collapse',
@@ -194,15 +194,13 @@ function buildPlainText(data: SignatureData) {
 export default function SignatureGenerator() {
   const [formData, setFormData] = useState<SignatureData>(defaultData)
   const [signatureData, setSignatureData] = useState<SignatureData>(defaultData)
-  const [darkMode, setDarkMode] = useState(false)
   const [message, setMessage] = useState('')
   const previewRef = useRef<HTMLDivElement>(null)
 
-  const logoFile = darkMode ? 'bk-white.png' : 'bk-black.png'
-  const logoUrl = typeof window === 'undefined' ? '' : window.location.origin + '/' + logoFile
+  const logoUrl = typeof window === 'undefined' ? '' : window.location.origin + '/bk-black.png'
   const signatureHtml = useMemo(
-    () => buildSignatureHtml(signatureData, logoUrl, darkMode),
-    [signatureData, logoUrl, darkMode]
+    () => buildSignatureHtml(signatureData, logoUrl),
+    [signatureData, logoUrl]
   )
   const plainText = useMemo(() => buildPlainText(signatureData), [signatureData])
 
@@ -341,7 +339,7 @@ export default function SignatureGenerator() {
               <div className="overflow-x-auto border-[1.5px] border-[#dededa] bg-white p-5">
                 <div
                   ref={previewRef}
-                  className={darkMode ? 'inline-block min-w-[350px] bg-[#242124] p-0' : 'inline-block min-w-[350px] bg-white p-0'}
+                  className="inline-block min-w-[350px] bg-white p-0"
                   dangerouslySetInnerHTML={{ __html: signatureHtml }}
                 />
               </div>
@@ -356,20 +354,6 @@ export default function SignatureGenerator() {
               </p>
             </div>
             <div className="space-y-3 p-5">
-              <label className="flex items-start gap-3 border border-[#dededa] bg-[#f8f8f6] p-3 text-sm font-semibold">
-                <input
-                  className="mt-1"
-                  type="checkbox"
-                  checked={darkMode}
-                  onChange={(event) => setDarkMode(event.target.checked)}
-                />
-                <span>
-                  Mörk version
-                  <span className="mt-1 block text-[12px] font-normal leading-snug text-[#70706c]">
-                    Använder vit logga och ljus text.
-                  </span>
-                </span>
-              </label>
               <button
                 className="w-full bg-black px-5 py-3 font-semibold text-white transition hover:bg-[#2a2a28]"
                 type="submit"
