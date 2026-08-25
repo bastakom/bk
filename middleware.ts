@@ -24,14 +24,14 @@ function shouldSkipPath(pathname: string) {
 }
 
 function hasLocale(pathname: string) {
-  return locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  )
+  return locales.some((locale) => {
+    return pathname.startsWith('/' + locale + '/') || pathname === '/' + locale
+  })
 }
 
 export function middleware(request: any) {
   const url = request.nextUrl.clone()
-  const { pathname } = url
+  const pathname = url.pathname
   const hostname = request.headers.get('host')?.split(':')[0]
 
   if (shouldSkipPath(pathname)) {
@@ -69,7 +69,7 @@ export function middleware(request: any) {
     return
   }
 
-  if (hostname === `www.${primaryHost}`) {
+  if (hostname === 'www.' + primaryHost) {
     url.hostname = primaryHost
     url.protocol = 'https'
     return NextResponse.redirect(url, 308)
@@ -77,7 +77,7 @@ export function middleware(request: any) {
 
   if (!hasLocale(pathname)) {
     const locale = getLocale()
-    url.pathname = pathname === '/' ? `/${locale}` : `/${locale}${pathname}`
+    url.pathname = pathname === '/' ? '/' + locale : '/' + locale + pathname
     return NextResponse.redirect(url, 308)
   }
 }
