@@ -37,6 +37,10 @@ const CaseOverviewCard = ({ item, ratio }: CaseOverviewCardProps) => {
   const href = item._resolvedHref;
   const title = item.title || item._resolvedTitle;
   const tags = Array.isArray(item._resolvedTags) ? item._resolvedTags : [];
+  const hoverScaleClass =
+    ratio === "1 / 1"
+      ? "group-hover:scale-[1.035]"
+      : "group-hover:scale-[1.015]";
 
   if (!desktopUrl || !href) return null;
 
@@ -49,7 +53,7 @@ const CaseOverviewCard = ({ item, ratio }: CaseOverviewCardProps) => {
           muted
           playsInline
           preload="metadata"
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.015]"
+          className={`h-full w-full object-cover transition-transform duration-700 ease-out ${hoverScaleClass}`}
           aria-label={item.alt_text || title || undefined}
         >
           <source src={url} />
@@ -65,7 +69,7 @@ const CaseOverviewCard = ({ item, ratio }: CaseOverviewCardProps) => {
         alt={item.alt_text || asset?.alt || title || ""}
         fill
         sizes="(max-width: 1023px) 100vw, 65vw"
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.015]"
+        className={`object-cover transition-transform duration-700 ease-out ${hoverScaleClass}`}
       />
     );
   };
