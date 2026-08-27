@@ -66,7 +66,7 @@ const CaseOverview = ({ blok, items, lang }: CaseOverviewProps) => {
             )}
 
             {blok.introduction && (
-              <div className="max-w-[65ch] self-end text-lg font-light-sofia leading-snug text-black lg:text-2xl">
+              <div className="w-full max-w-[75ch] self-end text-lg font-light-sofia leading-snug text-black lg:text-2xl">
                 {render(blok.introduction)}
               </div>
             )}
