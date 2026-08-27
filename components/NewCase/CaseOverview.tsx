@@ -60,7 +60,7 @@ const CaseOverview = ({ blok, items, lang }: CaseOverviewProps) => {
         {(blok.title || blok.introduction) && (
           <header className="mb-12 grid grid-cols-1 gap-5 lg:mb-20 lg:grid-cols-[9fr_16fr]">
             {blok.title && (
-              <h1 className="max-w-[16ch] text-[clamp(3rem,7vw,7rem)] font-normal leading-[0.95]">
+              <h1 className="max-w-[16ch] text-[65px] font-normal leading-[70px] lg:text-[100px] lg:leading-[100px]">
                 {blok.title}
               </h1>
             )}
