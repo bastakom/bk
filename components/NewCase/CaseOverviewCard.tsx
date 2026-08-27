@@ -92,24 +92,29 @@ const CaseOverviewCard = ({ item, ratio }: CaseOverviewCardProps) => {
         </div>
 
         {(item.client || title || tags.length > 0) && (
-          <div className="mt-3 flex items-start justify-between gap-5 text-[#25364F]">
-            <div className="min-w-0">
-              {item.client && (
-                <p className="text-sm font-normal uppercase tracking-[0.06em]">
-                  {item.client}
-                </p>
-              )}
-              {title && (
-                <h2 className="mt-1 text-2xl font-normal leading-tight lg:text-3xl">
-                  {title}
-                </h2>
-              )}
-            </div>
+          <div className="mt-3 text-[#25364F]">
+            {(item.client || tags.length > 0) && (
+              <div className="flex min-w-0 items-baseline justify-between gap-4">
+                {item.client ? (
+                  <p className="min-w-0 truncate text-sm font-normal uppercase tracking-[0.06em]">
+                    {item.client}
+                  </p>
+                ) : (
+                  <span />
+                )}
 
-            {tags.length > 0 && (
-              <p className="max-w-[45%] text-right text-sm font-light-sofia leading-snug text-[#545454] lg:text-base">
-                {tags.join(" · ")}
-              </p>
+                {tags.length > 0 && (
+                  <p className="shrink-0 whitespace-nowrap text-right text-sm font-light-sofia leading-none text-[#545454]">
+                    {tags.join(" · ")}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {title && (
+              <h2 className="mt-1 w-full text-2xl font-normal leading-tight lg:text-3xl">
+                {title}
+              </h2>
             )}
           </div>
         )}
