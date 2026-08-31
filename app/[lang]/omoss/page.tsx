@@ -228,7 +228,7 @@ const Page = async ({ params }: { params: { lang: string } }) => {
         >
           {res.map((member: any) => (
             <div key={member.id} className="relative group">
-              <div className="relative  max-h-[520px]">
+              <div className="relative max-h-[520px]">
                 {member?.content?.content === "" ? null : (
                   <div
                     className="absolute top-0 h-full text-white w-full p-5 flex items-center bg-[#25364F] opacity-0 group-hover:opacity-90
@@ -238,7 +238,7 @@ const Page = async ({ params }: { params: { lang: string } }) => {
                   </div>
                 )}
                 <Image
-                  className="object-cover max-h-[520px] xl:max-h-[520px]"
+                  className="w-full object-cover max-h-[520px] xl:max-h-[520px]"
                   style={{ objectPosition: "50% 50%" }}
                   src={member.content.image.filename}
                   width={800}
