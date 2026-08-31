@@ -49,10 +49,10 @@ const Navigation = ({ props, locale }: Props) => {
   }
 
   return (
-    <div className="flex py-2 items-center justify-between fixed z-30 w-full px-5 lg:px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
+    <div className="flex py-2 items-center justify-center fixed z-30 w-full px-5 lg:px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
       <Link
         href={`/${currentLocale}`}
-        className="flex gap-5 w-full lg:w-1/3 items-center"
+        className="absolute left-5 lg:left-10 flex gap-5 items-center"
         onClick={() => setIsOpen(false)}
       >
         <Image
@@ -70,7 +70,7 @@ const Navigation = ({ props, locale }: Props) => {
       >
         <span />
       </div>
-      <nav className="hidden xl:flex gap-5 w-2/3 justify-start">
+      <nav className="hidden xl:flex gap-5 justify-center">
         {props.story.content.header_menu.map((item: any) => {
           const link = localizedHref(item.link.cached_url, currentLocale)
           return (
