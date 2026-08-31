@@ -49,7 +49,7 @@ const Navigation = ({ props, locale }: Props) => {
   }
 
   return (
-    <div className="flex py-2 items-center justify-center fixed z-30 w-full px-5 lg:px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
+    <div className="flex min-h-[82px] py-2 items-center justify-center fixed z-30 w-full px-5 lg:px-10 top-0 left-0 bg-[#fff] dark:bg-[#121212]">
       <Link
         href={`/${currentLocale}`}
         className="absolute left-5 lg:left-10 flex gap-5 items-center"
