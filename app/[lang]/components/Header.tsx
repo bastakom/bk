@@ -14,10 +14,16 @@ export const fetchConfig = async (locale: string) => {
 
 const Header = async (locale: any) => {
   const { config } = await fetchConfig(locale.locale)
+
   return (
-    <div className="hidden lg:block">
-      <Navigation props={config.data} locale={locale} />
-    </div>
+    <>
+      <div className="block xl:hidden">
+        <MobileNavigation props={config.data} locale={locale} />
+      </div>
+      <div className="hidden xl:block">
+        <Navigation props={config.data} locale={locale} />
+      </div>
+    </>
   )
 }
 
