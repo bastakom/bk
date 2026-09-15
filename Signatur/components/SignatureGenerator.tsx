@@ -5,7 +5,7 @@ import { FormEvent, useMemo, useRef, useState } from 'react'
 const ADDRESS = 'Södra Tullgatan 3, 211 40 Malmö'
 const SWITCHBOARD = '040 127 327'
 const WEBSITE = 'bastakompisar.se'
-const FONT_STACK = "'Sofia Pro', Arial, Helvetica, sans-serif"
+const FONT_STACK = "Helvetica, sans-serif"
 
 type SignatureData = {
   name: string
