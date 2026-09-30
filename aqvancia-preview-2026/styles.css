@@ -1,0 +1,483 @@
+/* =========================================================
+   AQVANCIA – stilmall
+   Ändra färger, typsnitt och avstånd här i :root.
+   ========================================================= */
+
+/* Nunito Sans – lokal variabel font (alla vikter 200–1000) */
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("assets/fonts/NunitoSans-Variable.ttf") format("truetype");
+  font-weight: 200 1000;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("assets/fonts/NunitoSans-Italic-Variable.ttf") format("truetype");
+  font-weight: 200 1000;
+  font-stretch: 75% 125%;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Färger */
+  --color-bg:          #faf8f5;   /* ljus sidbakgrund */
+  --color-text:        #10222d;   /* mörk brödtext */
+  --color-teal:        #003846;   /* mörk petrol (footer, rubrik) */
+  --color-accent:      #de3e1b;   /* siffror 01/02/03 */
+  --color-plus:        #fb2500;   /* plustecken */
+  --color-muted-light: #e2ecef;   /* ljus text på mörk bakgrund */
+  --color-highlight:   #ecfe98;   /* chartreuse – länkar i footern och på korten */
+  --color-border:      #1a3644;   /* linje i footern */
+  --color-white:       #ffffff;
+  --gradient-services: linear-gradient(156deg, #c5e0dc 8.5%, #003846 96.5%);
+
+  /* Liquid glass – standard (knappar) */
+  --glass-tint:      rgba(255, 255, 255, 0.14);  /* grundton i glaset */
+  --glass-blur:      24px;                       /* hur suddig bakgrunden blir */
+  --glass-saturate:  90%;                        /* färgmättnad genom glaset (<100% = mattare) */
+  --glass-rim:       rgba(255, 255, 255, 0.4);   /* ljus kant (reflex) */
+  --glass-shine:     rgba(255, 255, 255, 0.08);  /* glans högst upp */
+  --glass-shadow:    0 6px 24px rgba(0, 20, 30, 0.12);
+
+  /* Liquid glass – företagskort (mattare, frostat) */
+  --card-glass-tint:     rgba(255, 255, 255, 0.2);
+  --card-glass-blur:     40px;
+  --card-glass-saturate: 50%;
+  --card-glass-rim:      rgba(255, 255, 255, 0.3);
+  --card-glass-shine:    rgba(255, 255, 255, 0.04);
+
+  /* Typsnitt – allt är Nunito Sans. Byt här om du vill ha olika. */
+  --font-heading: "Nunito Sans", system-ui, sans-serif;
+  --font-body:    "Nunito Sans", system-ui, sans-serif;
+  --font-ui:      "Nunito Sans", system-ui, sans-serif;
+  --font-plus:    "Nunito Sans", system-ui, sans-serif;
+
+  /* Textstorlekar – skalar mellan mobil och desktop */
+  --fs-hero:      clamp(2.5rem, 1.6rem + 4vw, 4rem);      /* 40 → 64px */
+  --fs-h2:        clamp(2rem, 1.6rem + 1.6vw, 2.5rem);    /* 32 → 40px */
+  --fs-statement: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);    /* 24 → 32px */
+  --fs-item:      1.5rem;     /* 24px */
+  --fs-body:      1rem;       /* 16px */
+  --fs-card:      0.9375rem;  /* 15px */
+  --fs-small:     0.875rem;   /* 14px */
+  --fs-xsmall:    0.8125rem;  /* 13px */
+
+  /* Layout */
+  --container:    1280px;
+  --gutter:       clamp(20px, 5.5vw, 80px);  /* sidomarginal */
+  --section-pad:  clamp(56px, 7vw, 88px);    /* luft ovan/under sektioner */
+  --radius-card:  8px;
+  --radius-pill:  44px;
+}
+
+/* ---------- Grund ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+h1, h2, p, ol { margin: 0; }
+a { color: inherit; text-decoration: none; }
+address { font-style: normal; }
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--fs-h2);
+  line-height: 1.35;
+}
+
+.lead {
+  font-weight: 300;
+  line-height: 1.25;
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+/* ---------- Liquid glass ----------
+   Lägg klassen "glass" på valfritt element för att få effekten.
+   Justera utseendet via --glass-* variablerna i :root. */
+.glass {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(135deg, var(--glass-shine), transparent 55%),
+    var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+          backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow:
+    inset 0 1px 1px var(--glass-shine),          /* ljus överkant */
+    var(--glass-shadow);
+}
+
+/* Glänsande kant som är ljusast i hörnen – som ljus som bryts i glas */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    var(--glass-rim),
+    rgba(255, 255, 255, 0.1) 35%,
+    rgba(255, 255, 255, 0.05) 65%,
+    var(--glass-rim));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+/* Mjukt ljussken högst upp i glaset */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(120% 60% at 20% 0%, var(--glass-shine), transparent 60%);
+  pointer-events: none;
+}
+
+/* Knapp (About us / Contact us) */
+.button {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 32px;
+  border-radius: var(--radius-pill);
+  color: var(--color-white);
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  line-height: 1;
+  transition: transform 0.2s, background-color 0.2s;
+}
+.button:hover {
+  --glass-tint: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  min-height: 586px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px var(--gutter) 88px;
+  color: var(--color-white);
+  text-align: center;
+  background:
+    linear-gradient(rgba(16, 34, 45, 0.2), rgba(16, 34, 45, 0.2)),
+    url("assets/hero.jpg") center bottom / cover no-repeat;
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 121px;
+}
+
+.hero__title {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--fs-hero);
+  line-height: 1.2;
+  max-width: 560px;
+}
+
+.hero__text {
+  font-weight: 300;
+  line-height: 1.25;
+  max-width: 485px;
+  margin: 33px 0 39px;
+}
+
+/* ---------- The Clean Equation ---------- */
+.equation {
+  padding-block: 80px 82px;
+  text-align: center;
+}
+
+.equation .lead { margin-top: 18px; }
+
+.equation__list {
+  list-style: none;
+  padding: 0;
+  margin-top: 63px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.equation__item {
+  width: 132px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  font-family: var(--font-heading);
+  font-size: var(--fs-item);
+  line-height: 1.35;
+}
+
+.equation__num {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  line-height: 1.35;
+  color: var(--color-accent);
+}
+
+.equation__plus {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-plus);
+  font-weight: 300;
+  font-size: 36px;
+  color: var(--color-plus);
+}
+
+.equation__symbol {
+  margin: 67px auto 0;
+}
+
+.equation__statement {
+  margin: 34px auto 0;
+  max-width: 830px;
+  font-family: var(--font-heading);
+  font-size: var(--fs-statement);
+  line-height: 1.35;
+  color: var(--color-teal);
+}
+
+/* ---------- Our companies ---------- */
+.companies {
+  padding-block: var(--section-pad);
+  color: var(--color-white);
+  /* Bilden är exporterad från Figma med rätt utsnitt (mobil har en egen, se längst ned) */
+  background: #0d2a36 url("assets/companies-bg.jpg") center / cover no-repeat;
+}
+
+.companies .container { max-width: calc(1184px + var(--gutter) * 2); }
+
+.companies__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.companies__intro {
+  max-width: 384px;
+  margin-top: 18px;
+  font-weight: 300;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.companies__grid {
+  margin-top: 53px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.card {
+  min-height: 257px;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 32px 37px;
+  border-radius: var(--radius-card);
+  --glass-tint:     var(--card-glass-tint);
+  --glass-blur:     var(--card-glass-blur);
+  --glass-saturate: var(--card-glass-saturate);
+  --glass-rim:      var(--card-glass-rim);
+  --glass-shine:    var(--card-glass-shine);
+}
+
+.card__logo {
+  height: 39px;         /* samma höjd för alla loggor så texten linjerar */
+  margin-bottom: 20px;
+}
+
+/* Beskär Silanos-bilden så att bara loggan syns (enl. Figma) */
+.logo-crop {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+.logo-crop img { position: absolute; max-width: none; }
+.logo-crop--silanos { width: 132px; height: 23px; }
+.logo-crop--silanos img {
+  width: 154.83%;
+  left: -56.77%;
+  top: -52.17%;
+}
+
+.card__text {
+  font-family: var(--font-heading);
+  font-size: var(--fs-card);
+  line-height: 1.6;
+}
+
+.card__link {
+  margin-top: auto;
+  padding-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  font-weight: 600;
+  font-size: var(--fs-xsmall);
+  text-transform: uppercase;
+  color: var(--color-highlight);   /* chartreuse */
+}
+.card__link img { transition: transform 0.2s; }
+.card__link:hover img { transform: translateX(3px); }
+
+/* ---------- Aqvancia Services ---------- */
+.services {
+  padding-block: 109px 105px;
+  background: var(--gradient-services);
+  color: var(--color-white);
+  text-align: center;
+}
+
+.services__text {
+  max-width: 816px;
+  margin: 21px auto 36px;
+  line-height: 1.7;
+  color: var(--color-muted-light);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  padding-block: 100px 48px;
+  background: var(--color-teal);
+  color: var(--color-white);
+  font-size: var(--fs-small);
+}
+
+.footer__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;   /* annars sträcks loggan på höjden */
+  gap: 48px;
+}
+
+.footer__addresses {
+  display: flex;
+  gap: 80px;
+}
+
+.footer__col {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.footer__company {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.footer__address {
+  line-height: 1.6;
+  color: var(--color-muted-light);
+}
+
+.footer__col a:hover { text-decoration: underline; }
+
+.footer__social {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-ui);
+}
+
+.footer__bottom {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px 32px;
+  font-size: var(--fs-xsmall);
+  color: var(--color-muted-light);
+}
+
+.footer__highlight {
+  color: var(--color-highlight);
+  text-decoration: underline;
+}
+
+/* =========================================================
+   Surfplatta
+   ========================================================= */
+@media (max-width: 1024px) {
+  .companies__grid { grid-template-columns: repeat(2, 1fr); }
+
+  .footer__top { flex-direction: column; }
+  .footer__bottom { flex-direction: column; }
+}
+
+/* =========================================================
+   Mobil
+   ========================================================= */
+@media (max-width: 640px) {
+  .hero { min-height: 560px; padding-bottom: 64px; }
+  .hero__content { margin-top: 88px; }
+  .hero__text { margin: 24px 0 32px; }
+
+  .equation { padding-block: 64px; }
+  .equation__list {
+    margin-top: 48px;
+    gap: 8px;
+  }
+  .equation__item {
+    width: auto;
+    gap: 12px;
+    font-size: 1.125rem;
+  }
+  .equation__plus { width: 24px; font-size: 28px; }
+  .equation__symbol { margin-top: 48px; }
+
+  .companies { background-image: url("assets/companies-bg-mobile.jpg"); background-position: 30% center; }
+  .companies__header { flex-direction: column; gap: 12px; }
+  .companies__intro { text-align: left; margin-top: 0; }
+  .companies__grid { grid-template-columns: 1fr; margin-top: 32px; gap: 16px; }
+  .card { min-height: 0; padding: 28px 24px; }
+
+  .services { padding-block: 72px; }
+
+  .footer { padding-top: 64px; }
+  .footer__addresses { flex-direction: column; gap: 40px; }
+  .footer__bottom { margin-top: 56px; }
+}
