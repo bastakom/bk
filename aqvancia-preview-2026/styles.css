@@ -280,7 +280,9 @@ address { font-style: normal; }
   padding-block: var(--section-pad);
   color: var(--color-white);
   /* Bilden är exporterad från Figma med rätt utsnitt (mobil har en egen, se längst ned) */
-  background: #0d2a36 url("assets/companies-bg.jpg") center / cover no-repeat;
+  background:
+  linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+  #0d2a36 url("assets/companies-bg.jpg") center / cover no-repeat;
 }
 
 .companies .container { max-width: calc(1184px + var(--gutter) * 2); }
