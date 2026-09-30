@@ -281,7 +281,7 @@ address { font-style: normal; }
   color: var(--color-white);
   /* Bilden är exporterad från Figma med rätt utsnitt (mobil har en egen, se längst ned) */
   background:
-  linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+  linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)),
   #0d2a36 url("assets/companies-bg.jpg") center / cover no-repeat;
 }
 
@@ -471,7 +471,9 @@ address { font-style: normal; }
   .equation__plus { width: 24px; font-size: 28px; }
   .equation__symbol { margin-top: 48px; }
 
-  .companies { background-image: url("assets/companies-bg-mobile.jpg"); background-position: 30% center; }
+  .companies { background:
+  linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)),
+  #0d2a36 url("assets/companies-bg.jpg") center / cover no-repeat; background-position: 30% center; }
   .companies__header { flex-direction: column; gap: 12px; }
   .companies__intro { text-align: left; margin-top: 0; }
   .companies__grid { grid-template-columns: 1fr; margin-top: 32px; gap: 16px; }
