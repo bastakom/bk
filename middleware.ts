@@ -4,6 +4,7 @@ const locales = ['sv', 'en']
 const primaryHost = 'bastakompisar.se'
 const orderHost = 'order.bastakompisar.se'
 const signatureHost = 'signatur.bastakompisar.se'
+const aqvanciaPreviewHost = 'aqvancia-preview-2026.bastakompisar.se'
 
 function getLocale() {
   return 'sv'
@@ -36,6 +37,20 @@ export function middleware(request: any) {
 
   if (shouldSkipPath(pathname)) {
     return
+  }
+
+  if (hostname === aqvanciaPreviewHost) {
+    if (pathname === '/') {
+      url.pathname = '/aqvancia-preview-2026'
+      return NextResponse.rewrite(url)
+    }
+
+    if (pathname.startsWith('/aqvancia-preview-2026')) {
+      return
+    }
+
+    url.pathname = '/aqvancia-preview-2026' + pathname
+    return NextResponse.rewrite(url)
   }
 
   if (hostname === orderHost) {
