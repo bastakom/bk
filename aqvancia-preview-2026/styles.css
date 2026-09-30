@@ -43,6 +43,7 @@
   --glass-shadow:    0 6px 24px rgba(0, 20, 30, 0.12);
 
   /* Liquid glass – företagskort (mattare, frostat) */
+/* Liquid glass – företagskort (mattare, frostat) */
 --card-glass-tint:     rgba(255, 255, 255, 0.15);
 --card-glass-blur:     24px;
 --card-glass-saturate: 90%;
