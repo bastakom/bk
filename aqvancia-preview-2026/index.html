@@ -8,6 +8,50 @@
   <meta name="robots" content="noindex,nofollow">
   <link rel="preload" href="assets/fonts/NunitoSans-Variable.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .equation__closing {
+      margin: 54px auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .equation__closing .equation__symbol {
+      margin: 0 auto;
+      width: 54px;
+      height: auto;
+    }
+
+    .equation__closing .equation__statement {
+      margin: 0 auto;
+      max-width: 680px;
+      font-size: clamp(1.75rem, 1.35rem + 1.4vw, 2.35rem);
+      line-height: 1.2;
+      color: var(--color-teal);
+    }
+
+    .equation__statement-line {
+      display: block;
+    }
+
+    @media (max-width: 640px) {
+      .equation__closing {
+        margin-top: 42px;
+        gap: 14px;
+      }
+
+      .equation__closing .equation__symbol {
+        width: 48px;
+      }
+
+      .equation__closing .equation__statement {
+        max-width: 320px;
+        font-size: 1.55rem;
+        line-height: 1.25;
+      }
+    }
+  </style>
 </head>
 <body id="top">
 
@@ -42,9 +86,14 @@
           <li class="equation__item"><span class="equation__num">03</span>Service</li>
         </ol>
 
-        <img class="equation__symbol" src="assets/q-symbol.svg" width="60" height="67" alt="">
+        <div class="equation__closing">
+          <img class="equation__symbol" src="assets/q-symbol.svg" width="60" height="67" alt="">
 
-        <p class="equation__statement">When all parts work together, operations run better.</p>
+          <p class="equation__statement">
+            <span class="equation__statement-line">When every part works together,</span>
+            <span class="equation__statement-line">operations run better.</span>
+          </p>
+        </div>
       </div>
     </section>
 
