@@ -264,6 +264,7 @@ address { font-style: normal; }
 
 .equation__symbol {
   margin: 67px auto 0;
+       margin: 1em !important;
 }
 
 .equation__statement {
