@@ -188,7 +188,7 @@ address { font-style: normal; }
   color: var(--color-white);
   text-align: center;
   background:
-    linear-gradient(rgba(16, 34, 45, 0.2), rgba(16, 34, 45, 0.2)),
+    linear-gradient(rgba(16, 34, 45, 0.5), rgba(16, 34, 45, 0.5)),
     url("assets/hero.jpg") top / cover no-repeat;
 }
 
