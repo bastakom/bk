@@ -43,11 +43,11 @@
   --glass-shadow:    0 6px 24px rgba(0, 20, 30, 0.12);
 
 /* Liquid glass – företagskort (mattare, frostat) */
---card-glass-tint:     rgba(255, 255, 255, 0.02);
+--card-glass-tint:     rgba(0, 20, 30, 0.28);
 --card-glass-blur:     15px;
---card-glass-saturate: 115%;
---card-glass-rim:      rgba(255, 255, 255, 0.50);
---card-glass-shine:    rgba(255, 255, 255, 0.01);
+--card-glass-saturate: 105%;
+--card-glass-rim:      rgba(255, 255, 255, 0.42);
+--card-glass-shine:    rgba(255, 255, 255, 0.03);
 
   /* Typsnitt – allt är Nunito Sans. Byt här om du vill ha olika. */
   --font-heading: "Nunito Sans", system-ui, sans-serif;
