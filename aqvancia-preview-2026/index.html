@@ -10,75 +10,66 @@
   <link rel="stylesheet" href="styles.css">
   <style>
     .equation__closing {
-      width: min(100%, 880px);
-      margin: 58px auto 0;
-      padding: clamp(32px, 5vw, 54px) clamp(26px, 6vw, 76px);
-      display: grid;
-      grid-template-columns: auto 1fr;
+      width: min(100%, 760px);
+      margin: 52px auto 0;
+      padding-top: 30px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: clamp(24px, 4vw, 46px);
-      border-radius: 8px;
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 58%),
-        var(--color-teal);
-      color: var(--color-white);
-      text-align: left;
-      box-shadow: 0 22px 50px rgba(0, 20, 30, 0.12);
+      gap: 18px;
     }
 
-    .equation__closing-mark {
-      width: clamp(74px, 10vw, 118px);
-      aspect-ratio: 1;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--color-bg);
+    .equation__closing::before {
+      content: "";
+      width: 100%;
+      max-width: 520px;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 56, 70, 0.22),
+        transparent
+      );
     }
 
     .equation__closing .equation__symbol {
-      margin: 0;
-      width: 58%;
+      margin: 0 auto;
+      width: 46px;
       height: auto;
     }
 
-    .equation__kicker {
-      margin: 0 0 10px;
-      font-size: var(--fs-xsmall);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--color-highlight);
-    }
-
     .equation__closing .equation__statement {
-      margin: 0;
-      max-width: 620px;
-      font-size: clamp(2rem, 1.25rem + 2.4vw, 3.25rem);
-      line-height: 1.08;
-      color: inherit;
+      margin: 0 auto;
+      max-width: 640px;
+      font-size: clamp(1.75rem, 1.3rem + 1.7vw, 2.65rem);
+      line-height: 1.16;
+      color: var(--color-teal);
     }
 
     .equation__statement-line {
       display: block;
     }
 
+    .equation__statement-emphasis {
+      color: var(--color-accent);
+    }
+
     @media (max-width: 640px) {
       .equation__closing {
-        margin-top: 42px;
-        grid-template-columns: 1fr;
-        justify-items: center;
-        gap: 22px;
-        text-align: center;
+        margin-top: 38px;
+        padding-top: 24px;
+        gap: 14px;
       }
 
-      .equation__closing-mark {
-        width: 84px;
+      .equation__closing .equation__symbol {
+        width: 42px;
       }
 
       .equation__closing .equation__statement {
-        max-width: 320px;
-        font-size: 2rem;
-        line-height: 1.12;
+        max-width: 330px;
+        font-size: 1.75rem;
+        line-height: 1.18;
       }
     }
   </style>
@@ -117,17 +108,12 @@
         </ol>
 
         <div class="equation__closing">
-          <div class="equation__closing-mark" aria-hidden="true">
-            <img class="equation__symbol" src="assets/q-symbol.svg" width="60" height="67" alt="">
-          </div>
+          <img class="equation__symbol" src="assets/q-symbol.svg" width="60" height="67" alt="">
 
-          <div>
-            <p class="equation__kicker">The result</p>
-            <p class="equation__statement">
-              <span class="equation__statement-line">All parts aligned.</span>
-              <span class="equation__statement-line">One cleaner operation.</span>
-            </p>
-          </div>
+          <p class="equation__statement">
+            <span class="equation__statement-line">Equipment, chemicals and service.</span>
+            <span class="equation__statement-line">Aligned as <span class="equation__statement-emphasis">one clean equation.</span></span>
+          </p>
         </div>
       </div>
     </section>
