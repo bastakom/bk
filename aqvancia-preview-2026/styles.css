@@ -29,7 +29,7 @@
   --color-accent:      #de3e1b;   /* siffror 01/02/03 */
   --color-plus:        #fb2500;   /* plustecken */
   --color-muted-light: #e2ecef;   /* ljus text på mörk bakgrund */
-  --color-highlight:   #ecfe98;   /* chartreuse – länkar i footern och på korten */
+  --color-highlight:   #ffffff;   /* chartreuse – länkar i footern och på korten */
   --color-border:      #1a3644;   /* linje i footern */
   --color-white:       #ffffff;
   --gradient-services: linear-gradient(156deg, #c5e0dc 8.5%, #003846 96.5%);
