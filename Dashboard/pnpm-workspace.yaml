@@ -1,0 +1,11 @@
+packages:
+  - apps/*
+  - packages/*
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+  "@prisma/engines": true
+  prisma: true
+  esbuild: true
+  embedded-postgres: true
+  "@embedded-postgres/darwin-arm64": true

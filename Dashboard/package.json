@@ -1,0 +1,23 @@
+{
+  "name": "rapportplattform",
+  "private": true,
+  "packageManager": "pnpm@12.11.2",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "db:start": "pnpm --filter @rp/db db:start",
+    "db:migrate": "pnpm --filter @rp/db migrate",
+    "db:seed": "pnpm --filter @rp/db seed",
+    "test": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "worker": "pnpm --filter worker start",
+    "fake-google": "pnpm --filter @rp/core fake-google",
+    "fake-platforms": "pnpm --filter @rp/core fake-platforms"
+  },
+  "devDependencies": {
+    "axe-core": "4.14.0",
+    "dotenv": "^18.0.7",
+    "pg": "^8.23.1",
+    "playwright": "1.56.1",
+    "typescript": "^5.9.3"
+  }
+}
