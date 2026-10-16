@@ -1,0 +1,713 @@
+// Hierarki: Workspace (byrå) → Client (kund) → ConnectedAccount + Dashboard → Widget.
+// Alla tenant-tabeller har workspaceId och skyddas dessutom av row level security
+// (se migrationen "rls"). Kopplingar mellan widget och konto bär clientId i en
+// sammansatt främmande nyckel, så databasen själv hindrar att ett konto används
+// i en annan kunds dashboard.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Auth (Better Auth) ────────────────────────────────────────────────────────
+
+model User {
+  id            String       @id
+  name          String
+  email         String       @unique
+  emailVerified Boolean      @default(false)
+  image         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  sessions      Session[]
+  authAccounts  AuthAccount[]
+  memberships   Membership[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model AuthAccount {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("auth_accounts")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
+
+// ─── Byrå och användare ────────────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  EDITOR
+  VIEWER
+  /// Kundens egen inloggning: ser bara kundportalen för sina kunder.
+  CLIENT
+}
+
+model Workspace {
+  id           String       @id @default(cuid())
+  name         String
+  slug         String       @unique
+  logoUrl      String?
+  brandColor   String       @default("#25364F")
+  /// White label: delade länkar på egen domän (t.ex. rapport.bastakompisar.se), verifieras via DNS
+  customDomain     String?   @unique
+  domainVerifiedAt DateTime?
+  /// White label: avsändare för utskick och larm (domänen verifieras hos e-posttjänsten)
+  emailFromName    String?
+  emailFrom        String?
+  emailVerifiedAt  DateTime?
+  fontFamily   String       @default("Figtree")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  memberships  Membership[]
+  invitations  Invitation[]
+  clients      Client[]
+  connections  Connection[]
+  templates    DashboardTemplate[]
+  customMetrics CustomMetric[]
+
+  @@map("workspaces")
+}
+
+/// Inbjudan via mejl: mottagaren väljer lösenord och blir medlem med given roll och kunder.
+model Invitation {
+  id          String    @id @default(cuid())
+  workspaceId String
+  email       String
+  name        String?
+  role        Role
+  clientIds   String[]  @default([])
+  /// sha256 av token i länken
+  tokenHash   String    @unique
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdById String?
+  createdAt   DateTime  @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@map("invitations")
+}
+
+model Membership {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        Role      @default(EDITOR)
+  /// Kunder personen har tillgång till. Tomt = alla (gäller ej CLIENT, som alltid är begränsad). Admin ser alltid alla.
+  clientIds   String[]  @default([])
+  createdAt   DateTime  @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+  @@map("memberships")
+}
+
+// ─── Kunder ────────────────────────────────────────────────────────────────────
+
+model Client {
+  id           String             @id @default(cuid())
+  workspaceId  String
+  name         String
+  slug         String
+  logoUrl      String?
+  primaryColor String             @default("#0F172A")
+  accentColor  String             @default("#4F46E5")
+  /// ISO 4217, alla belopp räknas om till denna i rapporter
+  currency     String             @default("SEK")
+  /// IANA-tidszon, datum normaliseras hit
+  timezone     String             @default("Europe/Stockholm")
+  locale       String             @default("sv-SE")
+  /// Intern brief för AI-analysen: mål, KPI-mål, budget, målgrupp m.m. Visas aldrig för kunden.
+  brief        Json               @default("{}")
+  archivedAt   DateTime?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  workspace    Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  /// Källor som kunden valt från byråns databaser
+  sources      ClientSource[]
+  dashboards   Dashboard[]
+  insights     AiInsight[]
+  goals        ClientGoal[]
+  annotations  Annotation[]
+  alertRules   AlertRule[]
+
+  @@unique([workspaceId, slug])
+  @@unique([id, workspaceId])
+  @@map("clients")
+}
+
+// ─── Kopplingar ────────────────────────────────────────────────────────────────
+
+enum ConnectionStatus {
+  ACTIVE
+  AUTH_REQUIRED
+  REVOKED
+}
+
+/// En OAuth-inloggning mot en plattform. Kan ge åtkomst till många konton
+/// som sedan knyts till olika kunder.
+model Connection {
+  id              String             @id @default(cuid())
+  workspaceId     String
+  connectorId     String
+  platform        String
+  /// T.ex. e-postadressen eller namnet på inloggningen hos plattformen
+  label           String
+  /// AES-256-GCM-krypterad TokenSet (JSON)
+  encryptedTokens String
+  scopes          String[]
+  status          ConnectionStatus   @default(ACTIVE)
+  createdById     String?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  workspace       Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  accounts        ConnectedAccount[]
+
+  @@index([workspaceId])
+  @@map("connections")
+}
+
+enum AccountStatus {
+  PENDING
+  OK
+  AUTH_REQUIRED
+  SYNC_ERROR
+}
+
+model ConnectedAccount {
+  id                String         @id @default(cuid())
+  workspaceId       String
+  connectionId      String
+  connectorId       String
+  platform          String
+  externalId        String
+  name              String
+  /// Kontots originalvaluta
+  currency          String
+  timezone          String
+  status            AccountStatus  @default(PENDING)
+  statusMessage     String?
+  lastSyncedAt      DateTime?
+  lastSyncAttemptAt DateTime?
+  /// Sätts när workern tar kontot för synk (atomiskt), så att två workers aldrig synkar samma konto.
+  syncLockedAt      DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  connection        Connection     @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  /// Kunder som använder källan (synkas bara om minst en gör det)
+  clientSources     ClientSource[]
+  syncRuns          SyncRun[]
+  facts             MetricFact[]
+  periodFacts       PeriodFact[]
+  creatives         Creative[]
+  alerts            SyncAlert[]
+
+  /// Ett externt konto finns en gång per byrå och kan väljas av flera kunder
+  @@unique([workspaceId, connectorId, externalId])
+  @@index([connectionId])
+  @@map("connected_accounts")
+}
+
+/// En kunds val av en källa från byråns databaser. Samma källa kan väljas av
+/// flera kunder; `filters` avgränsar kundens del (t.ex. kampanjer som
+/// innehåller "Sommar") och gäller i kundens alla dashboards.
+model ClientSource {
+  workspaceId   String
+  clientId      String
+  accountId     String
+  /// DataFilter[] (se packages/core/src/filters.ts)
+  filters       Json             @default("[]")
+  createdAt     DateTime         @default(now())
+  client        Client           @relation(fields: [clientId, workspaceId], references: [id, workspaceId], onDelete: Cascade)
+  account       ConnectedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  widgetSources WidgetSource[]
+
+  @@id([clientId, accountId])
+  @@index([accountId])
+  @@map("client_sources")
+}
+
+// ─── Dashboards ────────────────────────────────────────────────────────────────
+
+model Dashboard {
+  id          String    @id @default(cuid())
+  workspaceId String
+  clientId    String
+  name        String
+  description String?
+  /// Standardperiod, jämförelse, tema m.m.
+  settings    Json      @default("{}")
+  /// Syns i kundportalen för kundens inloggningar.
+  inPortal    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  client      Client    @relation(fields: [clientId, workspaceId], references: [id, workspaceId], onDelete: Cascade)
+  widgets     Widget[]
+  insights    AiInsight[]
+  schedules   ReportSchedule[]
+  shareLinks  ShareLink[]
+
+  @@unique([id, clientId])
+  @@index([clientId])
+  @@map("dashboards")
+}
+
+model Widget {
+  id          String         @id @default(cuid())
+  workspaceId String
+  clientId    String
+  dashboardId String
+  type        String
+  title       String?
+  /// Metrics, dimension, filter, sortering m.m.
+  config      Json           @default("{}")
+  /// react-grid-layout: x, y, w, h
+  layout      Json
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  dashboard   Dashboard      @relation(fields: [dashboardId, clientId], references: [id, clientId], onDelete: Cascade)
+  sources     WidgetSource[]
+
+  @@unique([id, clientId])
+  @@index([dashboardId])
+  @@map("widgets")
+}
+
+/// Vilka källor en widget hämtar från. Nyckeln pekar på kundens val av källan
+/// (client_sources), så en widget kan bara använda källor som dess kund valt.
+model WidgetSource {
+  workspaceId String
+  clientId    String
+  widgetId    String
+  accountId   String
+  widget      Widget           @relation(fields: [widgetId, clientId], references: [id, clientId], onDelete: Cascade)
+  source      ClientSource     @relation(fields: [clientId, accountId], references: [clientId, accountId], onDelete: Cascade)
+
+  @@id([widgetId, accountId])
+  @@index([accountId])
+  @@map("widget_sources")
+}
+
+/// Mall på byrånivå. `definition` innehåller källplatser ("slots", t.ex.
+/// { key: "ads", platform: "google_ads" }) och widgets som pekar på slots.
+model DashboardTemplate {
+  id          String    @id @default(cuid())
+  workspaceId String
+  name        String
+  description String?
+  definition  Json
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@map("dashboard_templates")
+}
+
+// ─── Synk och data ─────────────────────────────────────────────────────────────
+
+enum SyncStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+model SyncRun {
+  id           String           @id @default(cuid())
+  workspaceId  String
+  accountId    String
+  status       SyncStatus       @default(RUNNING)
+  rangeStart   DateTime         @db.Date
+  rangeEnd     DateTime         @db.Date
+  rowsWritten  Int              @default(0)
+  error        String?
+  startedAt    DateTime         @default(now())
+  finishedAt   DateTime?
+  account      ConnectedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, startedAt])
+  @@map("sync_runs")
+}
+
+/// Normaliserade dagliga fakta. dimension = "" betyder dagens totaler,
+/// annars en uppdelning på en dimension (t.ex. "campaign"). Metrics är
+/// endast additiva och i kontots originalvaluta.
+model MetricFact {
+  id             BigInt           @id @default(autoincrement())
+  workspaceId    String
+  accountId      String
+  date           DateTime         @db.Date
+  dimension      String           @default("")
+  dimensionValue String           @default("")
+  currency       String
+  metrics        Json
+  syncedAt       DateTime         @default(now())
+  account        ConnectedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, dimension, date, dimensionValue])
+  @@map("metric_facts")
+}
+
+/// Värden för en hel period (t.ex. räckvidd = unika personer) som inte kan summeras per dag.
+/// Hämtas från plattformen när en rapport behöver dem och sparas som cache.
+model PeriodFact {
+  id          String           @id @default(cuid())
+  workspaceId String
+  accountId   String
+  /// "" = totalt, annars dimensionen (t.ex. "campaign" eller "age_gender")
+  dimension   String           @default("")
+  /// Nyckel för filtren som plattformen tillämpade (t.ex. kampanjfilter), "" = inga
+  filterKey   String           @default("")
+  start       DateTime         @db.Date
+  end         DateTime         @db.Date
+  /// [{ "value": "", "metrics": { "reach": 123 } }]
+  rows        Json
+  fetchedAt   DateTime         @default(now())
+  account     ConnectedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, dimension, filterKey, start, end])
+  @@map("period_facts")
+}
+
+model Creative {
+  id          String   @id @default(cuid())
+  workspaceId String
+  accountId   String
+  externalId  String
+  name        String
+  headline    String?
+  text        String?
+  thumbnailUrl String?
+  format      String?
+  campaign    String?
+  permalink   String?
+  /// Connectorns referens för uppspelning (se Connector.resolveMedia).
+  mediaRef    String?
+  /// Bilden sparad hos oss: plattformarnas bildlänkar slutar gälla efter några dagar.
+  imageData   Bytes?
+  imageType   String?
+  /// Källan som bilden hämtades från (utan signatur) – ny nedladdning bara när den ändras.
+  imageSource String?
+  updatedAt   DateTime @updatedAt
+  account     ConnectedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, externalId])
+  @@map("creatives")
+}
+
+// ─── Valuta och egna metrics ───────────────────────────────────────────────────
+
+/// ECB:s dagliga referenskurser: antal enheter av `currency` per 1 EUR.
+/// Global data (inte per byrå). Belopp lagras i originalvaluta i metric_facts
+/// och räknas om med dessa kurser när de visas.
+model FxRate {
+  currency String
+  date     DateTime @db.Date
+  perEur   Float
+  source   String   @default("ECB")
+
+  @@id([currency, date])
+  @@map("fx_rates")
+}
+
+enum MetricFormat {
+  number
+  currency
+  percent
+  duration
+}
+
+/// Byråns egna "blended" metrics, t.ex. Total ROAS = conversion_value / spend.
+model CustomMetric {
+  id             String       @id @default(cuid())
+  workspaceId    String
+  /// Unik nyckel inom byrån; metric-id blir "custom_<key>"
+  key            String
+  name           String
+  formula        String
+  format         MetricFormat @default(number)
+  /// null = neutral (ingen grön/röd färg på förändringen)
+  higherIsBetter Boolean?
+  description    String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  workspace      Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, key])
+  @@map("custom_metrics")
+}
+
+// ─── Rapportutskick ────────────────────────────────────────────────────────────
+
+enum ScheduleFrequency {
+  WEEKLY
+  MONTHLY
+}
+
+enum PdfLayout {
+  PAGED
+  LONG
+}
+
+enum DeliveryStatus {
+  SENT
+  FAILED
+}
+
+/// Schemalagt PDF-utskick av en dashboard via e-post.
+model ReportSchedule {
+  id          String            @id @default(cuid())
+  workspaceId String
+  clientId    String
+  dashboardId String
+  frequency   ScheduleFrequency
+  /// 1 = måndag … 7 = söndag
+  weekday     Int?
+  /// 1–28, 0 = sista dagen i månaden
+  dayOfMonth  Int?
+  hour        Int               @default(7)
+  timezone    String
+  /// Period i rapporten, t.ex. "last_week" eller "last_month"
+  rangePreset String
+  compare     String            @default("previous_period")
+  layout      PdfLayout         @default(PAGED)
+  recipients  String[]
+  subject     String
+  message     String?
+  active      Boolean           @default(true)
+  nextRunAt   DateTime
+  lastRunAt   DateTime?
+  /// Sätts när en worker tar jobbet, så att två workers aldrig skickar samma utskick.
+  lockedAt    DateTime?
+  createdById String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  dashboard   Dashboard         @relation(fields: [dashboardId, clientId], references: [id, clientId], onDelete: Cascade)
+  deliveries  ReportDelivery[]
+
+  @@index([active, nextRunAt])
+  @@index([dashboardId])
+  @@map("report_schedules")
+}
+
+model ReportDelivery {
+  id          String          @id @default(cuid())
+  workspaceId String
+  clientId    String
+  dashboardId String
+  scheduleId  String?
+  recipients  String[]
+  subject     String
+  status      DeliveryStatus
+  error       String?
+  /// "resend" eller "outbox" (lokal utvecklingsbrevlåda)
+  provider    String
+  /// Sökväg till sparad PDF och HTML (utkorgen)
+  pdfPath     String?
+  htmlPath    String?
+  pageCount   Int?
+  rangeLabel  String?
+  createdAt   DateTime        @default(now())
+  schedule    ReportSchedule? @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+
+  @@index([dashboardId, createdAt])
+  @@index([workspaceId, createdAt])
+  @@map("report_deliveries")
+}
+
+/// Larm när en koppling slutar fungera (synkfel eller tappad behörighet).
+/// Skapas vid statusövergång, mejlas till byråns admins och stängs automatiskt
+/// när kontot synkar igen.
+model SyncAlert {
+  id          String           @id @default(cuid())
+  workspaceId String
+  accountId   String
+  kind        AccountStatus
+  message     String
+  notifiedAt  DateTime?
+  resolvedAt  DateTime?
+  createdAt   DateTime         @default(now())
+  account     ConnectedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, createdAt])
+  @@index([accountId, resolvedAt])
+  @@map("sync_alerts")
+}
+
+/// Läslänk till en dashboard för kunder utan inloggning, med valfritt lösenord.
+model ShareLink {
+  id               String    @id @default(cuid())
+  workspaceId      String
+  clientId         String
+  dashboardId      String
+  /// Slumpad, 32 byte (base64url). Den enda hemligheten i länken.
+  token            String    @unique
+  /// scrypt-hash, null = inget lösenord
+  passwordHash     String?
+  expiresAt        DateTime?
+  /// Får mottagaren byta period och jämförelse?
+  allowDateChange  Boolean   @default(true)
+  allowPdf         Boolean   @default(true)
+  label            String?
+  viewCount        Int       @default(0)
+  lastViewedAt     DateTime?
+  revokedAt        DateTime?
+  createdById      String?
+  createdAt        DateTime  @default(now())
+  dashboard        Dashboard @relation(fields: [dashboardId, clientId], references: [id, clientId], onDelete: Cascade)
+
+  @@index([dashboardId])
+  @@map("share_links")
+}
+
+/// Intern AI-analys av en dashboard för en period (performance marketing-strategi).
+/// Visas bara för inloggade på byrån – aldrig på delade länkar, i PDF eller utskick.
+model AiInsight {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  clientId     String
+  dashboardId  String
+  periodStart  DateTime  @db.Date
+  periodEnd    DateTime  @db.Date
+  compareStart DateTime? @db.Date
+  compareEnd   DateTime? @db.Date
+  model        String
+  /// Strukturerad analys (se apps/web/src/lib/ai/insights.ts)
+  content      Json
+  inputTokens  Int       @default(0)
+  outputTokens Int       @default(0)
+  createdById  String?
+  createdAt    DateTime  @default(now())
+  client       Client    @relation(fields: [clientId, workspaceId], references: [id, workspaceId], onDelete: Cascade)
+  dashboard    Dashboard @relation(fields: [dashboardId, clientId], references: [id, clientId], onDelete: Cascade)
+
+  @@index([dashboardId, createdAt])
+  @@map("ai_insights")
+}
+
+/// Kundens mål, t.ex. "Leads ≥ 500 per månad", "CPA ≤ 300 kr", "Budget 50 000 kr/mån".
+/// Används av målwidgeten, larm och AI-analysen.
+model ClientGoal {
+  id          String   @id @default(cuid())
+  workspaceId String
+  clientId    String
+  label       String?
+  /// MetricId eller egen metric ("custom_<nyckel>"); "spend" = budget
+  metric      String
+  target      Float
+  /// month | quarter | year | custom
+  period      String
+  /// Egen kampanjperiod (period = custom)
+  startDate   DateTime? @db.Date
+  endDate     DateTime? @db.Date
+  /// Mål med samma grupp visas tillsammans, t.ex. "Demoprodukt SE" (spend, räckvidd och CTR)
+  group       String?
+  /// Datafilter (t.ex. bara kampanjer som innehåller "SE"), samma format som widgetfilter
+  filters     Json      @default("[]")
+  /// Tom = alla kundens källor som har metricen
+  accountIds  String[]
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  client      Client   @relation(fields: [clientId, workspaceId], references: [id, workspaceId], onDelete: Cascade)
+
+  @@index([clientId])
+  @@map("client_goals")
+}
+
+/// Händelse på ett datum för kunden, t.ex. "Höstkampanjen startade". Visas i trendgrafer.
+/// Interna händelser visas bara för byrån, aldrig för kunden.
+model Annotation {
+  id          String   @id @default(cuid())
+  workspaceId String
+  clientId    String
+  date        DateTime @db.Date
+  text        String
+  internal    Boolean  @default(false)
+  createdById String?
+  createdAt   DateTime @default(now())
+  client      Client   @relation(fields: [clientId, workspaceId], references: [id, workspaceId], onDelete: Cascade)
+
+  @@index([clientId, date])
+  @@map("annotations")
+}
+
+/// Larmregel för en kund: nyckeltal över/under en gräns, eller ett mål som ligger efter.
+/// Kontrolleras varje timme; mejlas när regeln slår till och högst en gång per dygn så länge den gäller.
+model AlertRule {
+  id            String    @id @default(cuid())
+  workspaceId   String
+  clientId      String
+  /// metric | goal
+  kind          String
+  metric        String?
+  /// above | below
+  op            String?
+  threshold     Float?
+  /// yesterday | last_7 | month_to_date
+  window        String    @default("last_7")
+  goalId        String?
+  /// Tom = alla kundens källor
+  accountIds    String[]
+  /// Användar-id:n som får mejlet (tom = byråns administratörer)
+  recipientIds  String[]
+  active        Boolean   @default(true)
+  firing        Boolean   @default(false)
+  lastValue     Float?
+  lastCheckedAt DateTime?
+  lastNotifiedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  client        Client    @relation(fields: [clientId, workspaceId], references: [id, workspaceId], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([active, lastCheckedAt])
+  @@map("alert_rules")
+}

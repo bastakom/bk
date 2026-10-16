@@ -1,0 +1,38 @@
+{
+  "name": "@rp/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "db:start": "tsx scripts/start-postgres.ts",
+    "generate": "prisma generate",
+    "migrate": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "seed": "tsx prisma/seed.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "fx:sync": "tsx scripts/sync-fx.ts",
+    "data:export": "tsx scripts/export-data.ts",
+    "data:import": "tsx scripts/import-data.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/pg": "^8.23.1",
+    "better-auth": "1.7.7",
+    "embedded-postgres": "18.3.0-beta.17",
+    "prisma": "7.10.0",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "^3.2.7"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "@rp/core": "workspace:*",
+    "dotenv": "^18.0.7",
+    "pg": "^8.23.1"
+  }
+}

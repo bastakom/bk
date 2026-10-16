@@ -1,0 +1,17 @@
+node_modules
+.next
+# Hemligheter: alla .env-filer (även backuper som .env.bak-fake), utom mallen.
+.env
+.env.*
+!.env.example
+*.log
+.pgdata
+packages/db/src/generated
+coverage
+.DS_Store
+.outbox
+
+# Databaskopia (kunddata och krypterade token) och paketerade exporter – aldrig i git.
+databas-export/
+*.zip
+*.tsbuildinfo

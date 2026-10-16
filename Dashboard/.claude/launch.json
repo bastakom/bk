@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "/Users/alexbk/.local/node/bin/pnpm",
+      "runtimeArgs": ["--filter", "web", "dev"],
+      "env": { "PATH": "/Users/alexbk/.local/node/bin:/usr/bin:/bin:/usr/sbin:/sbin" },
+      "port": 3000
+    }
+  ]
+}
