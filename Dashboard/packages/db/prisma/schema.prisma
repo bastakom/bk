@@ -248,6 +248,7 @@ model ConnectedAccount {
   periodFacts       PeriodFact[]
   creatives         Creative[]
   alerts            SyncAlert[]
+  syncJobs          SyncJob[]
 
   /// Ett externt konto finns en gång per byrå och kan väljas av flera kunder
   @@unique([workspaceId, connectorId, externalId])
@@ -357,6 +358,40 @@ enum SyncStatus {
   RUNNING
   SUCCESS
   FAILED
+}
+
+enum SyncJobStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+/// Ett begränsat och återkörbart arbete för en connector-dimension och ett
+/// inklusivt datumintervall. Dimension = "" betyder dagstotaler.
+model SyncJob {
+  id          String        @id @default(cuid())
+  workspaceId String
+  accountId   String
+  dimension   String
+  rangeStart  DateTime      @db.Date
+  rangeEnd    DateTime      @db.Date
+  status      SyncJobStatus @default(PENDING)
+  attempts    Int           @default(0)
+  runAfter    DateTime      @default(now())
+  lockedAt    DateTime?
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  rowsWritten Int           @default(0)
+  error       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  account     ConnectedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, dimension, rangeStart, rangeEnd])
+  @@index([status, runAfter, lockedAt])
+  @@index([accountId, status, rangeStart])
+  @@map("sync_jobs")
 }
 
 model SyncRun {
