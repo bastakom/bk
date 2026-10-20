@@ -1,5 +1,5 @@
 import "server-only";
-import { syncAccount, type DbRunner, type SyncOptions } from "@rp/db";
+import { enqueueAccountHistory, syncAccount, type DbRunner, type SyncOptions } from "@rp/db";
 import { handleSyncOutcome } from "@rp/reports";
 import { appUrl } from "./app-url";
 
@@ -18,13 +18,16 @@ export async function syncUsedSources(db: DbRunner, connectionId: string) {
   const ids = await db((tx) =>
     tx.connectedAccount.findMany({ where: { connectionId, clientSources: { some: {} } }, select: { id: true, lastSyncedAt: true } }),
   );
-  for (const a of ids) await syncAndAlert(db, a.id, a.lastSyncedAt ? { days: 30 } : {});
+  for (const a of ids) {
+    if (!a.lastSyncedAt) await db((tx) => enqueueAccountHistory(tx, a.id));
+    else await syncAndAlert(db, a.id, { days: 30 });
+  }
 }
 
-/** Första synken för källor som en kund just valt och som aldrig synkats. */
+/** Lägger första historiska synken i kön och returnerar utan att vänta på API-anrop. */
 export async function syncNewSources(db: DbRunner, accountIds: string[]) {
   const fresh = await db((tx) => tx.connectedAccount.findMany({ where: { id: { in: accountIds }, lastSyncedAt: null }, select: { id: true } }));
-  for (const a of fresh) await syncAndAlert(db, a.id);
+  for (const a of fresh) await db((tx) => enqueueAccountHistory(tx, a.id));
 }
 
 /**
