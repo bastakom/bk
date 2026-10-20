@@ -3,6 +3,8 @@ import { PrismaClient } from "./generated/prisma/client";
 
 export * from "./generated/prisma/client";
 export { ownerRunner, syncAccount, type DbRunner, type SyncOptions, type SyncResult } from "./sync";
+export * from "./sync-queue";
+export * from "./sync-job-runner";
 export * from "./templates";
 export * from "./sources";
 export * from "./fx";
