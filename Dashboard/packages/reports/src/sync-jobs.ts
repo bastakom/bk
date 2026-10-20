@@ -2,7 +2,7 @@
  * Schemalagd datasynk och larm. Körs av workern; larmlogiken används även
  * av "Synka nu" i appen så att en statusövergång alltid larmas exakt en gång.
  */
-import { syncAccount, ownerRunner, syncFxRates, type DbRunner, type PrismaClient, type SyncResult } from "@rp/db";
+import { claimSyncJobs, ownerRunner, runSyncJob, syncAccount, syncFxRates, type DbRunner, type PrismaClient, type SyncResult } from "@rp/db";
 import { getMailer, type Mailer } from "./mail";
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -126,6 +126,35 @@ export async function runDueSyncs(
       }
     }),
   );
+  return results;
+}
+
+/**
+ * Kör den återkörbara historikkön. Varje connector-anrop är ett eget jobb;
+ * ett tungt intervall kan därför delas utan att övriga dimensioner påverkas.
+ */
+export async function runDueSyncJobs(
+  owner: PrismaClient,
+  opts: { baseUrl: string; batch?: number; concurrency?: number; now?: Date; log?: (m: string) => void; mailer?: Mailer },
+) {
+  const log = opts.log ?? console.log;
+  const claimed = await claimSyncJobs(owner, opts.batch ?? 20, opts.now ?? new Date());
+  const queue = [...claimed];
+  const results: { id: string; accountId: string; ok: boolean; rows: number; split?: boolean; error?: string }[] = [];
+  await Promise.all(Array.from({ length: Math.min(opts.concurrency ?? 3, queue.length) }, async () => {
+    for (let job = queue.shift(); job; job = queue.shift()) {
+      const started = Date.now();
+      const result = await runSyncJob(owner, job);
+      if (!result.ok && !result.split && result.auth) {
+        await handleSyncOutcome(ownerRunner(owner), job.accountId, {
+          ok: false, rowsWritten: 0, error: result.error, auth: true,
+          previousStatus: "PENDING", status: "AUTH_REQUIRED",
+        }, { baseUrl: opts.baseUrl, mailer: opts.mailer, log });
+      }
+      results.push({ id: job.id, accountId: job.accountId, ok: result.ok, rows: result.rowsWritten, split: result.split, error: result.error });
+      log(JSON.stringify({ event: result.split ? "sync_job_split" : "sync_job", job: job.id, account: job.accountId, dimension: job.dimension, start: job.rangeStart, end: job.rangeEnd, ok: result.ok, split: result.split ?? false, rows: result.rowsWritten, ms: Date.now() - started, error: result.error }));
+    }
+  }));
   return results;
 }
 
