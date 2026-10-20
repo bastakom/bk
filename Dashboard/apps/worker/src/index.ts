@@ -1,6 +1,6 @@
 /**
  * Bakgrundsworker. Varje minut:
- *  - synkar konton vars senaste synk är äldre än SYNC_INTERVAL_HOURS (standard 4 h),
+ *  - kör begränsade historikjobb från databaskön,
  *  - skickar förfallna schemalagda rapporter,
  *  - hämtar nya ECB-kurser när de är äldre än ett dygn,
  *  - kontrollerar larmregler (högst en gång per timme och regel, via webbappen).
@@ -14,7 +14,7 @@ import { resolve } from "node:path";
 
 config({ path: resolve(import.meta.dirname, "../../../.env"), quiet: true });
 const { createOwnerClient } = await import("@rp/db");
-const { closeBrowser, runDueSchedules, runDueSyncs, syncFxIfStale } = await import("@rp/reports");
+const { closeBrowser, runDueSchedules, runDueSyncJobs, syncFxIfStale } = await import("@rp/reports");
 
 const prisma = createOwnerClient();
 const baseUrl = process.env.APP_INTERNAL_URL ?? process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
@@ -32,7 +32,7 @@ async function tick() {
   try {
     await step("valutakurser", () => syncFxIfStale(prisma, log));
     await step("synk", async () => {
-      const res = await runDueSyncs(prisma, { baseUrl, log });
+      const res = await runDueSyncJobs(prisma, { baseUrl, log });
       if (res.length) log(`Synk: ${res.filter((r) => r.ok).length} lyckade, ${res.filter((r) => !r.ok).length} misslyckade`);
     });
     await step("utskick", async () => {
@@ -64,7 +64,7 @@ if (process.argv.includes("--once")) {
   await closeBrowser();
   await prisma.$disconnect();
 } else {
-  log(`Startad. Synk var ${process.env.SYNC_INTERVAL_HOURS ?? 4}:e timme, utskick och kurser kontrolleras varje minut (${baseUrl}).`);
+  log(`Startad. Jobbkön, utskick och kurser kontrolleras varje minut (${baseUrl}).`);
   await tick();
   const timer = setInterval(tick, 60_000);
   const stop = async () => {
