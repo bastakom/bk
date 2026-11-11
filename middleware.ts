@@ -17,6 +17,7 @@ function shouldSkipPath(pathname: string) {
     pathname === '/favicon.ico' ||
     pathname === '/robots.txt' ||
     pathname === '/sitemap.xml' ||
+    pathname === '/googled893a425ed32728f.html' ||
     pathname === '/bk-black.png' ||
     pathname === '/bk-white.png' ||
     pathname.startsWith('/fonts/') ||
@@ -99,6 +100,6 @@ export function middleware(request: any) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|img/|favicon.ico|robots.txt|sitemap.xml).*)',
+    '/((?!api|_next/static|_next/image|img/|favicon.ico|robots.txt|sitemap.xml|googled893a425ed32728f.html).*)',
   ],
 }
